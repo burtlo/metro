@@ -5,7 +5,7 @@ def asset_path(name)
   File.join Dir.pwd, "assets", name
 end
 
-module Misfits
+module Metro
 
   def self.run(filename="game")
 
@@ -37,6 +37,8 @@ module Misfits
     end
   end
 
+
+
   class Window < Gosu::Window
 
     attr_reader :scene
@@ -48,20 +50,35 @@ module Misfits
     def starting_at(scene)
       @scene = scene.new(self)
     end
+    
+    def scene=(new_scene)
+      # TODO: transition away from scene
+      @scene = new_scene.new(self)
+      # TODO: transition to new scene
+    end
 
     alias_method :gosu_show, :show
 
     def show
-      scene.show
       gosu_show
     end
 
     def update
+      scene._events.fire_downer_events
       scene.update
     end
 
     def draw
       scene.draw
+    end
+    
+    def button_up(id)
+      scene._events.button_up(id)
+    end
+    
+    def button_down(id)
+      # NOTE: This event does not appear to fire at all.
+      scene._events.button_down(id)
     end
 
   end

@@ -1,3 +1,3 @@
-module Misfits
+module Metro
   VERSION = "0.0.1"
 end

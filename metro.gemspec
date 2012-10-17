@@ -5,7 +5,7 @@ require 'misfits/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "misfits"
-  gem.version       = Misfits::VERSION
+  gem.version       = Metro::VERSION
   gem.authors       = ["Franklin Webber"]
   gem.email         = ["franklin.webber@gmail.com"]
   gem.description   = %q{TODO: Write a gem description}

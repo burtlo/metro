@@ -1,4 +1,4 @@
-# Misfits
+# Metro
 
 TODO: Write a gem description
 

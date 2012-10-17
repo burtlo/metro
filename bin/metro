@@ -8,4 +8,4 @@ $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'misfits'
 
-Misfits.run(*ARGV)
+Metro.run(*ARGV)
