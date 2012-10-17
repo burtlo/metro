@@ -8,8 +8,9 @@ def asset_path(name)
 end
 
 module Metro
+  extend self
 
-  def self.run(filename="game")
+  def run(filename="game")
 
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
 
