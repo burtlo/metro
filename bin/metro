@@ -6,6 +6,6 @@ while File.symlink?(path)
 end
 $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
-require 'misfits'
+require 'metro'
 
 Metro.run(*ARGV)

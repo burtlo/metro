@@ -1,5 +1,5 @@
 require 'gosu'
-require "misfits/version"
+require "metro/version"
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
@@ -11,10 +11,10 @@ module Metro
 
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
 
-    require_relative 'misfits/model'
+    require_relative 'metro/model'
     Dir['models/*.rb'].each {|model| require model }
 
-    require_relative 'misfits/scene'
+    require_relative 'metro/scene'
     Dir['scenes/*.rb'].each {|scene| require scene }
 
     game_contents = File.read(filename)
