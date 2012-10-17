@@ -9,7 +9,6 @@ module Metro
       end
 
       def self.parse(view_name)
-        puts "Loading View From View File: #{json_view_name(view_name)}"
         JSON.parse File.read json_view_name(view_name)
       end
 

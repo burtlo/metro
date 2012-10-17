@@ -1,10 +1,21 @@
 require 'gosu'
-require "metro/version"
+require 'logger'
+
+require 'metro/version'
 require 'metro/window'
 require 'metro/game'
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
+end
+
+
+def log
+  @log ||= begin
+    logger = Logger.new(STDOUT)
+    logger.level = Logger::DEBUG
+    logger
+  end
 end
 
 module Metro
