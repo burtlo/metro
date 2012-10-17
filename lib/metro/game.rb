@@ -7,9 +7,9 @@ module Metro
     def setup(game_configuration)
       @config = game_configuration
     end
-    
+
     attr_reader :config
-    
+
     def first_scene
       config.first_scene
     end

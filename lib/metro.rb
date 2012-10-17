@@ -23,7 +23,7 @@ end
 module Metro
   extend self
 
-  def run(filename="game")
+  def run(filename="metro")
     load_game_files
     load_game_configuration(filename)
     start_game
