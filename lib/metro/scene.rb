@@ -5,6 +5,14 @@ module Metro
   class Scene
     attr_reader :window, :_events
 
+    def self.inherited(base)
+      scenes << base
+    end
+
+    def self.scenes
+      @scenes ||= []
+    end
+
     include SceneView
 
     def initialize(window)
@@ -23,6 +31,19 @@ module Metro
     def draw ; end
 
     def _no_action ; end
+
+    def transition_to(scene_name)
+      new_scene = Scenes.create(scene_name,window)
+      _prepare_transition(new_scene)
+      window.scene = new_scene
+    end
+
+    def _prepare_transition(new_scene)
+      log.debug "Preparing to transition from scene #{self} to #{new_scene}"
+      prepare_transition(new_scene)
+    end
+
+    def prepare_transition(new_scene) ; end
 
   end
 end

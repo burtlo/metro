@@ -1,3 +1,5 @@
+require_relative 'scenes'
+
 module Metro
   class Window < Gosu::Window
 
@@ -7,14 +9,16 @@ module Metro
       super width, height, something
     end
 
-    def starting_at(scene)
-      @scene = scene.new(self)
+    def start_at(scene)
+      @scene = scenes.find(scene).new(self)
+    end
+    
+    def scenes
+      Scenes
     end
 
     def scene=(new_scene)
-      # TODO: transition away from scene
-      @scene = new_scene.new(self)
-      # TODO: transition to new scene
+      @scene = new_scene
     end
 
     alias_method :gosu_show, :show
