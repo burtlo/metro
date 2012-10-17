@@ -1,3 +1,4 @@
+require_relative 'yaml_view'
 require_relative 'json_view'
 require_relative 'no_view'
 
@@ -9,7 +10,7 @@ module Metro
     end
 
     def _view_parsers
-      [ JSONView, NoView ]
+      [ YAMLView, JSONView, NoView ]
     end
 
     def view

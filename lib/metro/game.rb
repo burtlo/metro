@@ -25,7 +25,7 @@ module Metro
     def dimensions
       [ width, height ]
     end
-
+    
     def center
       [ width / 2 , height / 2 ]
     end

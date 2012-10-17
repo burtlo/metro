@@ -19,7 +19,7 @@ module Metro
     end
 
     def draw
-      scene.draw
+      scene._draw
     end
 
     def button_up(id)
