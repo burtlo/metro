@@ -9,22 +9,8 @@ module Metro
       super width, height, something
     end
 
-    def start_at(scene)
-      @scene = scenes.find(scene).new(self)
-    end
-    
-    def scenes
-      Scenes
-    end
-
     def scene=(new_scene)
       @scene = new_scene
-    end
-
-    alias_method :gosu_show, :show
-
-    def show
-      gosu_show
     end
 
     def update

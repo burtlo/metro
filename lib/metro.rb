@@ -4,6 +4,8 @@ require 'logger'
 require 'metro/version'
 require 'metro/window'
 require 'metro/game'
+require 'metro/model'
+require 'metro/scene'
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
@@ -22,23 +24,28 @@ module Metro
   extend self
 
   def run(filename="game")
+    load_game_files
+    load_game_configuration(filename)
+    start_game
+  end
 
+  def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
-
-    require_relative 'metro/model'
     Dir['models/*.rb'].each {|model| require model }
-
-    require_relative 'metro/scene'
     Dir['scenes/*.rb'].each {|scene| require scene }
+  end
 
+  def load_game_configuration(filename)
     game_contents = File.read(filename)
-
     game_block = lambda {|instance| eval(game_contents) }
+    game = Game::DSL.parse(&game_block)
+    Game.setup game
+  end
 
-    window = Window.new Game::Width, Game::Height, false
-    window.instance_eval(&game_block)
+  def start_game
+    window = Window.new Game.width, Game.height, false
+    window.scene = Game.first_scene.new(window)
     window.show
-
   end
 
 end
