@@ -21,6 +21,53 @@ module Metro
   class Scene
 
     #
+    # The events method is where a scene has access to configure the events that it
+    # would like to listen for during the scene.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    # @param [EventRelay] e is the EventRelay that you can register for button up,
+    #   button down, or button held events.
+    #
+    # @see EventRelay
+    #
+    def events(e) ; end
+
+    #
+    # This method is called right after initialization
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    def show ; end
+
+    #
+    # This is called every update interval while the window is being shown.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    def update ; end
+
+    #
+    # This is called after every {#update} and when the OS wants the window to
+    # repaint itself.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    def draw ; end
+
+    #
+    # Before a scene is transisitioned away from to a new scene, this method is called
+    # to allow for the scene to complete any taskss, stop any actions, or pass any
+    # information from the existing scene to the scene that is about to replace it.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    # @param [Scene] new_scene this is the instance of the scene that is about to replace
+    #   the current scene.
+    #
+    def prepare_transition(new_scene) ; end
+
+    #
     # The window is the main instance of the game. Using window can access a lot of
     # underlying Metro::Window, a subclass of Gosu::Window, that the Scene class is
     # obfuscating.
@@ -31,46 +78,13 @@ module Metro
     attr_reader :window
 
     #
-    # The events object that is configured through the {#events} method, which stores
-    # all the gamepad and keyboard events defined.
-    #
-    # @see Events
-    #
-    attr_reader :event_relays
-
-    #
-    # Customized views that contain elements to be drawn will be handled by the
-    # view_drawer.
-    #
-    # @see SceneView::Drawer
-    #
-    attr_reader :view_drawer
-
-    #
-    # Captures all classes that subclass Scene.
-    #
-    def self.inherited(base)
-      scenes << base
-    end
-
-    #
-    # All subclasses of Scene, this should be all the defined scenes
-    # within the game.
-    #
-    # @return an Array of Scene subclasses
-    #
-    def self.scenes
-      @scenes ||= []
-    end
-
-    # This provides the functionality for view handling.
-    include SceneView
-
-    #
     # A scene is created with a window instance. When subclassing a Scene, you should
     # hopefully not need to create an {#initialize} method or call `super` but instead
     # implement the {#show} method which is the point of incision in the subclasses
     # that allow for the subclasses of Scene to be setup correctly.
+    # 
+    # @note This method should NOT be implemented in the Scene subclass. Instead use
+    #   the {#show} method which is called after initialization.
     #
     def initialize(window)
       @window = window
@@ -88,53 +102,33 @@ module Metro
     end
 
     #
-    # This method should be defined in the Scene subclass.
+    # Captures all classes that subclass Scene.
     #
-    # @param [Events] e is the object that you can register button presses
+    # @see #self.scenes
     #
-    def events(e) ; end
-
-    def add_event_relay(event_relay)
-      @event_relays << event_relay
+    def self.inherited(base)
+      scenes << base
     end
 
     #
-    # This method is called during a scene update and will fire all the events
-    # that have been defined for all held buttons for all defined event relays.
+    # All subclasses of Scene, this should be all the defined scenes within the game.
     #
-    def fire_events_for_held_buttons
-      event_relays.each do |er|
-        er.fire_events_for_held_buttons
-      end
+    # @return an Array of Scene subclasses
+    #
+    def self.scenes
+      @scenes ||= []
     end
 
-    def button_up(id)
-      event_relays.each do |er|
-        er.button_up(id)
-      end
-    end
-
-    def button_down(id)
-      event_relays.each do |er|
-        er.button_down(id)
-      end
-    end
+    # This provides the functionality for view handling.
+    include SceneView
 
     #
-    # This method is solely a non-action method for when events are triggered
-    # for button up and button down
+    # Customized views that contain elements to be drawn will be handled by the
+    # view_drawer.
     #
-    def _no_action ; end
-
-    # This method is called right after initialization
-    def show ; end
-
+    # @see SceneView::Drawer
     #
-    # This method handles the logic or game loop for the scene.
-    #
-    # @note This method should be implemented in the subclassed Scene
-    #
-    def update ; end
+    attr_reader :view_drawer
 
     #
     # The `draw_with_view` method is called by the Game Window to allow for any view related
@@ -145,13 +139,6 @@ module Metro
       view_drawer.draw(view)
       draw
     end
-
-    #
-    # This method handles all the visual rendering of the scene.
-    #
-    # @note This method should be implemented in the subclassed Scene
-    #
-    def draw ; end
 
     #
     # `transition_to` performs the work of transitioning this scene
@@ -181,16 +168,61 @@ module Metro
     end
 
     #
-    # Before a scene is transisitioned away from to a new scene, this method is called
-    # to allow for the scene to complete any taskss, stop any actions, or pass any
-    # information from the existing scene to the scene that is about to replace it.
+    # The events object that is configured through the {#events} method, which stores
+    # all the gamepad and keyboard events defined. By default a scene has an event
+    # relay defined. Additional relays can be defined based on the components added.
     #
-    # @note This method should be implemented in the subclassed Scene
+    # @see Events
+    # @see #add_event_relay
     #
-    # @param [Scene] new_scene this is the instance of the scene that is about to replace
-    #   the current scene.
+    attr_reader :event_relays
+
     #
-    def prepare_transition(new_scene) ; end
+    # Add an additional event relay to the list of event relays. It is appended
+    # to the end of the list of relays.
+    #
+    # @param [EventRelay] event_relay an event relay instance that will now
+    #   receive events generated from this scene.
+    #
+    def add_event_relay(event_relay)
+      @event_relays << event_relay
+    end
+
+    #
+    # This method is called during a scene update and will fire all the events
+    # that have been defined for all held buttons for all defined event relays.
+    #
+    def fire_events_for_held_buttons
+      event_relays.each do |relay|
+        relay.fire_events_for_held_buttons
+      end
+    end
+
+    #
+    # This method is called before a scene update and passes the button up events
+    # to each of the defined event relays.
+    #
+    def button_up(id)
+      event_relays.each do |relay|
+        relay.button_up(id)
+      end
+    end
+
+    #
+    # This method is called before a scene update and passes the button down events
+    # to each of the defined event relays.
+    #
+    def button_down(id)
+      event_relays.each do |relay|
+        relay.button_down(id)
+      end
+    end
+
+    #
+    # This method is solely a non-action method for when events are triggered
+    # for button up and button down
+    #
+    def _no_action ; end
 
   end
 end
