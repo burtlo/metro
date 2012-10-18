@@ -19,7 +19,9 @@ module Metro
     end
 
     def update
-      scene.event_manager.trigger_held_buttons
+      scene.event_relays.each do |er|
+        er.trigger_held_buttons
+      end
       scene.update
     end
 
@@ -28,11 +30,15 @@ module Metro
     end
 
     def button_up(id)
-      scene.event_manager.button_up(id)
+      scene.event_relays.each do |er|
+        er.button_up(id)
+      end
     end
 
     def button_down(id)
-      scene.event_manager.button_down(id)
+      scene.event_relays.each do |er|
+        er.button_down(id)
+      end
     end
 
   end

@@ -1,6 +1,5 @@
 module Metro
   module SceneView
-
     class Drawer
 
       # The window is necessary as all drawing elements created require
@@ -14,11 +13,15 @@ module Metro
       def initialize(scene)
         @scene = scene
         @window = scene.window
+        after_initialize
       end
+      
+      def after_initialize ; end
 
       def components
         @components ||= begin
-          Hash.new(UnsupportedComponent).merge label: Label.new(scene)
+          Hash.new(UnsupportedComponent).merge label: Label.new(scene),
+           select: Select.new(scene)
         end
       end
 
@@ -33,9 +36,9 @@ module Metro
       end
 
     end
-
   end
 end
 
-require_relative 'components/unsupported_component'
-require_relative 'components/label'
+require_relative 'unsupported_component'
+require_relative 'label'
+require_relative 'select'

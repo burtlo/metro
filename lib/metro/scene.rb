@@ -1,23 +1,23 @@
 require_relative 'scene_view/scene_view'
 require_relative 'scene_view/components/drawer'
-require_relative 'events'
+require_relative 'event_relay'
 
 module Metro
-  
+
   #
   # A scene is a basic unit of a game. Within a scene you define a number of methods
   # that handle the initial setup, event configuration, logic updating, and drawing.
-  # 
+  #
   # @see #show
   # @see #update
   # @see #draw
   # @see #events
-  # 
+  #
   # A fair number of private methods within Scene are prefaced with an underscore.
   # These methods often call non-underscored methods within those methods. This allows
   # for scene to configure or perform some functionality, while providing an interface
   # so that every subclass does not have to constantly call `super`.
-  # 
+  #
   class Scene
 
     #
@@ -36,7 +36,7 @@ module Metro
     #
     # @see Events
     #
-    attr_reader :event_manager
+    attr_reader :event_relays
 
     #
     # Customized views that contain elements to be drawn will be handled by the
@@ -75,8 +75,12 @@ module Metro
     def initialize(window)
       @window = window
 
-      @event_manager = Events.new(self)
-      events(@event_manager)
+      @event_relays ||= []
+
+      @scene_events = EventRelay.new(self,window)
+      events(@scene_events)
+
+      @event_relays << @scene_events
 
       @view_drawer = SceneView::Drawer.new(self)
 
@@ -89,6 +93,11 @@ module Metro
     # @param [Events] e is the object that you can register button presses
     #
     def events(e) ; end
+
+    def add_event_relay(event_relay)
+      log.info "Adding event relay #{event_relay}"
+      @event_relays << event_relay
+    end
 
     #
     # This method is solely a non-action method for when events are triggered

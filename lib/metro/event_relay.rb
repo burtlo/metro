@@ -1,10 +1,13 @@
 module Metro
-  class Events
+  class EventRelay
 
-    attr_reader :scene, :up_actions, :down_actions, :held_actions
+    attr_reader :target, :window
 
-    def initialize(scene)
-      @scene = scene
+    attr_reader :up_actions, :down_actions, :held_actions
+
+    def initialize(target,window)
+      @target = target
+      @window = window
       @up_actions ||= Hash.new(:_no_action)
       @down_actions ||= Hash.new(:_no_action)
       @held_actions ||= Hash.new(:_no_action)
@@ -32,19 +35,19 @@ module Metro
 
     def button_up(id)
       action = up_actions[id]
-      scene.instance_eval(&action)
+      target.instance_eval(&action)
     end
 
     def trigger_held_buttons
       held_actions.each do |key,action|
-        scene.instance_eval(&action) if scene.window.button_down?(key)
+        target.instance_eval(&action) if window.button_down?(key)
       end
     end
 
     def button_down(id)
       down_actions.each do |key,action|
-        if scene.window.button_down?(key)
-          scene.instance_eval(&action)
+        if window.button_down?(key)
+          target.instance_eval(&action)
         end
       end
     end
