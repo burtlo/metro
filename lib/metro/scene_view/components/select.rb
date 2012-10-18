@@ -14,7 +14,7 @@ module Metro
 
           events.on_up Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp, do: :previous_option
           events.on_up Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown, do: :next_option
-          events.on_up Gosu::KbEnter, Gosu::KbReturn, do: :selection
+          events.on_up Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0, do: :selection
 
           scene.add_event_relay events
         end
