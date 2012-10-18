@@ -61,7 +61,7 @@ module Metro
 
   def start_game
     window = Window.new Game.width, Game.height, Game.fullscreen?
-    window.scene = Game.first_scene.new(window)
+    window.scene = Scenes.create(Game.first_scene,window)
     window.show
   end
 

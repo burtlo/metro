@@ -9,7 +9,7 @@ module Metro
       end
 
       def first_scene(scene_name = nil)
-        scene_name ? @first_scene = Scenes.find(scene_name) : @first_scene
+        scene_name ? @first_scene = scene_name : @first_scene
       end
 
       def width(game_width = nil)
@@ -25,7 +25,6 @@ module Metro
       end
 
       def fullscreen(set_fullscreen = nil)
-        puts "Setting fullscreen: #{set_fullscreen}"
         set_fullscreen.nil? ? @fullscreen : @fullscreen = set_fullscreen
       end
 

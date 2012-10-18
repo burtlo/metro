@@ -207,7 +207,7 @@ module Metro
         target.instance_eval(&action) if window and window.button_down?(key)
       end
     end
-    
+
     # @return a block of code that is mapped for the 'button_up' id or a block that will attempt to call out
     #   to the action missing method.
     def up_action(id)
