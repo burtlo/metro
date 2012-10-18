@@ -81,7 +81,7 @@ module Metro
     # Setting the window places the scene within in the specified window. Which
     # will cause a number of variables and settings to be set up. The {#show}
     # method is called after the window has been set.
-    # 
+    #
     def window=(window)
       @window = window
 
@@ -91,8 +91,6 @@ module Metro
       events(@scene_events)
 
       @event_relays << @scene_events
-
-      @view_drawer = SceneView::Drawer.new(self)
 
       show
     end
@@ -152,26 +150,19 @@ module Metro
       @scenes ||= []
     end
 
-    # This provides the functionality for view handling.
-    include SceneView
-
     #
-    # Customized views that contain elements to be drawn will be handled by the
-    # view_drawer.
-    #
-    # @see SceneView::Drawer
-    #
-    attr_reader :view_drawer
-
-    #
-    # The `draw_with_view` method is called by the Game Window to allow for any view related
+    # The `base_draw` method is called by the Game Window. This is allow for any special
     # drawing needs to be handled before calling the traditional `draw` method defined
-    # in the subclassed Scenes.
+    # in the subclassed Scene.
     #
-    def draw_with_view
-      view_drawer.draw(view)
+    def base_draw
       draw
     end
+
+    # This provides the functionality for view handling.
+    # @note the inclusion of view functionality redefines {#base_draw} so it must proceed
+    #   the declaration of that method.
+    include SceneView
 
     #
     # `transition_to` performs the work of transitioning this scene

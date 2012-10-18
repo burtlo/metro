@@ -43,7 +43,7 @@ module Metro
     # repaint itself.
     #
     def draw
-      scene.draw_with_view
+      scene.base_draw
     end
 
     #
