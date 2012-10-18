@@ -1,5 +1,5 @@
 require_relative 'scene_view/scene_view'
-require_relative 'scene_view/drawer'
+require_relative 'scene_view/components/drawer'
 require_relative 'events'
 
 module Metro
@@ -112,7 +112,7 @@ module Metro
     # in the subclassed Scenes.
     #
     def _draw
-      view_drawer.draw
+      view_drawer.draw(view)
       draw
     end
 
