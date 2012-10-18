@@ -34,8 +34,6 @@ module Metro
         @selected_index = @selected_index + 1
         @selected_index = 0 if @selected_index >= options.length
       end
-      
-      def _no_action ; end
 
       def font
         @font ||= Gosu::Font.new(window, Gosu::default_font_name, 20)

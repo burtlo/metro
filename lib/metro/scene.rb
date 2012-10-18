@@ -82,7 +82,7 @@ module Metro
     # hopefully not need to create an {#initialize} method or call `super` but instead
     # implement the {#show} method which is the point of incision in the subclasses
     # that allow for the subclasses of Scene to be setup correctly.
-    # 
+    #
     # @note This method should NOT be implemented in the Scene subclass. Instead use
     #   the {#show} method which is called after initialization.
     #
@@ -217,12 +217,6 @@ module Metro
         relay.button_down(id)
       end
     end
-
-    #
-    # This method is solely a non-action method for when events are triggered
-    # for button up and button down
-    #
-    def _no_action ; end
 
   end
 end

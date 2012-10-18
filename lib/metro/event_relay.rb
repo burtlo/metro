@@ -8,9 +8,9 @@ module Metro
     def initialize(target,window)
       @target = target
       @window = window
-      @up_actions ||= Hash.new(:_no_action)
-      @down_actions ||= Hash.new(:_no_action)
-      @held_actions ||= Hash.new(:_no_action)
+      @up_actions ||= Hash.new(lambda {|instance| send(:up_action_missing) if respond_to?(:up_action_missing) })
+      @down_actions ||= Hash.new(lambda {|instance| send(:down_action_missing) if respond_to?(:down_action_missing) })
+      @held_actions ||= Hash.new(lambda {|instance| send(:held_action_missing) if respond_to?(:held_action_missing) })
     end
 
     def on(hash,args,block)
@@ -41,7 +41,7 @@ module Metro
     #
     # Fire the events mapped to the held buttons within the context
     # of the specified target.
-    # 
+    #
     def fire_events_for_held_buttons
       held_actions.each do |key,action|
         target.instance_eval(&action) if window.button_down?(key)
