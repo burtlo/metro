@@ -132,6 +132,13 @@ module Metro
     end
 
     #
+    # @return the string representation of a scene, this is used for debugging.
+    # 
+    def to_s
+      "[SCENE: #{self.class.scene_name}(#{self.class})]"
+    end
+
+    #
     # Captures all classes that subclass Scene.
     #
     # @see #self.scenes
