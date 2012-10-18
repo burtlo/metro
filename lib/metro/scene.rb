@@ -95,8 +95,25 @@ module Metro
     def events(e) ; end
 
     def add_event_relay(event_relay)
-      log.info "Adding event relay #{event_relay}"
       @event_relays << event_relay
+    end
+
+    def trigger_held_buttons
+      event_relays.each do |er|
+        er.trigger_held_buttons
+      end
+    end
+
+    def button_up(id)
+      event_relays.each do |er|
+        er.button_up(id)
+      end
+    end
+
+    def button_down(id)
+      event_relays.each do |er|
+        er.button_down(id)
+      end
     end
 
     #
