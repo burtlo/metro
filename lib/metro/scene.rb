@@ -102,6 +102,36 @@ module Metro
     end
 
     #
+    # Allows you to set or retrieve the scene name for the Scene.
+    #
+    # @example Retrieving the default scene name
+    #
+    #     class ExampleScene
+    #       def show
+    #         puts "Showing Scene: #{self.class.scene_name}"
+    #       end
+    #     end
+    #
+    #     ExampleScene.scene_name
+    #
+    # @example Setting a custom name for the Scene
+    #
+    #     class RollingCreditsScene
+    #       scene_name "credits"
+    #     end
+    #
+    # @param [String] scene_name when specified it will set the scene name for the class
+    #   to the value specified.
+    #
+    # @return the String name of the scene which it can be used as a reference for transitioning
+    #   or for generating the appropriate view information.
+    #
+    def self.scene_name(scene_name=nil)
+      @scene_name ||= to_s[/^(.+)Scene$/,1].downcase
+      scene_name ? @scene_name = scene_name.to_s : @scene_name
+    end
+
+    #
     # Captures all classes that subclass Scene.
     #
     # @see #self.scenes
@@ -148,7 +178,7 @@ module Metro
     #   the class or a string/symbol representation of the shortened scene name.
     #
     def transition_to(scene_name)
-      new_scene = Scenes.create(scene_name,window)
+      new_scene = Scenes.generate(scene_name,window)
       _prepare_transition(new_scene)
       window.scene = new_scene
     end

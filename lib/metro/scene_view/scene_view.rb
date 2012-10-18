@@ -42,7 +42,7 @@ module Metro
         if filename
           @view_name = File.join "views", filename.to_s
         else
-          @view_name ||= File.join "views", "#{self.to_s[/^(.+)Scene$/,1].downcase}"
+          @view_name ||= File.join "views", scene_name
         end
       end
 
