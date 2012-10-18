@@ -1,6 +1,6 @@
 # metro
 
-Metro is a framework built around [gosu](https://github.com/jlnr/gosu) the 2D game development library in Ruby. The goal of Metro is to enforce common conceptual structures and conventions making it easier to quickly generate a game.
+Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D game development library in Ruby). The goal of Metro is to enforce common conceptual structures and conventions making it easier to quickly generate a game.
 
 > NOTE: This project is very early in development and at this point mostly a prototype to explore more of theses concepts to gain an understanding of core tools necessary to make games.
 
