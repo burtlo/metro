@@ -32,15 +32,21 @@ module Metro
     end
 
     #
-    # Loads the view based on the view parsers.
+    # Loads and caches the view content based on the avilable view parsers and
+    # the view files defined.
+    #
+    # @return a Hash of view content.
     #
     def view
       @view ||= begin
-        parser = _view_parsers.find { |parser| parser.find self.class.view_name }
+        parser = _view_parsers.find { |parser| parser.exists? self.class.view_name }
         parser.parse self.class.view_name
       end
     end
 
+    #
+    # @return an instance of a SceneView::Drawer that is capable of drawing
+    #   the Scene.
     def view_drawer
       @view_drawer ||= SceneView::Drawer.new(self)
     end
@@ -54,8 +60,10 @@ module Metro
       # @example Custom View Name
       #
       #     class ClosingScene < Metro::Scene
-      #       view_name :alternate
+      #       view_name 'alternative'
       #     end
+      # 
+      #     ClosingScene.view_name # => views/alternative
       #
       def view_name(filename = nil)
         if filename
