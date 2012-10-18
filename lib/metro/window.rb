@@ -4,33 +4,55 @@ module Metro
 
   #
   # A subclass of the Gosu::Window which simply acts as system
-  # to shuffle in and out scenes and transfer events.
+  # to shuffle in and out scenes and relay event information.
   #
   class Window < Gosu::Window
 
-    attr_reader :scene
+    #
+    # The scene of the window.
+    #
+    # @see Scene
+    #
+    attr_accessor :scene
 
-    def initialize(width,height,something)
-      super width, height, something
+    #
+    # @param [Fixnum] width the width of the game window
+    # @param [Fixnum] height the height of the game window
+    # @param [TrueClass,FalseClass] fullscreen the boolean flag to enable or
+    #   disable fullscreen
+    #
+    def initialize(width,height,fullscreen)
+      super width, height, fullscreen
     end
 
-    def scene=(new_scene)
-      @scene = new_scene
-    end
-
+    #
+    # This is called every update interval while the window is being shown.
+    #
     def update
-      scene.trigger_held_buttons
+      scene.fire_events_for_held_buttons
       scene.update
     end
 
+    #
+    # This is called after every {#update} and when the OS wants the window to
+    # repaint itself.
+    #
     def draw
-      scene._draw
+      scene.draw_with_view
     end
 
+    #
+    # Called before {#update} when the user releases a button while the window
+    # has focus.
+    #
     def button_up(id)
       scene.button_up(id)
     end
 
+    #
+    # Called before {#update} when the user presses a button while the window
+    # has focus.
+    #
     def button_down(id)
       scene.button_down(id)
     end

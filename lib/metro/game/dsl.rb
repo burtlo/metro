@@ -24,6 +24,11 @@ module Metro
         [ width(w), height(h) ]
       end
 
+      def fullscreen(set_fullscreen = nil)
+        puts "Setting fullscreen: #{set_fullscreen}"
+        set_fullscreen.nil? ? @fullscreen : @fullscreen = set_fullscreen
+      end
+
     end
   end
 end

@@ -98,9 +98,13 @@ module Metro
       @event_relays << event_relay
     end
 
-    def trigger_held_buttons
+    #
+    # This method is called during a scene update and will fire all the events
+    # that have been defined for all held buttons for all defined event relays.
+    #
+    def fire_events_for_held_buttons
       event_relays.each do |er|
-        er.trigger_held_buttons
+        er.fire_events_for_held_buttons
       end
     end
 
@@ -133,11 +137,11 @@ module Metro
     def update ; end
 
     #
-    # The `_draw` method is called by the Game Window to allow for any view related
+    # The `draw_with_view` method is called by the Game Window to allow for any view related
     # drawing needs to be handled before calling the traditional `draw` method defined
     # in the subclassed Scenes.
     #
-    def _draw
+    def draw_with_view
       view_drawer.draw(view)
       draw
     end

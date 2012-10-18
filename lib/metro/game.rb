@@ -30,6 +30,10 @@ module Metro
       [ width / 2 , height / 2 ]
     end
 
+    def fullscreen?
+      !!config.fullscreen
+    end
+
     # TODO: ZOrder related constants that belong to Starry Knight
     Background, Stars, Players, UI = *0..3
 

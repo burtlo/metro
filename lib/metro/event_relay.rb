@@ -38,7 +38,11 @@ module Metro
       target.instance_eval(&action)
     end
 
-    def trigger_held_buttons
+    #
+    # Fire the events mapped to the held buttons within the context
+    # of the specified target.
+    # 
+    def fire_events_for_held_buttons
       held_actions.each do |key,action|
         target.instance_eval(&action) if window.button_down?(key)
       end
