@@ -2,14 +2,6 @@ module Metro
   module SceneView
     class Drawer
 
-      def self.capable_of_drawing
-        @capable_of_drawing
-      end
-
-      def self.draws(*args)
-        @capable_of_drawing = args.flatten.compact
-      end
-
       #
       # Captures all classes that subclass Drawer.
       #
@@ -24,6 +16,14 @@ module Metro
       #
       def self.drawers
         @drawers ||= []
+      end
+
+      def self.drawing_types
+        @drawing_types
+      end
+
+      def self.draws(*args)
+        @drawing_types = args.flatten.compact
       end
 
       # The window is necessary as all drawing elements created require
@@ -42,12 +42,13 @@ module Metro
 
       def after_initialize ; end
 
-      def components
-        @components ||= begin
+      def drawers
+        @drawers ||= begin
           hash = Hash.new(UnsupportedComponent)
 
           self.class.drawers.each do |drawer|
-            drawer.capable_of_drawing.each do |type|
+            drawer.drawing_types.each do |type|
+              #TODO: Deal with the situation where one drawer overrides an existing drawer
               hash[type] = drawer.new(scene)
             end
           end
@@ -61,9 +62,8 @@ module Metro
       #
       def draw(view)
         view.each do |name,content|
-          component = content['type']
-
-          components[component].draw(content)
+          drawer = content['type']
+          drawers[drawer].draw(content)
         end
       end
 
