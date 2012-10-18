@@ -23,11 +23,28 @@ end
 module Metro
   extend self
 
-  def run(filename="metro")
+  #
+  # @return [String] the default filename that contains the game contents
+  #
+  def default_game_filename
+    'metro'
+  end
+
+  #
+  # Run will load the contents of the game contents and game files
+  # within the current working directory and start the game. By default
+  # calling run with no parameter will look for a game file
+  #
+  # @param [String] filename the name of the game file to run. When not specified
+  #   the value uses the default filename.
+  #
+  def run(filename=default_game_filename)
     load_game_files
     load_game_configuration(filename)
     start_game
   end
+
+  private
 
   def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
