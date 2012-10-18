@@ -25,6 +25,11 @@ module Metro
       super width, height, fullscreen
     end
 
+    def scene=(scene)
+      scene.window = self
+      @scene = scene
+    end
+
     #
     # This is called every update interval while the window is being shown.
     #

@@ -17,9 +17,9 @@ module Metro
   #       # ... scene content ...
   #     end
   #
-  #     Scenes.generate("intro")    # => <#IntroScene:Instance>
-  #     Scenes.generate(:intro)     # => <#IntroScene:Instance>
-  #     Scenes.generate(IntroScene) # => <#IntroScene:Instance>
+  #     Scenes.generate("intro")    # => [SCENE: title]
+  #     Scenes.generate(:intro)     # => [SCENE: title]
+  #     Scenes.generate(IntroScene) # => [SCENE: title]
   #
   module Scenes
     extend self
@@ -41,8 +41,8 @@ module Metro
     # @param [String,Symbol] scene_name the name of the scene to locate.
     # @return an instance of Scene that is found matching the specified scene name
     #
-    def generate(scene_name,window)
-      find(scene_name).new(window)
+    def generate(scene_name)
+      find(scene_name).new
     end
 
     private

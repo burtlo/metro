@@ -78,18 +78,14 @@ module Metro
     attr_reader :window
 
     #
-    # A scene is created with a window instance. When subclassing a Scene, you should
-    # hopefully not need to create an {#initialize} method or call `super` but instead
-    # implement the {#show} method which is the point of incision in the subclasses
-    # that allow for the subclasses of Scene to be setup correctly.
-    #
-    # @note This method should NOT be implemented in the Scene subclass. Instead use
-    #   the {#show} method which is called after initialization.
-    #
-    def initialize(window)
+    # Setting the window places the scene within in the specified window. Which
+    # will cause a number of variables and settings to be set up. The {#show}
+    # method is called after the window has been set.
+    # 
+    def window=(window)
       @window = window
 
-      @event_relays ||= []
+      @event_relays = []
 
       @scene_events = EventRelay.new(self,window)
       events(@scene_events)
@@ -133,7 +129,7 @@ module Metro
 
     #
     # @return the string representation of a scene, this is used for debugging.
-    # 
+    #
     def to_s
       "[SCENE: #{self.class.scene_name}(#{self.class})]"
     end
@@ -185,7 +181,7 @@ module Metro
     #   the class or a string/symbol representation of the shortened scene name.
     #
     def transition_to(scene_name)
-      new_scene = Scenes.generate(scene_name,window)
+      new_scene = Scenes.generate(scene_name)
       _prepare_transition(new_scene)
       window.scene = new_scene
     end
