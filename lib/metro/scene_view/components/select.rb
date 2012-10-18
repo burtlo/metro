@@ -1,6 +1,7 @@
 module Metro
   module SceneView
     class Select < Drawer
+      draws 'select'
 
       attr_accessor :selected_index, :options
 

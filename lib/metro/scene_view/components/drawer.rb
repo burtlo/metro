@@ -2,6 +2,30 @@ module Metro
   module SceneView
     class Drawer
 
+      def self.capable_of_drawing
+        @capable_of_drawing
+      end
+
+      def self.draws(*args)
+        @capable_of_drawing = args.flatten.compact
+      end
+
+      #
+      # Captures all classes that subclass Drawer.
+      #
+      def self.inherited(base)
+        drawers << base
+      end
+
+      #
+      # All subclasses of Drawer, this should be all the defined scenes within the game.
+      #
+      # @return an Array of Drawer subclasses
+      #
+      def self.drawers
+        @drawers ||= []
+      end
+
       # The window is necessary as all drawing elements created require
       # an access to this instance.
       attr_reader :window
@@ -15,13 +39,20 @@ module Metro
         @window = scene.window
         after_initialize
       end
-      
+
       def after_initialize ; end
 
       def components
         @components ||= begin
-          Hash.new(UnsupportedComponent).merge label: Label.new(scene),
-           select: Select.new(scene)
+          hash = Hash.new(UnsupportedComponent)
+
+          self.class.drawers.each do |drawer|
+            drawer.capable_of_drawing.each do |type|
+              hash[type] = drawer.new(scene)
+            end
+          end
+
+          hash
         end
       end
 
@@ -30,7 +61,8 @@ module Metro
       #
       def draw(view)
         view.each do |name,content|
-          component = content['type'].to_sym
+          component = content['type']
+
           components[component].draw(content)
         end
       end

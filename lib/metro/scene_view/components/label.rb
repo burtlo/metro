@@ -1,6 +1,7 @@
 module Metro
   module SceneView
     class Label < Drawer
+      draws 'label'
 
       def font
         @font ||= Gosu::Font.new(window, Gosu::default_font_name, 20)
