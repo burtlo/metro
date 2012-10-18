@@ -1,6 +1,10 @@
-# Metro
+# metro
 
-TODO: Write a gem description
+Metro is a framework built around [gosu](https://github.com/jlnr/gosu) the 2D game development library in Ruby. The goal of Metro is to enforce common conceptual structures and conventions making it easier to quickly generate a game.
+
+> NOTE: This project is very early in development and at this point mostly a prototype to explore more of theses concepts to gain an understanding of core tools necessary to make games.
+
+Please take a look at the [example game project](https://github.com/burtlo/starry-knight) that I am building alongside of 'metro' to see how it can be used to develop games.
 
 ## Installation
 
@@ -18,12 +22,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+bundle exec metro [gamefilename]
+```
 
-## Contributing
+By default Metro will look for a file named 'metro' within the current working directory if no *gamefilename* has been provided.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Please take a look at the [example game project](https://github.com/burtlo/starry-knight) that I am building alongside of 'metro' to see how it can be used to develop games.
