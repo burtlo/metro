@@ -10,26 +10,24 @@ module Metro
       @held_actions ||= Hash.new(:_no_action)
     end
 
-    def on_up(*args,&block)
+    def on(hash,args,block)
       options = (args.last.is_a?(Hash) ? args.pop : {})
 
       args.each do |keystroke|
-        @up_actions[keystroke] = block || lambda { |instance| send(options[:do]) }
+        hash[keystroke] = block || lambda { |instance| send(options[:do]) }
       end
+    end
+
+    def on_up(*args,&block)
+      on(@up_actions,args,block)
     end
 
     def on_down(*args,&block)
-      options = (args.last.is_a?(Hash) ? args.pop : {})
-      args.each do |keystroke|
-        @down_actions[keystroke] = block || lambda { |instance| send(options[:do]) }
-      end
+      on(@down_actions,args,block)
     end
 
     def on_hold(*args,&block)
-      options = (args.last.is_a?(Hash) ? args.pop : {})
-      args.each do |keystroke|
-        @held_actions[keystroke] = block || lambda { |instance| send(options[:do]) }
-      end
+      on(@held_actions,args,block)
     end
 
     def button_up(id)

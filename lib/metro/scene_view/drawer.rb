@@ -26,7 +26,7 @@ module Metro
 
         font.draw label_text,
           content['x'], content['y'], content['z-order'],
-          content['x-factor'] || 7.0, content['y-factor'] || 7.0,
+          content['x-factor'] || 1.0, content['y-factor'] || 1.0,
           content['color'] || 0xffffffff
       end
 
