@@ -64,7 +64,19 @@ module Metro
     # @param [Scene] new_scene this is the instance of the scene that is about to replace
     #   the current scene.
     #
-    def prepare_transition(new_scene) ; end
+    def prepare_transition_to(new_scene) ; end
+
+    #
+    # Before a scene is transisitioned to it is called with the previous scene. This
+    # allows for the new scene to rerieve any data from the previous scene to assist
+    # with the layout of the current scene.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    # @param [Scene] old_scene this is the instance of the scene that is being moved
+    #   away from.
+    #
+    def prepare_transition_from(old_scene) ; end
 
     #
     # The window is the main instance of the game. Using window can access a lot of
@@ -187,7 +199,8 @@ module Metro
     #
     def _prepare_transition(new_scene)
       log.debug "Preparing to transition from scene #{self} to #{new_scene}"
-      prepare_transition(new_scene)
+      prepare_transition_to(new_scene)
+      new_scene.prepare_transition_from(self)
     end
 
     #
