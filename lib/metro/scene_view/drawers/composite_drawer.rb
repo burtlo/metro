@@ -24,7 +24,7 @@ module Metro
       def draw(view)
         view.each do |name,content|
           type = content['type']
-          drawers[type].draw(content)
+          drawers[type].draw(content.merge 'name' => name)
         end
       end
 
