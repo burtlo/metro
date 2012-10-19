@@ -18,13 +18,19 @@ module Metro
     #
     class CompositeDrawer < Drawer
 
+      attr_accessor :draw_debug
+
       #
       # Render all the view elements defined that are supported by this drawer.
       #
       def draw(view)
         view.each do |name,content|
           type = content['type']
-          drawers[type].draw(content.merge 'name' => name)
+
+          if not content.key?('debug') or (content['debug'] and draw_debug)
+            drawers[type].draw(content.merge 'name' => name)
+          end
+
         end
       end
 

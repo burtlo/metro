@@ -27,6 +27,10 @@ module Metro
       def fullscreen(set_fullscreen = nil)
         set_fullscreen.nil? ? @fullscreen : @fullscreen = set_fullscreen
       end
+      
+      def debug(set_debug = nil)
+        set_debug.nil? ? @debug : @debug = set_debug
+      end
 
     end
   end

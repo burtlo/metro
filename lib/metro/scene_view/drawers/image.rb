@@ -21,7 +21,8 @@ module Metro
       end
 
       def draw(view)
-        images[view['name']].draw(view['x'],view['y'],1)
+        image = images[view['name']]
+        image.draw(view['x'] - image.width / 2.0,view['y'] - image.height / 2.0,1)
       end
 
     end

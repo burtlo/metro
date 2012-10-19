@@ -51,7 +51,11 @@ module Metro
     # @return an instance of a SceneView::Drawer that is capable of drawing
     #   the Scene.
     def view_drawer
-      @view_drawer ||= SceneView::CompositeDrawer.new(self)
+      @view_drawer ||= begin
+        drawer = SceneView::CompositeDrawer.new(self)
+        drawer.draw_debug = Game.debug?
+        drawer
+      end
     end
 
     module ClassMethods
