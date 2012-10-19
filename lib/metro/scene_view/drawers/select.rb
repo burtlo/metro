@@ -7,6 +7,8 @@ module Metro
     # target as it needs to maintain the state of the menu. When an option is selected
     # an event is fired based on the name of the option.
     #
+    # @note Only one 'select' can be defined for a given scene.
+    # 
     class Select < Drawer
       draws 'select'
 
