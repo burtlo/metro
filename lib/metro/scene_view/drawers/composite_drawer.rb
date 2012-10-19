@@ -1,6 +1,7 @@
 require_relative 'artists_block'
 require_relative 'label'
 require_relative 'select'
+require_relative 'image'
 
 module Metro
   module SceneView
