@@ -132,7 +132,14 @@ module Metro
     #   or for generating the appropriate view information.
     #
     def self.scene_name(scene_name=nil)
-      @scene_name ||= to_s[/^(.+)Scene$/,1].downcase
+      @scene_name ||= begin
+        root_name = to_s[/^(.+)Scene$/,1]
+        root_name.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
+        root_name.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+        root_name.downcase!
+        root_name
+      end
+
       scene_name ? @scene_name = scene_name.to_s : @scene_name
     end
 

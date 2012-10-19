@@ -31,7 +31,15 @@ module Metro
     # @return the Scene class that is found matching the specified scene name.
     #
     def find(scene_name)
-      scenes_hash[scene_name]
+      found_scene = scenes_hash[scene_name]
+      log.error missing_scene_error_message(scene_name) unless found_scene
+      found_scene
+    end
+
+    def missing_scene_error_message(scene_name)
+      scene_names = Scene.scenes.map(&:scene_name).join(", ")
+      [ "Could not find scene with name '#{scene_name}'",
+        "Known scenes: #{scene_name}" ].join("\n")
     end
 
     #
