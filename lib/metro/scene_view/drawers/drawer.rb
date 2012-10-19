@@ -33,7 +33,8 @@ module Metro
       #   of drawing.
       #
       def self.draws(*args)
-        @draws_types = args.flatten.compact.map(&:to_s)
+        @draws_types = args.flatten.compact.reject {|arg| arg.is_a? Hash }
+        @draws_options = args.flatten.compact.find {|arg| arg.is_a? Hash }
       end
 
       #
@@ -88,6 +89,10 @@ module Metro
       #
       def self.draws_types
         Array(@draws_types)
+      end
+      
+      def self.draw_options
+        @draws_options || {}
       end
 
       #

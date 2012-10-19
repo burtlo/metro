@@ -18,6 +18,19 @@ module Metro
     class CompositeDrawer < Drawer
 
       #
+      # Render all the view elements defined that are supported by this drawer.
+      #
+      def draw(view)
+        view.each do |name,content|
+          type = content['type']
+          drawers[type].draw(content)
+        end
+      end
+
+      #
+      # Given all the registered drawers map the things that they can draw
+      # to the particular drawer.
+      #
       # @return a Hash which maps the types of things that can be drawn to
       #   the specific drawer.
       #
@@ -31,8 +44,11 @@ module Metro
 
           Drawer.drawers.each do |drawer|
             drawer.draws_types.each do |type|
-              #TODO: Deal with the situation where one drawer overrides an existing drawer
-              hash[type] = drawer.new(scene)
+
+              if not hash.key?(type) or (hash.key?(type) and override_on_conflict?(drawer,type))
+                hash[type] = drawer.new(scene)
+              end
+
             end
           end
 
@@ -41,13 +57,22 @@ module Metro
       end
 
       #
-      # Render all the view elements defined that are supported by this drawer.
+      # @return true if the drawer should override the existing drawer, false if the drawer
+      #   should leave the existing drawer in it's place.
       #
-      def draw(view)
-        view.each do |name,content|
-          drawer = content['type']
-          drawers[drawer].draw(content)
+      def override_on_conflict?(drawer,type)
+        if drawer.draw_options[:override]
+          true
+        else
+          log.warn override_warning_message(drawer,type)
+          false
         end
+      end
+
+      def override_warning_message(drawer,type)
+        [ "Drawer Attempting to Override Existing Drawer For '#{type}'",
+          "#{drawer} will NOT be drawing '#{type}' as it is being handled by another Drawer.",
+          "To override this in the #{drawer.class} class specify the parameter \"draws '#{type}', overrides: true\"" ].join("\n")
       end
 
     end
