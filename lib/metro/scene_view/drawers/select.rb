@@ -1,5 +1,12 @@
 module Metro
   module SceneView
+
+    #
+    # Draws a a menu of options. It is called a Select as it is named after the HTML
+    # element select. A select drawer also inserts itself into the scene as an event
+    # target as it needs to maintain the state of the menu. When an option is selected
+    # an event is fired based on the name of the option.
+    #
     class Select < Drawer
       draws 'select'
 

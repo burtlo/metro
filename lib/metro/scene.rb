@@ -1,5 +1,4 @@
 require_relative 'scene_view/scene_view'
-require_relative 'scene_view/components/drawer'
 require_relative 'event_relay'
 
 module Metro
@@ -34,7 +33,7 @@ module Metro
     def events(e) ; end
 
     #
-    # This method is called right after initialization
+    # This method is called right after the scene has been adopted by the window
     #
     # @note This method should be implemented in the Scene subclass.
     #

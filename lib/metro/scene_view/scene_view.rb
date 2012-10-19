@@ -2,6 +2,9 @@ require_relative 'yaml_view'
 require_relative 'json_view'
 require_relative 'no_view'
 
+require_relative 'drawers/drawer'
+require_relative 'drawers/composite_drawer'
+
 module Metro
 
   #
@@ -48,7 +51,7 @@ module Metro
     # @return an instance of a SceneView::Drawer that is capable of drawing
     #   the Scene.
     def view_drawer
-      @view_drawer ||= SceneView::Drawer.new(self)
+      @view_drawer ||= SceneView::CompositeDrawer.new(self)
     end
 
     module ClassMethods

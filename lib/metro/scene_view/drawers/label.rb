@@ -1,5 +1,9 @@
 module Metro
   module SceneView
+
+    #
+    # Draws a string of text.
+    #
     class Label < Drawer
       draws 'label'
 
