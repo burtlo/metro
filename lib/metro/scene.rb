@@ -1,5 +1,6 @@
 require_relative 'scene_view/scene_view'
 require_relative 'event_relay'
+require_relative 'animation/animation'
 
 module Metro
 
