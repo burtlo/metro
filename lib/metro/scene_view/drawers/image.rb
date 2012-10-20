@@ -22,7 +22,7 @@ module Metro
 
       def draw(view)
         image = images[view['name']]
-        image.draw(view['x'] - image.width / 2.0,view['y'] - image.height / 2.0,1)
+        image.draw_rot(view['x'],view['y'],1,view['angle'].to_f)
       end
 
     end
