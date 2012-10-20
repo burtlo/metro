@@ -6,6 +6,7 @@ require 'metro/window'
 require 'metro/game'
 require 'metro/model'
 require 'metro/scene'
+require 'metro/generic'
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
