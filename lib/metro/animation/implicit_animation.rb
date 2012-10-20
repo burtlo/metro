@@ -12,7 +12,7 @@ module Metro
   #
   #     animation = ImplicitAnimation.new actor: player,
   #       to: { x: final_x, y: final_y },
-  #       interval: 80.0,
+  #       interval: 80,
   #       easing: :ease_in,
   #       context: scene
   #

@@ -10,7 +10,7 @@ module Metro
 
       def calculate(start,final,interval)
         change = final - start
-        (1..interval).map { |time| linear(time,start,change,interval) }
+        (1..interval).map { |time| linear(time.to_f,start,change,interval) }
       end
     end
 
@@ -23,7 +23,7 @@ module Metro
 
       def calculate(start,final,interval)
         change = final - start
-        (1..interval).map { |time| ease_in_quad(time,start,change,interval) }
+        (1..interval).map { |time| ease_in_quad(time.to_f,start,change,interval) }
       end
     end
 
