@@ -30,6 +30,7 @@ module Metro
           type = content['type']
 
           if not content.key?('debug') or (content['debug'] and draw_debug)
+            next if content['draw'].to_s == "false"
             drawers[type].draw(content.merge 'name' => name)
           end
 
