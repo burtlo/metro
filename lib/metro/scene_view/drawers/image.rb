@@ -22,7 +22,13 @@ module Metro
 
       def draw(view)
         image = images[view['name']]
-        image.draw_rot(view['x'],view['y'],1,view['angle'].to_f)
+
+        image.draw_rot view['x'], view['y'], view['z-order'],
+          view['angle'].to_f,
+          view['center-x'] || 0.5, view['center-y'] || 0.5,
+          view['factor-x'] || 1, view['factor-y'] || 1,
+          view['color'] || 0xffffffff
+          
       end
 
     end
