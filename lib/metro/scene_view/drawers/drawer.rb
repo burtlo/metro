@@ -52,7 +52,7 @@ module Metro
       #
       # @param [Hash] view the hash content of the view.
       #
-      def draw(view) ; end
+      def draw(view=nil) ; end
 
       #
       # @return the instance of window that is often necessary to create Gosu

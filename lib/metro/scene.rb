@@ -80,6 +80,32 @@ module Metro
     def prepare_transition_from(old_scene) ; end
 
     #
+    # Define the actors for this scene. Specifying an entity as an actor requires
+    # that they have the ability to #draw and that they need to be drawn with
+    # every draw of scene.
+    #
+    # The actor itself needs to be defined as an instance variable in #initialize,
+    # #prepare_transition_from, or #show. This is because the actors are configured
+    # to be displayed in the window and are automatically added to the drawing queue.
+    #
+    def self.actors(*actor_names)
+      @actors ||= []
+
+      actor_names = actor_names.flatten.compact
+
+      actor_names.each do |actor_name|
+        define_method actor_name do
+          instance_variable_get("@#{actor_name}")
+        end
+
+        @actors.push actor_name
+      end
+
+      @actors
+    end
+
+
+    #
     # The window is the main instance of the game. Using window can access a lot of
     # underlying Metro::Window, a subclass of Gosu::Window, that the Scene class is
     # obfuscating.
@@ -105,6 +131,14 @@ module Metro
       @event_relays << @scene_events
 
       @updaters = []
+
+      @drawers = [ view_drawer ]
+
+      self.class.actors.each do |actor_name|
+        actor = send(actor_name)
+        actor.window = window
+        @drawers << actor
+      end
 
       show
     end
@@ -175,7 +209,7 @@ module Metro
     # Enqueue will add an updater to the list of updaters that are run initially when
     # update is called. An updater is any object that can respond to #update. This
     # is used for animations.
-    # 
+    #
     def enqueue(updater)
       @updaters << updater
     end
@@ -184,24 +218,23 @@ module Metro
     # The `base_update` method is called by the Game Window. This is to allow for any
     # special update needs to be handled before calling the traditional `update` method
     # defined in the subclassed Scene.
-    # 
+    #
     def base_update
       @updaters.each {|updater| updater.update }
       update
     end
 
     #
-    # The `base_draw` method is called by the Game Window. This is to allow for any 
-    # special drawing needs to be handled before calling the traditional `draw` method 
+    # The `base_draw` method is called by the Game Window. This is to allow for any
+    # special drawing needs to be handled before calling the traditional `draw` method
     # defined in the subclassed Scene.
     #
     def base_draw
+      @drawers.each {|drawer| drawer.draw }
       draw
     end
 
     # This provides the functionality for view handling.
-    # @note the inclusion of view functionality redefines {#base_draw} so it must proceed
-    #   the declaration of that method.
     include SceneView
 
     #

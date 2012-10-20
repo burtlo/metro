@@ -9,7 +9,7 @@ module Metro
     # It is the fallback drawer when no suitable drawer can be found.
     #
     class ArtistsBlock < Drawer
-      def self.draw(view)
+      def self.draw(view = nil)
         # log.warn "The component #{view['type']} does not have a supported drawer."
       end
     end

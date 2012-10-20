@@ -23,7 +23,9 @@ module Metro
       #
       # Render all the view elements defined that are supported by this drawer.
       #
-      def draw(view)
+      def draw(view = nil)
+        view = scene.view unless view
+
         view.each do |name,content|
           type = content['type']
 

@@ -20,11 +20,6 @@ module Metro
     #
     def self.included(base)
       base.extend ClassMethods
-
-      base.send :define_method, :base_draw do
-        view_drawer.draw(view)
-        draw
-      end
     end
 
     #
