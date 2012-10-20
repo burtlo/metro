@@ -104,6 +104,8 @@ module Metro
 
       @event_relays << @scene_events
 
+      @updaters = []
+
       show
     end
 
@@ -170,9 +172,28 @@ module Metro
     end
 
     #
-    # The `base_draw` method is called by the Game Window. This is allow for any special
-    # drawing needs to be handled before calling the traditional `draw` method defined
-    # in the subclassed Scene.
+    # Enqueue will add an updater to the list of updaters that are run initially when
+    # update is called. An updater is any object that can respond to #update. This
+    # is used for animations.
+    # 
+    def enqueue(updater)
+      @updaters << updater
+    end
+
+    #
+    # The `base_update` method is called by the Game Window. This is to allow for any
+    # special update needs to be handled before calling the traditional `update` method
+    # defined in the subclassed Scene.
+    # 
+    def base_update
+      @updaters.each {|updater| updater.update }
+      update
+    end
+
+    #
+    # The `base_draw` method is called by the Game Window. This is to allow for any 
+    # special drawing needs to be handled before calling the traditional `draw` method 
+    # defined in the subclassed Scene.
     #
     def base_draw
       draw
@@ -195,7 +216,6 @@ module Metro
       _prepare_transition(new_scene)
       window.scene = new_scene
     end
-
 
     #
     # Before a scene is transitioned away from to a new scene, this private method is

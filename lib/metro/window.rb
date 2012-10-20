@@ -35,7 +35,7 @@ module Metro
     #
     def update
       scene.fire_events_for_held_buttons
-      scene.update
+      scene.base_update
     end
 
     #

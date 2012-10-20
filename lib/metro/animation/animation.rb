@@ -36,7 +36,7 @@ module Metro
     #
     # Perform a step of an animation, if it hasn't already been completed.
     #
-    def step!
+    def update
       return if completed?
 
       execute_step
@@ -44,7 +44,7 @@ module Metro
 
       complete! if completed?
     end
-
+    
     #
     # @return the current step of the animation.
     #
