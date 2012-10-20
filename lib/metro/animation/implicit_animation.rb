@@ -32,12 +32,12 @@ class ImplicitAnimation < Animation
       deltas[attribute] = stepping(easing).calculate(start,final,interval)
     end
 
-    step do
-      attributes.each do |attribute|
-        actor.send "#{attribute}=", delta_for_step(attribute)
-      end
-    end
+  end
 
+  def execute_step
+    attributes.each do |attribute|
+      actor.send "#{attribute}=", delta_for_step(attribute)
+    end
   end
 
 end

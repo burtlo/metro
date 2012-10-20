@@ -1,6 +1,8 @@
 class Animation
 
   attr_reader :current_step
+  
+  attr_reader :step_block, :complete_block
 
   def initialize(options)
     @current_step = 0
@@ -35,29 +37,20 @@ class Animation
     1
   end
 
-  def execute_block_in_context(block_name)
-    if respond_to? block_name
-      block_to_execute = send(block_name)
-      context.instance_eval(&block_to_execute)
-    else
-      instance_variable_get("@#{block_name}").call
-    end
-  end
-
   def execute_step
-    execute_block_in_context(:step_block)
+    context.instance_eval(&@step_block) if step_block and context
   end
 
   def complete!
-    execute_block_in_context(:completed)
+    context.instance_eval(&@complete_block) if complete_block and context
   end
 
-  def step(&block)
-    @step_block = block if block
+  def on_step(&block)
+    @step_block = block
   end
 
-  def completed(&block)
-    @completed = block if block
+  def on_complete(&block)
+    @complete_block = block
   end
 
 end
