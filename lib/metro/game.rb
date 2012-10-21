@@ -33,9 +33,13 @@ module Metro
     def fullscreen?
       !!config.fullscreen
     end
-    
+
     def debug?
       !!config.debug
+    end
+
+    def name
+      config.name
     end
 
     # TODO: ZOrder related constants that belong to Starry Knight

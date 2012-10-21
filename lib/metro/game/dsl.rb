@@ -31,6 +31,10 @@ module Metro
       def debug(set_debug = nil)
         set_debug.nil? ? @debug : @debug = set_debug
       end
+      
+      def name(set_name = nil)
+        set_name.nil? ? @name : @name = set_name
+      end
 
     end
   end
