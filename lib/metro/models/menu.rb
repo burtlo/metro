@@ -2,17 +2,16 @@ module Metro
   module Models
 
     #
-    # Draws a a menu of options. It is called a Select as it is named after the HTML
-    # element select. A select model also inserts itself into the scene as an event
+    # Draws a a menu of options. A menu model inserts itself into the scene as an event
     # target as it needs to maintain the state of the menu. When an option is selected
     # an event is fired based on the name of the option.
     #
-    # @note Only one 'select' can be defined for a given scene.
+    # @note Only one 'menu' can be defined for a given scene.
     #
-    class Select < Model
+    class Menu < Model
       attr_accessor :selected_index, :options
 
-      def initialize
+      def after_initialize
         @selected_index = 0
       end
 

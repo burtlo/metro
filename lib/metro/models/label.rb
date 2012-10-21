@@ -11,7 +11,8 @@ module Metro
 
       attr_accessor :x, :y, :x_factor, :y_factor, :z_order
 
-      def initialize
+      def after_initialize
+        @text = ""
         @x_factor = @y_factor = 1.0
       end
 

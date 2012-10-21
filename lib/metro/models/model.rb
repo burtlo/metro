@@ -184,5 +184,5 @@ end
 
 require_relative 'generic'
 require_relative 'label'
-require_relative 'select'
+require_relative 'menu'
 require_relative 'image'
