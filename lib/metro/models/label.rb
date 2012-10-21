@@ -2,8 +2,11 @@ module Metro
   module Models
 
     #
-    # Draws a string of text.
-    #
+    # Draws a string of text
+    # 
+    # @example Using the Label in a view file
+    #    model: "metro::models::label"
+    # 
     class Label < Model
 
       attr_accessor :x, :y, :x_factor, :y_factor, :z_order

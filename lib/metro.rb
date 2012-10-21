@@ -1,5 +1,8 @@
 require 'gosu'
+require 'gosu_ext/color'
+
 require 'logger'
+
 
 require 'metro/version'
 require 'metro/window'

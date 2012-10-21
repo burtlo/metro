@@ -130,14 +130,15 @@ module Metro
     #
     # Setups up the Actors for the Scene based on the SceneActors that have been
     # defined.
-    # 
+    #
     # @note this method should not be overriden, otherwise the actors will perish!
     # @see #after_initialize
-    # 
+    #
     def initialize
       self.class.scene_actors.each do |scene_actor|
         actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
         actor_instance = scene_actor.create(actor_data)
+        actor_instance.scene = self
         send "#{scene_actor.name}=", actor_instance
       end
 
@@ -176,7 +177,6 @@ module Metro
       self.class.scene_actors.each do |scene_actor|
         actor = send(scene_actor.name)
         actor.window = window
-        actor.scene = self
         @drawers << actor
       end
 

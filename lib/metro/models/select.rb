@@ -12,18 +12,23 @@ module Metro
     class Select < Model
       attr_accessor :selected_index, :options
 
-      def scene=(value)
-        @scene = value
-        
+      def initialize
         @selected_index = 0
+      end
 
-        events = EventRelay.new(self,window)
+      def window=(value)
+        @window = value
+        events
+      end
+      
+      def events
+        relay = EventRelay.new(self,window)
 
-        events.on_up Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp, do: :previous_option
-        events.on_up Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown, do: :next_option
-        events.on_up Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0, do: :selection
+        relay.on_up Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp, do: :previous_option
+        relay.on_up Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown, do: :next_option
+        relay.on_up Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0, do: :selection
 
-        scene.add_event_relay events
+        scene.add_event_relay relay
       end
 
       def selection
@@ -48,7 +53,7 @@ module Metro
       attr_reader :highlight_color
 
       def highlight_color=(value)
-        @highlight_color = _convert_color(value)
+        @highlight_color = Gosu::Color.new(value)
       end
 
       def alpha=(value)
