@@ -63,7 +63,7 @@ module Metro
 
       to.each do |attribute,final|
         start = actor.send(attribute)
-        deltas[attribute] = stepping(easing).calculate(start,final,interval)
+        deltas[attribute] = stepping(easing).calculate(start.to_f,final.to_f,interval.to_f)
       end
     end
 

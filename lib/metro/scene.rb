@@ -1,4 +1,5 @@
 require_relative 'scene_view/scene_view'
+require_relative 'scene_actor'
 require_relative 'event_relay'
 require_relative 'animation/animation'
 
@@ -19,6 +20,15 @@ module Metro
   # so that every subclass does not have to constantly call `super`.
   #
   class Scene
+
+    #
+    # As Scene does a lot of work for you with regarding to setting up content, it is
+    # best not to override #initialize and instead define an #after_initialize method
+    # within the subclasses of Scene.
+    #
+    # @note This method should be implemented in the Scene subclass.
+    #
+    def after_initialize ; end
 
     #
     # The events method is where a scene has access to configure the events that it
@@ -79,31 +89,60 @@ module Metro
     #
     def prepare_transition_from(old_scene) ; end
 
-    #
-    # Define the actors for this scene. Specifying an entity as an actor requires
-    # that they have the ability to #draw and that they need to be drawn with
-    # every draw of scene.
-    #
-    # The actor itself needs to be defined as an instance variable in #initialize,
-    # #prepare_transition_from, or #show. This is because the actors are configured
-    # to be displayed in the window and are automatically added to the drawing queue.
-    #
-    def self.actors(*actor_names)
-      @actors ||= []
 
+    #
+    # Define a scene actor with the given name and options.
+    #
+    def self.draw(actor_name,options = {})
+      scene_actor = SceneActor.new actor_name, options
+
+      define_method actor_name do
+        instance_variable_get("@#{actor_name}")
+      end
+
+      define_method "#{actor_name}=" do |value|
+        instance_variable_set("@#{actor_name}",value)
+      end
+
+      scene_actors.push scene_actor
+    end
+
+    #
+    # Define several standard scene actors.
+    #
+    def self.draws(*actor_names)
       actor_names = actor_names.flatten.compact
 
       actor_names.each do |actor_name|
-        define_method actor_name do
-          instance_variable_get("@#{actor_name}")
-        end
-
-        @actors.push actor_name
+        draw actor_name
       end
 
-      @actors
+      scene_actors
     end
 
+    #
+    # @return a list of all the SceneActors that have been defined for this Scene.
+    #
+    def self.scene_actors
+      @scene_actors ||= []
+    end
+
+    #
+    # Setups up the Actors for the Scene based on the SceneActors that have been
+    # defined.
+    # 
+    # @note this method should not be overriden, otherwise the actors will perish!
+    # @see #after_initialize
+    # 
+    def initialize
+      self.class.scene_actors.each do |scene_actor|
+        actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
+        actor_instance = scene_actor.create(actor_data)
+        send "#{scene_actor.name}=", actor_instance
+      end
+
+      after_initialize
+    end
 
     #
     # The window is the main instance of the game. Using window can access a lot of
@@ -132,11 +171,12 @@ module Metro
 
       @updaters = []
 
-      @drawers = [ view_drawer ]
+      @drawers = []
 
-      self.class.actors.each do |actor_name|
-        actor = send(actor_name)
+      self.class.scene_actors.each do |scene_actor|
+        actor = send(scene_actor.name)
         actor.window = window
+        actor.scene = self
         @drawers << actor
       end
 
@@ -220,7 +260,7 @@ module Metro
     # defined in the subclassed Scene.
     #
     def base_update
-      @updaters.each {|updater| updater.update }
+      @updaters.each { |updater| updater.update }
       update
     end
 
@@ -230,7 +270,7 @@ module Metro
     # defined in the subclassed Scene.
     #
     def base_draw
-      @drawers.each {|drawer| drawer.draw }
+      @drawers.each { |drawer| drawer.draw }
       draw
     end
 
@@ -260,6 +300,13 @@ module Metro
     #
     def _prepare_transition(new_scene)
       log.debug "Preparing to transition from scene #{self} to #{new_scene}"
+
+      new_scene.class.scene_actors.find_all {|actor| actor.load_from_previous_scene? }.each do |scene_actor|
+        new_actor = new_scene.send(scene_actor.name)
+        current_actor = send(scene_actor.name)
+        new_actor._load current_actor._save
+      end
+
       prepare_transition_to(new_scene)
       new_scene.prepare_transition_from(self)
     end

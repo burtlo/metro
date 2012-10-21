@@ -4,9 +4,9 @@ require 'logger'
 require 'metro/version'
 require 'metro/window'
 require 'metro/game'
-require 'metro/model'
 require 'metro/scene'
-require 'metro/generic'
+require 'metro/models/model'
+require 'metro/models/generic'
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
@@ -51,7 +51,6 @@ module Metro
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
     Dir['models/*.rb'].each {|model| require model }
     Dir['scenes/*.rb'].each {|scene| require scene }
-    Dir['drawers/*.rb'].each {|drawer| require drawer }
   end
 
   def load_game_configuration(filename)

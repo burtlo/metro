@@ -2,9 +2,6 @@ require_relative 'yaml_view'
 require_relative 'json_view'
 require_relative 'no_view'
 
-require_relative 'drawers/drawer'
-require_relative 'drawers/composite_drawer'
-
 module Metro
 
   #
@@ -15,8 +12,7 @@ module Metro
 
     #
     # When the module is included insure that all the class helper methods are added
-    # at the same time. As well as re-defining the {Scene#base_draw} method to allow
-    # for the use of the view_drawer.
+    # at the same time.
     #
     def self.included(base)
       base.extend ClassMethods
@@ -26,7 +22,7 @@ module Metro
     # Supported view formats
     #
     def _view_parsers
-      [ YAMLView, JSONView, NoView ]
+      self.class._view_parsers
     end
 
     #
@@ -36,21 +32,7 @@ module Metro
     # @return a Hash of view content.
     #
     def view
-      @view ||= begin
-        parser = _view_parsers.find { |parser| parser.exists? self.class.view_name }
-        parser.parse self.class.view_name
-      end
-    end
-
-    #
-    # @return an instance of a SceneView::Drawer that is capable of drawing
-    #   the Scene.
-    def view_drawer
-      @view_drawer ||= begin
-        drawer = SceneView::CompositeDrawer.new(self)
-        drawer.draw_debug = Game.debug?
-        drawer
-      end
+      self.class.view
     end
 
     module ClassMethods
@@ -64,7 +46,7 @@ module Metro
       #     class ClosingScene < Metro::Scene
       #       view_name 'alternative'
       #     end
-      # 
+      #
       #     ClosingScene.view_name # => views/alternative
       #
       def view_name(filename = nil)
@@ -72,6 +54,26 @@ module Metro
           @view_name = File.join "views", filename.to_s
         else
           @view_name ||= File.join "views", scene_name
+        end
+      end
+
+      #
+      # Supported view formats
+      #
+      def _view_parsers
+        [ YAMLView, JSONView, NoView ]
+      end
+
+      #
+      # Loads and caches the view content based on the avilable view parsers and
+      # the view files defined.
+      #
+      # @return a Hash of view content.
+      #
+      def view
+        @view ||= begin
+          parser = _view_parsers.find { |parser| parser.exists? view_name }
+          parser.parse view_name
         end
       end
 
