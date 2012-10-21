@@ -100,7 +100,7 @@ module Metro
 
       options.each do |raw_key,value|
 
-        key = raw_key.dup
+        key = raw_key.to_s.dup
         key.gsub!(/-/,'_')
         key.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
         key.gsub!(/([a-z\d])([A-Z])/,'\1_\2')

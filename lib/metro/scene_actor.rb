@@ -12,7 +12,7 @@ module Metro
       contents = {} unless contents
       actor_class = class_for_actor(model_name(contents))
       instance = actor_class.new
-      instance._load(contents)
+      instance._load options.merge(contents)
       instance
     end
 

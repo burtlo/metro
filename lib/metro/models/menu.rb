@@ -9,7 +9,7 @@ module Metro
     # @note Only one 'menu' can be defined for a given scene.
     #
     class Menu < Model
-      attr_accessor :selected_index, :options
+      attr_reader :selected_index, :menu_options
 
       def after_initialize
         @selected_index = 0
@@ -17,9 +17,10 @@ module Metro
 
       def window=(value)
         @window = value
+        @menu_options = options.map {|option| Option.new option }
         events
       end
-      
+
       def events
         relay = EventRelay.new(self,window)
 
@@ -31,7 +32,7 @@ module Metro
       end
 
       def selection
-        scene_method = options[selected_index].downcase.gsub(/\s/,'_')
+        scene_method = option_at_index(selected_index).method
         scene.send scene_method
       end
 
@@ -60,15 +61,42 @@ module Metro
         highlight_color.alpha = value.floor
       end
 
+      def option_at_index(index)
+        menu_options[index]
+      end
+
       def draw
         options.each_with_index do |option,index|
+
+          option_name = option_at_index(index).name
 
           draw_color = color
           draw_color = highlight_color if index == selected_index
 
           y_position = y + padding * index
-          font.draw option, x, y_position, Metro::Game::UI, 1.0, 1.0, draw_color
+          font.draw option_name, x, y_position, Metro::Game::UI, 1.0, 1.0, draw_color
         end
+      end
+
+      class Option
+
+        attr_reader :data
+
+        attr_accessor :name, :method
+
+        def initialize(data)
+          @data = data
+
+          if data.is_a?(Hash)
+            @name = data.keys.first
+            @method = data.values.first
+          else
+            @name = data
+            @method = data.to_s.downcase.gsub(/\s/,'_').gsub(/^[^a-zA-Z]*/,'').gsub(/[^a-zA-Z0-9\s_]/,'')
+          end
+
+        end
+
       end
 
     end
