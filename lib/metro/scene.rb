@@ -255,6 +255,16 @@ module Metro
     end
 
     #
+    # A simplier syntax to enqueue an animation. At the moment this animation is going
+    # to be an implicit animation.
+    #
+    def animate(options,&block)
+      animation = Metro::ImplicitAnimation.new options.merge(context: self)
+      animation.on_complete(&block) if block
+      enqueue animation
+    end
+
+    #
     # The `base_update` method is called by the Game Window. This is to allow for any
     # special update needs to be handled before calling the traditional `update` method
     # defined in the subclassed Scene.
