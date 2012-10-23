@@ -1,3 +1,5 @@
+require_relative 'missing_scene'
+
 module Metro
 
   #
@@ -32,14 +34,17 @@ module Metro
     #
     def find(scene_name)
       found_scene = scenes_hash[scene_name]
-      log.error missing_scene_error_message(scene_name) unless found_scene
+
+      unless found_scene
+        found_scene = create_missing_scene(scene_name)
+      end
+
       found_scene
     end
 
-    def missing_scene_error_message(scene_name)
-      scene_names = Scene.scenes.map(&:scene_name).join(", ")
-      [ "Could not find scene with name '#{scene_name}'",
-        "Known scenes: #{scene_name}" ].join("\n")
+    def create_missing_scene(scene_name)
+      MissingScene.missing_scene = scene_name
+      MissingScene
     end
 
     #
