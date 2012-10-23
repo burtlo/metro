@@ -7,10 +7,10 @@ Gem::Specification.new do |gem|
   gem.name          = "metro"
   gem.version       = Metro::VERSION
   gem.authors       = ["Franklin Webber"]
-  gem.email         = ["franklin.webber@gmail.com"]
+  gem.email         = Metro::CONTACT_EMAILS
   gem.description   = %q{A framework around Gosu to make game creation less tedious}
   gem.summary       = %q{A framework around Gosu to make game creation less tedious}
-  gem.homepage      = "https://github.com/burtlo/metro"
+  gem.homepage      = Metro::WEBSITE
   
   gem.add_dependency 'gosu', '~> 0.7'
   

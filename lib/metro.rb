@@ -2,9 +2,11 @@ require 'gosu'
 require 'gosu_ext/color'
 
 require 'logger'
-
+require 'erb'
 
 require 'metro/version'
+require 'metro/error'
+require 'metro/template_message'
 require 'metro/window'
 require 'metro/game'
 require 'metro/scene'
@@ -14,7 +16,6 @@ require 'metro/models/generic'
 def asset_path(name)
   File.join Dir.pwd, "assets", name
 end
-
 
 def log
   @log ||= begin
@@ -57,6 +58,7 @@ module Metro
   end
 
   def load_game_configuration(filename)
+    game_files_exist!(filename)
     game_contents = File.read(filename)
     game_block = lambda {|instance| eval(game_contents) }
     game = Game::DSL.parse(&game_block)
@@ -68,6 +70,29 @@ module Metro
     window.caption = Game.name
     window.scene = Scenes.generate(Game.first_scene)
     window.show
+  end
+
+  def game_files_exist!(*files)
+    error_messages = files.compact.flatten.map { |file| game_file_exists?(file) }.reject {|exist| exist == true }
+    unless error_messages.empty?
+      display_error_message(error_messages)
+      exit 1
+    end
+  end
+
+  def game_file_exists?(file)
+    unless File.exists? file
+      Error.new title: "Unable to find Metro game file",
+        message: "The specified file `#{file}` which is required to run the game could not be found.",
+        details: [ "Ensure you have specified the correct file", "Ensure that the file exists at that location" ]
+    else
+      true
+    end
+  end
+
+  def display_error_message(messages)
+    message = TemplateMessage.new messages: messages, website: WEBSITE, email: CONTACT_EMAILS
+    warn message
   end
 
 end

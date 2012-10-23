@@ -27,13 +27,32 @@ module Metro
       def fullscreen(set_fullscreen = nil)
         set_fullscreen.nil? ? @fullscreen : @fullscreen = set_fullscreen
       end
-      
+
       def debug(set_debug = nil)
         set_debug.nil? ? @debug : @debug = set_debug
       end
-      
+
       def name(set_name = nil)
         set_name.nil? ? @name : @name = set_name
+      end
+
+      def author(name)
+        authors.push name
+      end
+
+      def authors
+        @authors ||= []
+      end
+
+      alias_method :artist, :author
+      alias_method :designer, :author
+
+      def website(game_website = nil)
+        game_website ? @website = game_website : @website
+      end
+
+      def contact(game_contact = nil)
+        game_contact ? @contact = game_contact : @contact
       end
 
     end
