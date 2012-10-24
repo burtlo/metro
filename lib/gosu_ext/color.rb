@@ -12,14 +12,14 @@ class Gosu::Color
       if value.is_a? Gosu::Color
         gosu_initialize value.alpha, value.red, value.green, value.blue
       elsif value.is_a? String
-        gosu_initialize *Array(self.class.from_string(value))
+        gosu_initialize *Array(self.class.parse_string(value))
       end
     else
       gosu_initialize *args
     end
   end
 
-  def self.from_string(value)
+  def self.parse_string(value)
     parse_hex(value) || parse_rgb(value) || parse_rgba(value) || [ 255, 255, 255, 255 ]
   end
 
