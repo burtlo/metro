@@ -1,5 +1,6 @@
 require_relative 'scene_view/scene_view'
 require_relative 'scene_actor'
+require_relative 'scene_event'
 require_relative 'scene_animation'
 require_relative 'event_relay'
 require_relative 'animation/animation'
@@ -147,6 +148,15 @@ module Metro
       @scene_animations ||= []
     end
 
+    def self.event(event_type,*buttons,&block)
+      scene_event = SceneEvent.new event_type, buttons, &block
+      scene_events.push scene_event
+    end
+    
+    def self.scene_events
+      @scene_events ||= []
+    end
+
     #
     # Setups up the Actors for the Scene based on the SceneActors that have been
     # defined.
@@ -186,8 +196,11 @@ module Metro
       @event_relays = []
 
       @scene_events = EventRelay.new(self,window)
-      events(@scene_events)
-
+      
+      self.class.scene_events.each do |event|
+        @scene_events.send(event.event,*event.buttons,&event.block)
+      end
+      
       @event_relays << @scene_events
 
       @updaters = []
