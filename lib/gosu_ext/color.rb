@@ -13,6 +13,8 @@ class Gosu::Color
         gosu_initialize value.alpha, value.red, value.green, value.blue
       elsif value.is_a? String
         gosu_initialize *Array(self.class.parse_string(value))
+      else
+        gosu_initialize value
       end
     else
       gosu_initialize *args
@@ -22,7 +24,7 @@ class Gosu::Color
   def self.parse_string(value)
     parse_hex(value) || parse_rgb(value) || parse_rgba(value) || [ 255, 255, 255, 255 ]
   end
-
+  
   def self.parse_rgba(rgba)
     if rgba =~ /rgba\(([\d]{1,3}),([\d]{1,3}),([\d]{1,3}),(\d(?:\.\d)?)\)/
       [ (255 * $4.to_f).floor.to_i, $1.to_i, $2.to_i, $3.to_i ]
@@ -36,7 +38,9 @@ class Gosu::Color
   end
 
   def self.parse_hex(hex)
-    if hex =~ /#([A-Fa-f0-9]{6})/
+    if hex =~ /0x([A-Fa-f0-9]{8})/
+      hex.to_i(16)
+    elsif hex =~ /#([A-Fa-f0-9]{6})/
       "0xFF#{$1}".to_i(16)
     end
   end

@@ -33,6 +33,27 @@ describe Gosu::Color do
 
   describe "#initialize" do
 
+    context "when defined with an existing Gosu Color" do
+      subject { described_class.new color }
+      let(:color) { described_class.new 123, 123, 123, 0 }
+      let(:expected_color_values) { [ 123, 123, 0, 123 ] }
+      it_behaves_like "a correctly defined color"
+    end
+
+    context "when defined with a hexadecimal value" do
+      subject { described_class.new hex }
+      let(:hex) { 0xFF777777 }
+      let(:expected_color_values) { [ 119, 119, 119, 255 ] }
+      it_behaves_like "a correctly defined color"
+    end
+
+    context "when defined with a gosu color hex string" do
+      subject { described_class.new hex }
+      let(:hex) { "0xFF777777" }
+      let(:expected_color_values) { [ 119, 119, 119, 255 ] }
+      it_behaves_like "a correctly defined color"
+    end
+
     context "when defined with a hex string" do
       subject { described_class.new hex }
       let(:hex) { "#777777" }
