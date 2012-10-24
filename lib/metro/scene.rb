@@ -210,7 +210,7 @@ module Metro
     #
     def self.scene_name(scene_name=nil)
       @scene_name ||= begin
-        root_name = to_s[/^(.+)Scene$/,1]
+        root_name = to_s.gsub(/Scene$/,'')
         root_name.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
         root_name.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
         root_name.downcase!
