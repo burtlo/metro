@@ -13,6 +13,9 @@ require 'metro/scene'
 require 'metro/models/model'
 require 'metro/models/generic'
 
+require_relative 'metro/missing_scene'
+
+
 def asset_path(name)
   File.join Dir.pwd, "assets", name
 end

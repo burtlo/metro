@@ -1,5 +1,3 @@
-require_relative 'missing_scene'
-
 module Metro
 
   #

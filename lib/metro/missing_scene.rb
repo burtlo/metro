@@ -1,5 +1,3 @@
-require_relative 'scene'
-
 module Metro
   class MissingScene < Scene
     scene_name :missing_scene
