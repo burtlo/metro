@@ -33,19 +33,6 @@ module Metro
     def after_initialize ; end
 
     #
-    # The events method is where a scene has access to configure the events that it
-    # would like to listen for during the scene.
-    #
-    # @note This method should be implemented in the Scene subclass.
-    #
-    # @param [EventRelay] e is the EventRelay that you can register for button up,
-    #   button down, or button held events.
-    #
-    # @see EventRelay
-    #
-    def events(e) ; end
-
-    #
     # This method is called right after the scene has been adopted by the window
     #
     # @note This method should be implemented in the Scene subclass.
@@ -95,9 +82,9 @@ module Metro
     # When an actor is defined a getter and setter method is defined. However, it is
     # a better interface internally not to rely heavily on send and have this small
     # amount of obfuscation in the event that this needs to change.
-    # 
+    #
     # @return the actor with the given name.
-    # 
+    #
     def actor(name)
       send(name)
     end
@@ -147,12 +134,17 @@ module Metro
     def self.scene_animations
       @scene_animations ||= []
     end
+    
+    
+    def event(event_type,*buttons,&block)
+      @scene_events.send(event_type,*buttons,&block)
+    end
 
     def self.event(event_type,*buttons,&block)
       scene_event = SceneEvent.new event_type, buttons, &block
       scene_events.push scene_event
     end
-    
+
     def self.scene_events
       @scene_events ||= []
     end
@@ -196,11 +188,11 @@ module Metro
       @event_relays = []
 
       @scene_events = EventRelay.new(self,window)
-      
+
       self.class.scene_events.each do |event|
-        @scene_events.send(event.event,*event.buttons,&event.block)
+        event event.event, *event.buttons, &event.block
       end
-      
+
       @event_relays << @scene_events
 
       @updaters = []
