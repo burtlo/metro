@@ -1,5 +1,6 @@
 require_relative 'scene_view/scene_view'
 require_relative 'scene_actor'
+require_relative 'scene_animation'
 require_relative 'event_relay'
 require_relative 'animation/animation'
 
@@ -89,6 +90,16 @@ module Metro
     #
     def prepare_transition_from(old_scene) ; end
 
+    #
+    # When an actor is defined a getter and setter method is defined. However, it is
+    # a better interface internally not to rely heavily on send and have this small
+    # amount of obfuscation in the event that this needs to change.
+    # 
+    # @return the actor with the given name.
+    # 
+    def actor(name)
+      send(name)
+    end
 
     #
     # Define a scene actor with the given name and options.
@@ -125,6 +136,15 @@ module Metro
     #
     def self.scene_actors
       @scene_actors ||= []
+    end
+
+    def self.animate(options,&block)
+      scene_animation = SceneAnimation.new options, &block
+      scene_animations.push scene_animation
+    end
+
+    def self.scene_animations
+      @scene_animations ||= []
     end
 
     #
@@ -178,6 +198,10 @@ module Metro
         actor = send(scene_actor.name)
         actor.window = window
         @drawers << actor
+      end
+
+      self.class.scene_animations.each do |animation|
+        animate animation.options, &animation.on_complete_block
       end
 
       show
@@ -259,6 +283,7 @@ module Metro
     # to be an implicit animation.
     #
     def animate(options,&block)
+      options[:actor] = actor(options[:actor]) if options[:actor].is_a? Symbol
       animation = Metro::ImplicitAnimation.new options.merge(context: self)
       animation.on_complete(&block) if block
       enqueue animation
