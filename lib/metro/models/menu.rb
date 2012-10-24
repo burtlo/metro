@@ -6,34 +6,34 @@ module Metro
     # target as it needs to maintain the state of the menu. When an option is selected
     # an event is fired based on the name of the option.
     #
-    # @note Only one 'menu' can be defined for a given scene.
+    # @note Only one 'menu' can be defined for a given scene
     #
     class Menu < Model
+
+      event :on_up, Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp do
+        previous_option
+      end
+
+      event :on_up, Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown do
+        next_option
+      end
+
+      event :on_up, Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0 do
+        selection
+      end
+
       attr_reader :selected_index, :menu_options
-      
+
       attr_accessor :padding
 
       def after_initialize
         @selected_index = 0
         @padding = 40
-        @color = Gosu::Color.new "#777777"
-        @highlight_color = Gosu::Color.new "rgb(255,255,255)"
       end
 
       def window=(value)
         @window = value
         @menu_options = options.map {|option| Option.new option }
-        events
-      end
-
-      def events
-        relay = EventRelay.new(self,window)
-
-        relay.on_up Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp, do: :previous_option
-        relay.on_up Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown, do: :next_option
-        relay.on_up Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0, do: :selection
-
-        scene.add_event_relay relay
       end
 
       def selection
@@ -83,11 +83,25 @@ module Metro
         end
       end
 
+      #
+      # The Option represents a choice within the menu.
+      #
       class Option
 
+        #
+        # The raw data that was used to create the option.
+        #
         attr_reader :data
 
-        attr_accessor :name, :method
+        #
+        # The human readable name of the option.
+        #
+        attr_accessor :name
+
+        #
+        # The method to execute within the scene when the option is selected.
+        #
+        attr_accessor :method
 
         def initialize(data)
           @data = data
@@ -99,9 +113,7 @@ module Metro
             @name = data
             @method = data.to_s.downcase.gsub(/\s/,'_').gsub(/^[^a-zA-Z]*/,'').gsub(/[^a-zA-Z0-9\s_]/,'')
           end
-
         end
-
       end
 
     end
