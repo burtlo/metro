@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = Metro::WEBSITE
   
   gem.add_dependency 'gosu', '~> 0.7'
+  gem.add_development_dependency 'rspec', '~> 2.11'
   
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
