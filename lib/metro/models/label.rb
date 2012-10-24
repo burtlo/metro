@@ -14,6 +14,8 @@ module Metro
       def after_initialize
         @text = ""
         @x_factor = @y_factor = 1.0
+        @z_order = 0
+        @color = Gosu::Color.new "rgba(255,255,255,1.0)"
       end
 
       def font

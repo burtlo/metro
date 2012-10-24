@@ -10,9 +10,14 @@ module Metro
     #
     class Menu < Model
       attr_reader :selected_index, :menu_options
+      
+      attr_accessor :padding
 
       def after_initialize
         @selected_index = 0
+        @padding = 40
+        @color = Gosu::Color.new "#777777"
+        @highlight_color = Gosu::Color.new "rgb(255,255,255)"
       end
 
       def window=(value)
