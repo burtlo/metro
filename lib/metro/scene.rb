@@ -136,8 +136,8 @@ module Metro
     end
     
     
-    def event(event_type,*buttons,&block)
-      @scene_events.send(event_type,*buttons,&block)
+    def event(relay,event_type,*buttons,&block)
+      relay.send(event_type,*buttons,&block)
     end
 
     def self.event(event_type,*buttons,&block)
@@ -187,13 +187,13 @@ module Metro
 
       @event_relays = []
 
-      @scene_events = EventRelay.new(self,window)
+      scene_events = EventRelay.new(self,window)
 
       self.class.scene_events.each do |event|
-        event event.event, *event.buttons, &event.block
+        event scene_events, event.event, *event.buttons, &event.block
       end
 
-      @event_relays << @scene_events
+      @event_relays << scene_events
 
       @updaters = []
 
@@ -203,6 +203,15 @@ module Metro
         actor = send(scene_actor.name)
         actor.window = window
         @drawers << actor
+        
+        actor_event_relay = EventRelay.new(actor,window)
+        
+        actor.class.actor_events.each do |actor_event|
+          event actor_event_relay, actor_event.event, *actor_event.buttons, &actor_event.block
+        end
+        
+        @event_relays << actor_event_relay
+        
       end
 
       self.class.scene_animations.each do |animation|

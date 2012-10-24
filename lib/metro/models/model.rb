@@ -40,6 +40,15 @@ module Metro
     #
     def after_initialize ; end
 
+    def self.event(event_type,*buttons,&block)
+      actor_event = SceneEvent.new event_type, buttons, &block
+      actor_events.push actor_event
+    end
+
+    def self.actor_events
+      @actor_events ||= []
+    end
+
     #
     # Returns the color of the model. In most cases where color is a prominent
     # attribute (e.g. label) this will be the color. In the cases where color
