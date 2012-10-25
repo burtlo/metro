@@ -1,12 +1,12 @@
 require_relative 'scene_view/scene_view'
 
-require_relative 'events/event_factory'
+require_relative 'events/has_events'
 require_relative 'events/event_relay'
 require_relative 'events/unknown_sender'
 
-require_relative 'models/model_factory'
+require_relative 'models/draws'
 
-require_relative 'animation/animation_factory'
+require_relative 'animation/has_animations'
 require_relative 'animation/animation'
 
 module Metro
@@ -82,160 +82,17 @@ module Metro
     #
     def prepare_transition_from(old_scene) ; end
 
+    include Draws
+
     #
-    # When an actor is defined a getter and setter method is defined. However, it is
-    # a better interface internally not to rely heavily on send and have this small
-    # amount of obfuscation in the event that this needs to change.
+    # When an actor is defined, through the class method `draw` a getter and setter method
+    # is defined. However, it is a better interface internally not to rely heavily on send
+    # and have this small amount of obfuscation in the event that this needs to change.
     #
     # @return the actor with the given name.
     #
     def actor(name)
       send(name)
-    end
-
-    #
-    # Define a scene actor with the given name and options.
-    #
-    # As a convience the scene will define `getter` and `setter` methods for the
-    # specified actor.
-    #
-    # @example Defining a title label within a scene
-    #
-    #     class ExampleScene
-    #       draw :title, 'text' => 'Title Screen',
-    #         'x' => 20, 'y' => 20, 'z-order' => 0,
-    #         'x-factor' => 3, 'y-factor' => 3,
-    #         'color' => 0xffffffff,
-    #         'model' => 'metro::models::label'
-    #
-    #       def show
-    #         puts "Where is my title? #{title.x},#{title.y}"
-    #       end
-    #     end
-    #
-    def self.draw(actor_name,options = {})
-      scene_actor = ModelFactory.new actor_name, options
-
-      define_method actor_name do
-        instance_variable_get("@#{actor_name}")
-      end
-
-      define_method "#{actor_name}=" do |value|
-        instance_variable_set("@#{actor_name}",value)
-      end
-
-      actors.push scene_actor
-    end
-
-    #
-    # Define several standard scene actors.
-    #
-    def self.draws(*actor_names)
-      actor_names = actor_names.flatten.compact
-
-      actor_names.each do |actor_name|
-        draw actor_name
-      end
-
-      actors
-    end
-
-    #
-    # @return a list of all the ModelFactories that have been defined for this Scene.
-    #
-    def self.actors
-      @actors ||= []
-    end
-
-    #
-    # Register an event for the scene.
-    #
-    # @example Registering for a save complete event that would re-enable a menu.
-    #
-    #     class ExampleScene
-    #       event :notification, :save_complete do
-    #         menu.enabled!
-    #       end
-    #     end
-    #
-    # @example Registering for button held events
-    #
-    #     class ExampleScene
-    #       event :on_hold Gosu::KbLeft, Gosu::GpLeft do
-    #         player.turn_left
-    #       end
-    #
-    #       event :on_hold, Gosu::KbRight, Gosu::GpRight do
-    #         player.turn_right
-    #       end
-    #
-    #       event :on_hold, Gosu::KbUp, Gosu::GpButton0, do: :calculate_accleration
-    #
-    #       def calculate_acceleration
-    #         long_complicated_calculated_result = 0
-    #         # ... multi-line calculations to determine the player acceleration ...
-    #         player.accelerate = long_complicated_calculated_result
-    #       end
-    #     end
-    #
-    # @example Registering for a button down event to call a method named 'next_option'
-    #
-    #     class ExampleScene
-    #        event :on_up, Gosu::KbEscape, do: :leave_scene
-    #
-    #       def leave_scene
-    #         transition_to :title
-    #       end
-    #     end
-    #
-    # Here in this scene if the Escape Key is pressed and released the example scene
-    # will transition to the title scene.
-    #
-    # @example Registering for a button up event with a block of code to execute
-    #
-    #     class ExampleScene
-    #       event :on_up, Gosu::KbEscape do
-    #        transition_to :title
-    #       end
-    #     end
-    #
-    # @example Registering for a button down event to call a method named 'previous_option'
-    #
-    #     class ExampleScene
-    #       event :on_down, Gosu::GpLeft, Gosu::GpUp, do: :previous_option
-    #
-    #       def previous_option
-    #         @selected_index = @selected_index - 1
-    #         @selected_index = options.length - 1 if @selected_index <= -1
-    #       end
-    #     end
-    #
-    # Here in this scene if the GpLeft or GpUp buttons are pressed down the method
-    # `previous_options` will be executed.
-    #
-    #
-    # @example Registering for a button down event with a block of code to execute
-    #
-    #     class ExampleScene
-    #        event :on_down, Gosu::GpLeft, Gosu::GpUp do
-    #         @selected_index = @selected_index - 1
-    #         @selected_index = options.length - 1 if @selected_index <= -1
-    #       end
-    #     end
-    #
-    # This example uses a block instead of a method name but it is absolultey the same
-    # as the last example.
-    #
-    def self.event(event_type,*buttons,&block)
-      scene_event = EventFactory.new event_type, buttons, &block
-      events.push scene_event
-    end
-
-    #
-    # @return a list of all the EventFactories defined for the scene
-    #
-    def self.events
-      @events ||= []
     end
 
     #
@@ -259,26 +116,14 @@ module Metro
     end
 
     #
-    # Define an animation to execute when the scene starts.
+    # A scene has events which it will register when the window is established.
     #
-    # @example Defining an animation that fades in and moves a logo when it is
-    #   done, transition to the title scene.
-    #
-    #     animate actor: :logo, to: { y: 80, alpha: 50 }, interval: 120 do
-    #       transition_to :title
-    #     end
-    #
-    def self.animate(options,&block)
-      scene_animation = AnimationFactory.new options, &block
-      animations.push scene_animation
-    end
+    include HasEvents
 
     #
-    # All the animations that are defined for the scene to be run the scene starts.
+    # A scene defines animations which it will execute when the scene starts
     #
-    def self.animations
-      @animations ||= []
-    end
+    include HasAnimations
 
     #
     # Setups up the Actors for the Scene based on the ModelFactories that have been
@@ -353,13 +198,13 @@ module Metro
     # the window, adding them to the list of things that need to be
     # drawn and then registering any eventst that they might have.
     #
-    def register_actor(actor)
-      actor = send(actor.name)
-      actor.window = window
+    def register_actor(actor_factory)
+      registering_actor = actor(actor_factory.name)
+      registering_actor.window = window
 
-      drawers.push(actor)
+      drawers.push(registering_actor)
 
-      register_events_for_target(actor,actor.class.events)
+      register_events_for_target(registering_actor,registering_actor.class.events)
     end
 
     #
@@ -509,9 +354,9 @@ module Metro
     def _prepare_transition(new_scene)
       log.debug "Preparing to transition from scene #{self} to #{new_scene}"
 
-      new_scene.class.actors.find_all {|actor| actor.load_from_previous_scene? }.each do |scene_actor|
-        new_actor = new_scene.send(scene_actor.name)
-        current_actor = send(scene_actor.name)
+      new_scene.class.actors.find_all {|actor_factory| actor_factory.load_from_previous_scene? }.each do |actor_factory|
+        new_actor = new_scene.actor(actor_factory.name)
+        current_actor = actor(actor_factory.name)
         new_actor._load current_actor._save
       end
 

@@ -50,19 +50,9 @@ module Metro
     end
 
     #
-    # Define an event for this model.
+    # Allows for the definition of events within the scene.
     # 
-    def self.event(event_type,*buttons,&block)
-      actor_event = EventFactory.new event_type, buttons, &block
-      events.push actor_event
-    end
-
-    #
-    # @return a list of all the events defined for the model.
-    # 
-    def self.events
-      @events ||= []
-    end
+    include HasEvents
 
     #
     # Returns the color of the model. In most cases where color is a prominent
