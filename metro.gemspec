@@ -3,6 +3,8 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'metro/version'
 
+Struct.new("Changes",:date,:changes)
+
 Gem::Specification.new do |gem|
   gem.name          = "metro"
   gem.version       = Metro::VERSION
@@ -14,7 +16,11 @@ Gem::Specification.new do |gem|
     Metro makes it easy to create games by enforcing common conceptual structures
     and conventions.
   EOS
-  gem.description   = gem.summary
+  gem.description   = <<-EOS
+    Metro is a 2D Gaming framework built around gosu (game development library).
+    Metro makes it easy to create games by enforcing common conceptual structures
+    and conventions.
+  EOS
 
   gem.homepage      = Metro::WEBSITE
 
@@ -26,4 +32,21 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  changes = Metro.changes_for_version(::Metro::VERSION)
+
+  gem.post_install_message = <<-EOM
+    ______  ___      _____
+    ___   |/  /_____ __  /_______________
+    __  /|_/ / _  _ \\_  __/__  ___/_  __ \\
+    _  /  / /  /  __// /_  _  /    / /_/ /
+    /_/  /_/   \\___/  \\__/ /_/     \\____/
+
+  Thank you for installing metro #{::Metro::VERSION} / #{changes.date}.
+  ---------------------------------------------------------------------
+  Changes:
+  #{changes.changes.map{|change| "  #{change}"}.join("")}
+  ---------------------------------------------------------------------
+EOM
+
 end
