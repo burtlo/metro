@@ -1,5 +1,6 @@
 require 'gosu'
 require 'gosu_ext/color'
+require 'sender'
 
 require 'logger'
 require 'erb'
