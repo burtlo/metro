@@ -1,6 +1,6 @@
 module Metro
 
-  class SceneEvent
+  class EventFactory
 
     attr_reader :event, :buttons, :block
 

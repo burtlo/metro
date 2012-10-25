@@ -1,5 +1,5 @@
 module Metro
-  class SceneActor
+  class ModelFactory
 
     attr_reader :name, :options
 

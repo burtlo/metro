@@ -1,6 +1,6 @@
 module Metro
 
-  class SceneAnimation
+  class AnimationFactory
 
     attr_reader :options, :on_complete_block
 

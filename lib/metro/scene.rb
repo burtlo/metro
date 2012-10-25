@@ -1,12 +1,12 @@
 require_relative 'scene_view/scene_view'
 
-require_relative 'events/scene_event'
+require_relative 'events/event_factory'
 require_relative 'events/event_relay'
 require_relative 'events/unknown_sender'
 
-require_relative 'models/scene_actor'
+require_relative 'models/model_factory'
 
-require_relative 'animation/scene_animation'
+require_relative 'animation/animation_factory'
 require_relative 'animation/animation'
 
 module Metro
@@ -114,7 +114,7 @@ module Metro
     #     end
     #
     def self.draw(actor_name,options = {})
-      scene_actor = SceneActor.new actor_name, options
+      scene_actor = ModelFactory.new actor_name, options
 
       define_method actor_name do
         instance_variable_get("@#{actor_name}")
@@ -141,7 +141,7 @@ module Metro
     end
 
     #
-    # @return a list of all the SceneActors that have been defined for this Scene.
+    # @return a list of all the ModelFactories that have been defined for this Scene.
     #
     def self.actors
       @actors ||= []
@@ -227,12 +227,12 @@ module Metro
     # as the last example.
     #
     def self.event(event_type,*buttons,&block)
-      scene_event = SceneEvent.new event_type, buttons, &block
+      scene_event = EventFactory.new event_type, buttons, &block
       events.push scene_event
     end
 
     #
-    # @return a list of all the SceneEvents defined for the scene
+    # @return a list of all the EventFactories defined for the scene
     #
     def self.events
       @events ||= []
@@ -269,7 +269,7 @@ module Metro
     #     end
     #
     def self.animate(options,&block)
-      scene_animation = SceneAnimation.new options, &block
+      scene_animation = AnimationFactory.new options, &block
       animations.push scene_animation
     end
 
@@ -281,7 +281,7 @@ module Metro
     end
 
     #
-    # Setups up the Actors for the Scene based on the SceneActors that have been
+    # Setups up the Actors for the Scene based on the ModelFactories that have been
     # defined.
     #
     # @note this method should not be overriden, otherwise the actors will perish!
@@ -526,7 +526,7 @@ module Metro
     #   will have the appropriate methods and functionality to respond appropriately
     #   to the action blocks defined in the methods.
     #
-    # @param [Array<SceneEvent>] events an array of SceneEvent objects that need to now
+    # @param [Array<EventFactory>] events an array of EventFactory objects that need to now
     #   be mapped to the specified target.
     #
     def register_events_for_target(target,events)

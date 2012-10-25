@@ -53,7 +53,7 @@ module Metro
     # Define an event for this model.
     # 
     def self.event(event_type,*buttons,&block)
-      actor_event = SceneEvent.new event_type, buttons, &block
+      actor_event = EventFactory.new event_type, buttons, &block
       events.push actor_event
     end
 
