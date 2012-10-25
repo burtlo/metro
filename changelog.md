@@ -1,5 +1,9 @@
 # Metro
 
+## 0.1.1 / 2012-10-25
+
+* FIX: Requiring the sender gem
+
 ## 0.1.0 / 2012-10-25
 
 * Better error handling for missing metro file and missing scene
