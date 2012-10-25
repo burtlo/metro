@@ -1,10 +1,13 @@
 require_relative 'scene_view/scene_view'
-require_relative 'scene_actor'
-require_relative 'scene_event'
-require_relative 'scene_animation'
-require_relative 'event_relay'
-require_relative 'animation/animation'
+
+require_relative 'events/scene_event'
+require_relative 'events/event_relay'
 require_relative 'events/unknown_sender'
+
+require_relative 'models/scene_actor'
+
+require_relative 'animation/scene_animation'
+require_relative 'animation/animation'
 
 module Metro
 
