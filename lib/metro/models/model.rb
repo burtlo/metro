@@ -40,13 +40,28 @@ module Metro
     #
     def after_initialize ; end
 
-    def self.event(event_type,*buttons,&block)
-      actor_event = SceneEvent.new event_type, buttons, &block
-      actor_events.push actor_event
+    #
+    # Generate a custom notification event with the given name.
+    #
+    # @param [Symbol] event the name of the notification to generate.
+    # 
+    def notification(event)
+      scene.notification(event.to_sym)
     end
 
-    def self.actor_events
-      @actor_events ||= []
+    #
+    # Define an event for this model.
+    # 
+    def self.event(event_type,*buttons,&block)
+      actor_event = SceneEvent.new event_type, buttons, &block
+      events.push actor_event
+    end
+
+    #
+    # @return a list of all the events defined for the model.
+    # 
+    def self.events
+      @events ||= []
     end
 
     #

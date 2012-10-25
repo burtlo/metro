@@ -56,6 +56,7 @@ module Metro
       @up_actions ||= {}
       @down_actions ||= {}
       @held_actions ||= {}
+      @custom_notifications ||= Hash.new([])
     end
 
     attr_reader :target, :window
@@ -68,9 +69,7 @@ module Metro
     # @example Registering for a button down event to call a method named 'previous_option'
     #
     #     class ExampleScene
-    #       def events(e)
-    #         e.on_down Gosu::GpLeft, Gosu::GpUp, do: :previous_option
-    #       end
+    #       event :on_down, Gosu::GpLeft, Gosu::GpUp, do: :previous_option
     #
     #       def previous_option
     #         @selected_index = @selected_index - 1
@@ -85,11 +84,9 @@ module Metro
     # @example Registering for a button down event with a block of code to execute
     #
     #     class ExampleScene
-    #       def events(e)
-    #         e.on_down Gosu::GpLeft, Gosu::GpUp do
-    #           @selected_index = @selected_index - 1
-    #           @selected_index = options.length - 1 if @selected_index <= -1
-    #         end
+    #        event :on_down, Gosu::GpLeft, Gosu::GpUp do
+    #         @selected_index = @selected_index - 1
+    #         @selected_index = options.length - 1 if @selected_index <= -1
     #       end
     #     end
     #
@@ -108,9 +105,7 @@ module Metro
     # @example Registering for a button down event to call a method named 'next_option'
     #
     #     class ExampleScene
-    #       def events(e)
-    #         e.on_up Gosu::KbEscape, do: :leave_scene
-    #       end
+    #        event :on_up, Gosu::KbEscape, do: :leave_scene
     #
     #       def leave_scene
     #         transition_to :title
@@ -123,10 +118,8 @@ module Metro
     # @example Registering for a button up event with a block of code to execute
     #
     #     class ExampleScene
-    #       def events(e)
-    #         e.on_up Gosu::KbEscape do
-    #           transition_to :title
-    #         end
+    #       event :on_up, Gosu::KbEscape do
+    #        transition_to :title
     #       end
     #     end
     #
@@ -147,17 +140,15 @@ module Metro
     # @example Registering for button held events
     #
     #     class ExampleScene
-    #       def events(e)
-    #         e.on_hold Gosu::KbLeft, Gosu::GpLeft do
-    #           player.turn_left
-    #         end
-    #
-    #         e.on_hold Gosu::KbRight, Gosu::GpRight do
-    #           player.turn_right
-    #         end
-    #
-    #         e.on_hold Gosu::KbUp, Gosu::GpButton0, do: :calculate_accleration
+    #       event :on_hold Gosu::KbLeft, Gosu::GpLeft do
+    #         player.turn_left
     #       end
+    #
+    #       event :on_hold, Gosu::KbRight, Gosu::GpRight do
+    #         player.turn_right
+    #       end
+    #
+    #       event :on_hold, Gosu::KbUp, Gosu::GpButton0, do: :calculate_accleration
     #
     #       def calculate_acceleration
     #         long_complicated_calculated_result = 0
@@ -171,7 +162,45 @@ module Metro
       _on(@held_actions,args,block)
     end
 
-    attr_reader :up_actions, :down_actions, :held_actions
+    #
+    # Register for a custom notification event. These events are fired when
+    # another object within the game posts a notification with matching criteria.
+    # If there has indeed been a match, then the stored action block will be fired.
+    #
+    # When the action block is specified is defined with no parameters it is assumed that
+    # that the code should be executed within the context of the object that defined
+    # the action, the 'target'.
+    #
+    # @example Registering for a save complete event that would re-enable a menu.
+    #
+    #     class ExampleScene
+    #       event :notification, :save_complete do
+    #         menu.enabled!
+    #       end
+    #     end
+    #
+    # The action block can also be specified with two parameters. In this case the code is
+    # no longer executed within the context of the object and is instead provided the
+    # the action target and the action source.
+    #
+    # @example Registering for a win game event that explicitly states the target and source.
+    #
+    #     class ExampleScene
+    #
+    #       event :notification, :win_game do |target,winner|
+    #         target.declare_winner winner
+    #       end
+    #
+    #       def declare_winner(winning_player)
+    #         # ...
+    #       end
+    #     end
+    #
+    def notification(param,&block)
+      custom_notifications[param.to_sym] = custom_notifications[param.to_sym] + [ block ]
+    end
+
+    attr_reader :up_actions, :down_actions, :held_actions, :custom_notifications
 
     def _on(hash,args,block)
       options = (args.last.is_a?(Hash) ? args.pop : {})
@@ -220,6 +249,35 @@ module Metro
       down_actions[id] || lambda {|instance| send(:down_action_missing,id) if respond_to?(:down_action_missing) }
     end
 
+    #
+    # Fire all events mapped to the matching notification.
+    #
+    def fire_events_for_notification(event,sender)
+      notification_actions = custom_notifications[event]
+      notification_actions.each do |action|
+        _fire_event_for_notification(event,sender,action)
+      end
+    end
+
+    #
+    # Fire a single event based on the matched notification.
+    #
+    # An action without any parameters is assumed to be executed within the contexxt
+    # of the target. If there are two parameters we will simply execute the action and
+    # pass it both the target and the sender.
+    # 
+    # @TODO: Allow for the blocks to be specified with one parameter: source (and executed
+    #   within the context of the target)
+    # 
+    # @TODO: Allow for the blocks to be specified with three parameters: source, target, event
+    #
+    def _fire_event_for_notification(event,sender,action)
+      if action.arity == 2
+        action.call(target,sender)
+      else
+        target.instance_eval(&action)
+      end
+    end
 
   end
 end

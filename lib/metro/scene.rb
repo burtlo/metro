@@ -4,6 +4,7 @@ require_relative 'scene_event'
 require_relative 'scene_animation'
 require_relative 'event_relay'
 require_relative 'animation/animation'
+require_relative 'events/unknown_sender'
 
 module Metro
 
@@ -92,6 +93,23 @@ module Metro
     #
     # Define a scene actor with the given name and options.
     #
+    # As a convience the scene will define `getter` and `setter` methods for the
+    # specified actor.
+    #
+    # @example Defining a title label within a scene
+    #
+    #     class ExampleScene
+    #       draw :title, 'text' => 'Title Screen',
+    #         'x' => 20, 'y' => 20, 'z-order' => 0,
+    #         'x-factor' => 3, 'y-factor' => 3,
+    #         'color' => 0xffffffff,
+    #         'model' => 'metro::models::label'
+    #
+    #       def show
+    #         puts "Where is my title? #{title.x},#{title.y}"
+    #       end
+    #     end
+    #
     def self.draw(actor_name,options = {})
       scene_actor = SceneActor.new actor_name, options
 
@@ -103,7 +121,7 @@ module Metro
         instance_variable_set("@#{actor_name}",value)
       end
 
-      scene_actors.push scene_actor
+      actors.push scene_actor
     end
 
     #
@@ -116,37 +134,147 @@ module Metro
         draw actor_name
       end
 
-      scene_actors
+      actors
     end
 
     #
     # @return a list of all the SceneActors that have been defined for this Scene.
     #
-    def self.scene_actors
-      @scene_actors ||= []
+    def self.actors
+      @actors ||= []
     end
 
-    def self.animate(options,&block)
-      scene_animation = SceneAnimation.new options, &block
-      scene_animations.push scene_animation
-    end
-
-    def self.scene_animations
-      @scene_animations ||= []
-    end
-    
-    
-    def event(relay,event_type,*buttons,&block)
-      relay.send(event_type,*buttons,&block)
-    end
-
+    #
+    # Register an event for the scene.
+    #
+    # @example Registering for a save complete event that would re-enable a menu.
+    #
+    #     class ExampleScene
+    #       event :notification, :save_complete do
+    #         menu.enabled!
+    #       end
+    #     end
+    #
+    # @example Registering for button held events
+    #
+    #     class ExampleScene
+    #       event :on_hold Gosu::KbLeft, Gosu::GpLeft do
+    #         player.turn_left
+    #       end
+    #
+    #       event :on_hold, Gosu::KbRight, Gosu::GpRight do
+    #         player.turn_right
+    #       end
+    #
+    #       event :on_hold, Gosu::KbUp, Gosu::GpButton0, do: :calculate_accleration
+    #
+    #       def calculate_acceleration
+    #         long_complicated_calculated_result = 0
+    #         # ... multi-line calculations to determine the player acceleration ...
+    #         player.accelerate = long_complicated_calculated_result
+    #       end
+    #     end
+    #
+    # @example Registering for a button down event to call a method named 'next_option'
+    #
+    #     class ExampleScene
+    #        event :on_up, Gosu::KbEscape, do: :leave_scene
+    #
+    #       def leave_scene
+    #         transition_to :title
+    #       end
+    #     end
+    #
+    # Here in this scene if the Escape Key is pressed and released the example scene
+    # will transition to the title scene.
+    #
+    # @example Registering for a button up event with a block of code to execute
+    #
+    #     class ExampleScene
+    #       event :on_up, Gosu::KbEscape do
+    #        transition_to :title
+    #       end
+    #     end
+    #
+    # @example Registering for a button down event to call a method named 'previous_option'
+    #
+    #     class ExampleScene
+    #       event :on_down, Gosu::GpLeft, Gosu::GpUp, do: :previous_option
+    #
+    #       def previous_option
+    #         @selected_index = @selected_index - 1
+    #         @selected_index = options.length - 1 if @selected_index <= -1
+    #       end
+    #     end
+    #
+    # Here in this scene if the GpLeft or GpUp buttons are pressed down the method
+    # `previous_options` will be executed.
+    #
+    #
+    # @example Registering for a button down event with a block of code to execute
+    #
+    #     class ExampleScene
+    #        event :on_down, Gosu::GpLeft, Gosu::GpUp do
+    #         @selected_index = @selected_index - 1
+    #         @selected_index = options.length - 1 if @selected_index <= -1
+    #       end
+    #     end
+    #
+    # This example uses a block instead of a method name but it is absolultey the same
+    # as the last example.
+    #
     def self.event(event_type,*buttons,&block)
       scene_event = SceneEvent.new event_type, buttons, &block
-      scene_events.push scene_event
+      events.push scene_event
     end
 
-    def self.scene_events
-      @scene_events ||= []
+    #
+    # @return a list of all the SceneEvents defined for the scene
+    #
+    def self.events
+      @events ||= []
+    end
+
+    #
+    # Post a custom notification event. This will trigger any objects that are listening
+    # for custom events.
+    #
+    def notification(event)
+
+      # __sender__ is made available through the sender gem, this is solely to make the
+      # the api call to generate a notification simply `#notification`. Freeing the caller
+      # from having to include themself in the execution.
+      #
+      # @note if the sender functionality proves troublesome across platforms this can
+      #   be dropped and simply require the sender to be included.
+      #
+      sender = __sender__ rescue UnknownSender
+
+      event_relays.each do |relay|
+        relay.fire_events_for_notification(event,sender)
+      end
+    end
+
+    #
+    # Define an animation to execute when the scene starts.
+    #
+    # @example Defining an animation that fades in and moves a logo when it is
+    #   done, transition to the title scene.
+    #
+    #     animate actor: :logo, to: { y: 80, alpha: 50 }, interval: 120 do
+    #       transition_to :title
+    #     end
+    #
+    def self.animate(options,&block)
+      scene_animation = SceneAnimation.new options, &block
+      animations.push scene_animation
+    end
+
+    #
+    # All the animations that are defined for the scene to be run the scene starts.
+    #
+    def self.animations
+      @animations ||= []
     end
 
     #
@@ -157,7 +285,7 @@ module Metro
     # @see #after_initialize
     #
     def initialize
-      self.class.scene_actors.each do |scene_actor|
+      self.class.actors.each do |scene_actor|
         actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
         actor_instance = scene_actor.create(actor_data)
         actor_instance.scene = self
@@ -185,40 +313,50 @@ module Metro
     def window=(window)
       @window = window
 
-      @event_relays = []
+      event_relays.clear
 
-      scene_events = EventRelay.new(self,window)
-
-      self.class.scene_events.each do |event|
-        event scene_events, event.event, *event.buttons, &event.block
-      end
-
-      @event_relays << scene_events
-
-      @updaters = []
-
-      @drawers = []
-
-      self.class.scene_actors.each do |scene_actor|
-        actor = send(scene_actor.name)
-        actor.window = window
-        @drawers << actor
-        
-        actor_event_relay = EventRelay.new(actor,window)
-        
-        actor.class.actor_events.each do |actor_event|
-          event actor_event_relay, actor_event.event, *actor_event.buttons, &actor_event.block
-        end
-        
-        @event_relays << actor_event_relay
-        
-      end
-
-      self.class.scene_animations.each do |animation|
-        animate animation.options, &animation.on_complete_block
-      end
+      register_events!
+      register_actors!
+      register_animations!
 
       show
+    end
+
+    #
+    # Register all the events that were defined for this scene.
+    #
+    def register_events!
+      register_events_for_target(self,self.class.events)
+    end
+
+    #
+    # Register all the actors that were defined for this scene.
+    #
+    def register_actors!
+      self.class.actors.each { |actor| register_actor(actor) }
+    end
+
+    #
+    # Register all the animations that were defined for this scene.
+    #
+    def register_animations!
+      self.class.animations.each do |animation|
+        animate animation.options, &animation.on_complete_block
+      end
+    end
+
+    #
+    # Registering an actor involves setting up the actor within
+    # the window, adding them to the list of things that need to be
+    # drawn and then registering any eventst that they might have.
+    #
+    def register_actor(actor)
+      actor = send(actor.name)
+      actor.window = window
+
+      drawers.push(actor)
+
+      register_events_for_target(actor,actor.class.events)
     end
 
     #
@@ -289,7 +427,7 @@ module Metro
     # is used for animations.
     #
     def enqueue(updater)
-      @updaters << updater
+      updaters.push(updater)
     end
 
     #
@@ -303,14 +441,32 @@ module Metro
       enqueue animation
     end
 
+
+    #
+    # The objects that need to be executed on every update. These objects are traditionally
+    # animations or window events for held pressed buttons. But can be any objects that responds
+    # to the method #update.
+    #
+    def updaters
+      @updaters ||= []
+    end
+
     #
     # The `base_update` method is called by the Game Window. This is to allow for any
     # special update needs to be handled before calling the traditional `update` method
     # defined in the subclassed Scene.
     #
     def base_update
-      @updaters.each { |updater| updater.update }
+      updaters.each { |updater| updater.update }
       update
+    end
+
+    #
+    # The objects that need to be drawn with every draw cycle. These objects are traditionally
+    # the model objects, like the actors defined within the scene.
+    #
+    def drawers
+      @drawers ||= []
     end
 
     #
@@ -319,7 +475,7 @@ module Metro
     # defined in the subclassed Scene.
     #
     def base_draw
-      @drawers.each { |drawer| drawer.draw }
+      drawers.each { |drawer| drawer.draw }
       draw
     end
 
@@ -350,7 +506,7 @@ module Metro
     def _prepare_transition(new_scene)
       log.debug "Preparing to transition from scene #{self} to #{new_scene}"
 
-      new_scene.class.scene_actors.find_all {|actor| actor.load_from_previous_scene? }.each do |scene_actor|
+      new_scene.class.actors.find_all {|actor| actor.load_from_previous_scene? }.each do |scene_actor|
         new_actor = new_scene.send(scene_actor.name)
         current_actor = send(scene_actor.name)
         new_actor._load current_actor._save
@@ -361,6 +517,26 @@ module Metro
     end
 
     #
+    # Helper method that is used internally to setup the events for the specified target.
+    #
+    # @param [Object] target the intended target for the specified events. This object
+    #   will have the appropriate methods and functionality to respond appropriately
+    #   to the action blocks defined in the methods.
+    #
+    # @param [Array<SceneEvent>] events an array of SceneEvent objects that need to now
+    #   be mapped to the specified target.
+    #
+    def register_events_for_target(target,events)
+      target_relay = EventRelay.new(target,window)
+
+      events.each do |target_event|
+        target_relay.send target_event.event, *target_event.buttons, &target_event.block
+      end
+
+      event_relays.push(target_relay)
+    end
+
+    #
     # The events object that is configured through the {#events} method, which stores
     # all the gamepad and keyboard events defined. By default a scene has an event
     # relay defined. Additional relays can be defined based on the components added.
@@ -368,17 +544,8 @@ module Metro
     # @see Events
     # @see #add_event_relay
     #
-    attr_reader :event_relays
-
-    #
-    # Add an additional event relay to the list of event relays. It is appended
-    # to the end of the list of relays.
-    #
-    # @param [EventRelay] event_relay an event relay instance that will now
-    #   receive events generated from this scene.
-    #
-    def add_event_relay(event_relay)
-      @event_relays << event_relay
+    def event_relays
+      @event_relays ||= []
     end
 
     #
