@@ -7,5 +7,10 @@ end
 $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'metro'
+require 'commands/thor'
 
-Metro.run(*ARGV)
+if Metro::Thor.tasks.keys.include? ARGV.first
+  Metro::Thor.start
+else
+  Metro.run(*ARGV)
+end

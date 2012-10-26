@@ -1,0 +1,32 @@
+title:
+  model: metro::models::label
+  text: STARRY KNIGHT
+  x: 30
+  y: 50
+  z-order: 4
+  x-factor: 3
+  y-factor: 3
+  color: "rgba(255,255,0,0.0)"
+logo:
+  model: metro::models::image
+  x: 540
+  y: 380
+  z-order: 4
+  path: "player.png"
+  color: "rgba(255,255,255,0.0)"
+star: &star_default
+  model: star
+  x: 100
+  y: 400
+  path: "star.png"
+  width: 25
+  height: 25
+  tileable: false
+star2:
+  <<: *star_default
+  x: 455
+  y: 333
+star3:
+  <<: *star_default
+  x: 515
+  y: 40

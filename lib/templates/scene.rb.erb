@@ -1,0 +1,117 @@
+class <%= scene_name %>
+  # By default the Scene Name is based on the class name
+  # but that can be overriden with the scene_name class method
+  # scene_name "credits"
+
+  #
+  # DRAWING and ACTORS
+  #
+  # @example Explicitly drawing a text label in the scene
+  #
+  # draw :title, 'text' => 'Title Screen',
+  #   'x' => 20, 'y' => 20, 'z-order' => 0,
+  #   'x-factor' => 3, 'y-factor' => 3,
+  #   'color' => 0xffffffff,
+  #   'model' => 'metro::models::label'
+  #
+  # The draw method can be simplier for models that have content defined
+  # for them in the view or the models themselves define the appropriate
+  # fields.
+  #
+  # @example defining multiple things to draw; their visual data would be
+  #   stored within the respective view file
+  #
+  # draws :menu, :hero, :enemy
+  #
+
+  #
+  # ANIMATIONS
+  #
+  # @example of the title being moved to a new y position and the alpha level
+  #
+  # animate actor: :title, to: { y: 80, alpha: 50 }, interval: 120 do
+  #   puts "Done Animating!"
+  # end
+  #
+
+  #
+  # Example Event Handling Definitions
+  #
+  # @example Registering the keyboard down event to execute a block of code
+  #
+  # event :on_down, Gosu::GpLeft, Gosu::GpUp, do
+  #   transition_to :next_scene
+  # end
+  #
+  # @example Registering the keyboard up key to execute the method `leave_scene`
+  #
+  # event :on_up, Gosu::KbEscape, do: :leave_scene
+  #
+  # @example Registering for button held events that would move an actor named `player`
+  #
+  # event :on_hold, Gosu::KbRight, Gosu::GpRight do
+  #   title.alpha = title.alpha - 1
+  # end
+  # Keystroke and Game Event Reference
+  #
+  # @see https://github.com/jlnr/gosu/blob/master/Gosu/ButtonsMac.hpp
+  # @see https://github.com/jlnr/gosu/blob/master/Gosu/ButtonsX.hpp
+  # @see https://github.com/jlnr/gosu/blob/master/Gosu/ButtonsWin.hpp
+  #
+  #
+  # @example Registering for an event called 'save_complete' event that anyone
+  #   can generate and this scene block will execute this code.
+  #
+  # event :notification, :save_complete do
+  #   puts "Save Complete!"
+  # end
+  #
+  # Within the scene or in the models you could use the method `notification`
+  # to generate the notification
+  #
+  # def update
+  #   if game_save.complete?
+  #     notification :save_complete
+  #   end
+  # end
+  #
+
+  #
+  # As Scene does a lot of work for you with regarding to setting up content, it is
+  # best not to override #initialize and instead define an #after_initialize method
+  # within the subclasses of Scene.
+  #
+  def after_initialize ; end
+
+  #
+  # This method is called right after the scene has been adopted by the window
+  #
+  def show ; end
+
+  #
+  # This is called every update interval while the window is being shown.
+  #
+  def update ; end
+
+  #
+  # This is called after every {#update} and when the OS wants the window to
+  # repaint itself.
+  #
+  def draw ; end
+
+  #
+  # Before a scene is transisitioned away from to a new scene, this method is called
+  # to allow for the scene to complete any taskss, stop any actions, or pass any
+  # information from the existing scene to the scene that is about to replace it.
+  #
+  def prepare_transition_to(new_scene) ; end
+
+  #
+  # Before a scene is transisitioned to it is called with the previous scene. This
+  # allows for the new scene to rerieve any data from the previous scene to assist
+  # with the layout of the current scene.
+  #
+  def prepare_transition_from(old_scene) ; end
+
+
+end
