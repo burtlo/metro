@@ -1,3 +1,5 @@
+require_relative 'transitions/scene_transitions'
+
 module Metro
 
   #
@@ -49,11 +51,33 @@ module Metro
     # Finds the scene with the specified name and then creates an instance of that
     # scene.
     #
-    # @param [String,Symbol] scene_name the name of the scene to locate.
+    # @param [String,Symbol,Object] scene_name the name of the scene to locate.
     # @return an instance of Scene that is found matching the specified scene name
     #
-    def generate(scene_name)
-      find(scene_name).new
+    def generate(scene_or_scene_name,options = {})
+      new_scene = use_scene_or_generate_scene(scene_or_scene_name)
+
+      post_filters.inject(new_scene) {|scene,post| post.filter(scene,options) }
+    end
+
+    #
+    # If we have been given a scene, then we simply want to use it otherwise
+    # we need to find and generate our scene from the scene name.
+    # 
+    def use_scene_or_generate_scene(scene_or_scene_name)
+      if scene_or_scene_name.is_a? Scene
+        scene_or_scene_name
+      else
+        find(scene_or_scene_name).new
+      end
+    end
+
+    #
+    # Post filters are applied to the scene after it has been found. These are
+    # all objects that can respond to the #filter method.
+    # 
+    def post_filters
+      [ SceneTransitions ]
     end
 
     private

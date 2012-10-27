@@ -1,5 +1,3 @@
-require_relative 'scenes'
-
 module Metro
 
   #
