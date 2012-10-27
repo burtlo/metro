@@ -1,0 +1,9 @@
+title:
+  model: metro::models::label
+  text: "#{Metro::Game.name}"
+  x: 120
+  y: 40
+  x-factor: 2
+  y-factor: 2
+  color: rgba(255,255,255,0.0)
+  

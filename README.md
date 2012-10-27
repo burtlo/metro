@@ -31,7 +31,7 @@ Or install it yourself as:
 ## Usage
 
 ```
-bundle exec metro [gamefilename]
+metro [gamefilename]
 ```
 
 By default Metro will look for a file named 'metro' within the current working directory if no *gamefilename* has been provided.

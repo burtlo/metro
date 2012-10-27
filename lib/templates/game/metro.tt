@@ -1,20 +1,28 @@
+#
+# This is the main game file which contains information
+# about your game. T
+#
+# Remember, this is really a ruby file, so anything
+# that can be done with Ruby can be written here.
+# 
+# "With great power comes great responsibility" ~ Uncle Ben
 
 #
 # This is the name of your game...
-name "Game Name"
+name "<%= name %>"
 
 #
 # The author of the game. This method can be executed
 # twice if more people are working on this game.
 #
-author "Franklin Webber"
+author "John Carmack"
 
 #
 # The website where the person playing this game
 # could learn more about this game, other games, the
 # authors, or perhaps ask for help or support.
 #
-website "www.recursivegames.com"
+website "www.idsoftware.com"
 
 #
 # The contact email address where a person that is
@@ -32,7 +40,7 @@ resolution 640, 480
 # The scene that will be shown first when the game
 # starts.
 #
-first_scene :main
+first_scene :brand
 
 #
 # Enable debug mode for the game. Which could
@@ -41,11 +49,3 @@ first_scene :main
 # value.
 #
 # debug true
-
-
-#
-# Remember, this is really a ruby file, so anything
-# that can be done with Ruby can be written here.
-# 
-# "With great power comes great responsibility" ~ Uncle Ben
-#

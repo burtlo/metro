@@ -1,26 +1,77 @@
 require 'thor'
 require 'thor/group'
 
-require_relative 'generate/game'
-require_relative 'generate/model'
-require_relative 'generate/scene'
-require_relative 'generate/view'
-
 module Metro
-  class Thor < Thor
 
-    desc "new", "Generate a new game at the specified file path"
-    def new(game_name)
-      Metro::GeneratGame.start [ game_name ]
+  class Generator < ::Thor::Group
+    include Thor::Actions
+
+    def self.source_root
+      File.join File.dirname(__FILE__), "..", "templates"
+    end
+  end
+
+  class UnknownGenerator
+
+    def self.start(commands)
+      raise "There is no command: [ #{commands.join(', ')} ]"
     end
 
-    desc "generate", "Generate new game models, views, or scenes"
+  end
+
+
+  class Thor < Thor
+
+    no_tasks do
+
+      def banner
+        """
+********************************************************************************
+  ______  ___      _____
+  ___   |/  /_____ __  /_______________
+  __  /|_/ / _  _ \\_  __/__  ___/_  __ \\
+  _  /  / /  /  __// /_  _  /    / /_/ /
+  /_/  /_/   \\___/ \\__/  /_/     \\____/
+
+-------------------------------------------------------------------------------"""
+      end
+
+      def generators
+        Hash.new(UnknownGenerator).merge model: Metro::GenerateModel,
+          scene: Metro::GenerateScene,
+          view:  Metro::GenerateView
+      end
+
+      def generator(name)
+        generators[name.to_sym]
+      end
+
+    end
+
+    desc "new [GAMENAME]",
+      "Create a new game within the directory using with the [GAMENAME] given."
+    def new(game_name)
+      Metro::GenerateGame.start [ game_name ]
+    end
+
+    desc "generate",
+      "Create a new game model, view, or scene"
     def generate(type,name)
+      gen = generator(type)
+      gen.start [ name ]
+    end
 
-      generator = Metro.const_get "Generate#{type.capitalize}"
-      generator.start [ name ]
-
+    desc "help", "This commoand"
+    def help(topic)
+      say banner
+      print_table self.class.printable_tasks, indent: 4
     end
 
   end
 end
+
+
+require_relative 'generate_game'
+require_relative 'generate_model'
+require_relative 'generate_scene'
+require_relative 'generate_view'

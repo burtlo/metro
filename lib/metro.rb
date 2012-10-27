@@ -2,6 +2,7 @@ require 'gosu'
 require 'gosu_ext/color'
 require 'sender'
 
+require 'core_ext/string'
 require 'logger'
 require 'erb'
 
