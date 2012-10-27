@@ -12,6 +12,7 @@ require 'metro/template_message'
 require 'metro/window'
 require 'metro/game'
 require 'metro/scene'
+require 'metro/scenes'
 require 'metro/models/model'
 require 'metro/models/generic'
 

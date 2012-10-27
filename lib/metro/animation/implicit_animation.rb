@@ -34,16 +34,9 @@ module Metro
   #
   class ImplicitAnimation < Animation
 
-    #
-    # @return the array of attributes that are being animated.
-    #
-    attr_reader :attributes
-
-    #
-    # @return a Hash that contains all the animation step deltas
-    #   for each attribute.
-    #
-    attr_reader :deltas
+    def animations
+      @animations ||= []
+    end
 
     #
     # @return the type of easing that the implicit animation should employ.
@@ -57,13 +50,36 @@ module Metro
     # that are going to be animated and to determine each of their deltas.
     #
     def after_initialize
-      @deltas = {}
-
-      @attributes = to.map { |attribute,final| attribute }
-
       to.each do |attribute,final|
         start = actor.send(attribute)
-        deltas[attribute] = stepping(easing).calculate(start.to_f,final.to_f,interval.to_f)
+
+        if attribute == :color
+          final = Gosu::Color.new final
+
+          animations.push build_animation_step(:"color.red",start.red,final.red)
+          animations.push build_animation_step(:"color.green",start.green,final.green)
+          animations.push build_animation_step(:"color.blue",start.blue,final.blue)
+          animations.push build_animation_step(:"color.alpha",start.alpha,final.alpha)
+        else
+          animations.push build_animation_step(attribute,start,final)
+        end
+
+      end
+    end
+
+    def build_animation_step(attribute,start,final)
+      step = AnimationStep.new
+      step.actor = actor
+      step.attribute = attribute
+      step.deltas = stepping(easing).calculate(start.to_f,final.to_f,interval.to_f)
+      step
+    end
+
+    class AnimationStep
+      attr_accessor :actor, :attribute, :deltas
+
+      def execute_step(step)
+        actor.set(attribute,deltas.at(step))
       end
     end
 
@@ -86,9 +102,7 @@ module Metro
     # current animation step.
     #
     def execute_step
-      attributes.each do |attribute|
-        actor.send "#{attribute}=", delta_for_step(attribute)
-      end
+      animations.each {|step| step.execute_step(current_step) }
     end
 
     #

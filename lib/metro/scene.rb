@@ -7,7 +7,7 @@ require_relative 'events/unknown_sender'
 require_relative 'models/draws'
 
 require_relative 'animation/has_animations'
-require_relative 'animation/animation'
+require_relative 'animation/scene_animation'
 
 module Metro
 
@@ -284,9 +284,9 @@ module Metro
     #
     def animate(options,&block)
       options[:actor] = actor(options[:actor]) if options[:actor].is_a? Symbol
-      animation = Metro::ImplicitAnimation.new options.merge(context: self)
-      animation.on_complete(&block) if block
-      enqueue animation
+      options[:context] = self
+      animation_group = SceneAnimation.build options, &block
+      enqueue animation_group
     end
 
 
@@ -334,11 +334,12 @@ module Metro
     # `transition_to` performs the work of transitioning this scene
     # to another scene.
     #
-    # @param [String,Symbol,Class] scene_name the name of the Scene which can be either
-    #   the class or a string/symbol representation of the shortened scene name.
+    # @param [String,Symbol,Object] scene_or_scene_name the name of the Scene which can
+    #   be either the class or a string/symbol representation of the shortened scene name.
+    #   This could also be an instance of scene.
     #
-    def transition_to(scene_name)
-      new_scene = Scenes.generate(scene_name)
+    def transition_to(scene_or_scene_name,options = {})
+      new_scene = Scenes.generate(scene_or_scene_name,options)
       _prepare_transition(new_scene)
       window.scene = new_scene
     end
