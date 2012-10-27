@@ -1,5 +1,9 @@
 # Metro
 
+## 0.1.2 / 2012-10-26
+
+* Generators for games, scenes, models, and views
+
 ## 0.1.1 / 2012-10-25
 
 * FIX: Requiring the sender gem
