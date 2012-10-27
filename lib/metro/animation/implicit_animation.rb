@@ -63,27 +63,29 @@ module Metro
 
       to.each do |attribute,final|
         start = actor.send(attribute)
-        
+
         if attribute == :color
-          
+
           # the actor should be consulted on what the attribute is and that attribute type should
           # dictate how this calculation is done.
-          
+
           final = Gosu::Color.new final
-          
-          red = stepping(easing).calculate(start.red.to_f,final.red.to_f,interval.to_f)
-          green = stepping(easing).calculate(start.green.to_f,final.green.to_f,interval.to_f)
-          blue = stepping(easing).calculate(start.green.to_f,final.green.to_f,interval.to_f)
-          alpha = stepping(easing).calculate(start.alpha.to_f,final.alpha.to_f,interval.to_f)
-          
-          deltas[attribute] = interval.times.map do |index|
-            Gosu::Color.new alpha[index], red[index], green[index], blue[index]
-          end
-          
+
+          @attributes.delete(:color)
+          @attributes << :"color.red"
+          @attributes << :"color.green"
+          @attributes << :"color.blue"
+          @attributes << :"color.alpha"
+
+          deltas[:"color.red"] = stepping(easing).calculate(start.red.to_f,final.red.to_f,interval.to_f)
+          deltas[:"color.green"] = stepping(easing).calculate(start.green.to_f,final.green.to_f,interval.to_f)
+          deltas[:"color.blue"] = stepping(easing).calculate(start.green.to_f,final.green.to_f,interval.to_f)
+          deltas[:"color.alpha"] = stepping(easing).calculate(start.alpha.to_f,final.alpha.to_f,interval.to_f)
+
         else
           deltas[attribute] = stepping(easing).calculate(start.to_f,final.to_f,interval.to_f)
         end
-        
+
       end
     end
 
@@ -107,7 +109,8 @@ module Metro
     #
     def execute_step
       attributes.each do |attribute|
-        actor.send "#{attribute}=", delta_for_step(attribute)
+        actor.set(attribute,delta_for_step(attribute))
+        # actor.send "#{attribute}=",
       end
     end
 

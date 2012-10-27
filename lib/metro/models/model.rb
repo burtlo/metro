@@ -1,3 +1,5 @@
+require_relative 'key_value_coding'
+
 module Metro
 
   #
@@ -32,6 +34,8 @@ module Metro
     # @see Scene
     attr_accessor :scene
 
+    include KeyValueCoding
+
     #
     # This is an entry point for customization. As the model's {#initialize}
     # method performs may perform some initialization that may be necessary.
@@ -44,14 +48,14 @@ module Metro
     # Generate a custom notification event with the given name.
     #
     # @param [Symbol] event the name of the notification to generate.
-    # 
+    #
     def notification(event)
       scene.notification(event.to_sym)
     end
 
     #
     # Allows for the definition of events within the scene.
-    # 
+    #
     include HasEvents
 
     #
@@ -62,7 +66,9 @@ module Metro
     #
     # @see #alpha
     #
-    attr_reader :color
+    def color
+      @color
+    end
 
     #
     # Sets the color of the model.
