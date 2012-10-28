@@ -32,7 +32,7 @@ module Metro
   # is executed. In this case, upon completition, transition the scene
   # from the current one to the main scene.
   #
-  class ImplicitAnimation < Animation
+  class ImplicitAnimation < OnUpdateOperation
 
     def animations
       @animations ||= []

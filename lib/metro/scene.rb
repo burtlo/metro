@@ -8,6 +8,7 @@ require_relative 'models/draws'
 
 require_relative 'animation/has_animations'
 require_relative 'animation/scene_animation'
+require_relative 'animation/after_interval_factory'
 
 module Metro
 
@@ -130,6 +131,47 @@ module Metro
     include HasAnimations
 
     #
+    # Allow the definition of a updater that will be executed when the scene starts.
+    #
+    # @example Setting up an event to 2 seconds after the scene has started.
+    #
+    #     class ExampleScene
+    #
+    #       draws :title
+    #
+    #       after 2.seconds do
+    #         transition_to :next_scene
+    #       end
+    #     end
+    #
+    def self.after(ticks,&block)
+      after_intervals.push AfterIntervalFactory.new ticks, &block
+    end
+
+    #
+    # Perform an operation after the specified interval.
+    #
+    #     class ExampleScene
+    #
+    #       draws :player
+    #
+    #       def update
+    #         if player.is_dead?
+    #           after 2.seconds do
+    #             transition_to :game_over
+    #           end
+    #         end
+    #       end
+    #
+    #     end
+    #
+    def after(ticks,&block)
+      tick = OnUpdateOperation.new interval: ticks, context: self
+      tick.on_complete(&block)
+      enqueue tick
+    end
+
+    #
     # Setups up the Actors for the Scene based on the ModelFactories that have been
     # defined.
     #
@@ -170,6 +212,7 @@ module Metro
       register_events!
       register_actors!
       register_animations!
+      register_after_intervals!
 
       show
     end
@@ -194,6 +237,12 @@ module Metro
     def register_animations!
       self.class.animations.each do |animation|
         animate animation.actor, animation.options, &animation.on_complete_block
+      end
+    end
+
+    def register_after_intervals!
+      self.class.after_intervals.each do |after_interval|
+        after after_interval.ticks, &after_interval.block
       end
     end
 
@@ -293,6 +342,13 @@ module Metro
       enqueue animation_group
     end
 
+    #
+    # The class defined updaters which will be converted to instance updaters when the scene
+    # has started.
+    #
+    def self.after_intervals
+      @after_intervals ||= []
+    end
 
     #
     # The objects that need to be executed on every update. These objects are traditionally

@@ -1,11 +1,13 @@
 module Metro
 
   #
-  # Animation is the motion that gives a system it's life. An animation
-  # in this case is a really a mechanism that allows for an action to
-  # be repeated for a given interval of time.
+  # OnUpdateOperation is an object that executes on the update cycle
+  # of the game. This usually take the form of an animation or some operation
+  # that needs to execute with each update of the game.
   #
-  class Animation
+  class OnUpdateOperation
+
+    def after_initialize ; end
 
     def initialize(options)
       @current_step = 0
