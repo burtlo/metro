@@ -3,7 +3,7 @@ require 'metro/game/dsl'
 module Metro
   module Game
     extend self
-
+    
     def setup(game_configuration)
       @config = game_configuration
     end
@@ -53,6 +53,10 @@ module Metro
     def contact
       config.contact
     end
-
+    
+    def controls
+      config.controls
+    end
+    
   end
 end

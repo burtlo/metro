@@ -55,6 +55,46 @@ module Metro
         game_contact ? @contact = game_contact : @contact
       end
 
+      class Controls
+        # extend GosuConstants
+
+        def _event_type(options)
+          options[:is]
+        end
+
+        def _event_args(options)
+          options[:with]
+        end
+
+        def defined_controls
+          @defined_controls ||= []
+        end
+
+        def method_missing(name,*params,&block)
+          log.debug "Adding control #{name}"
+          options = params.find {|param| param.is_a? Hash }
+          event = _event_type(options)
+          args = _event_args(options)
+          defined_controls.push ActionGroup.new name, event, args
+        end
+      end
+
+      def controls(&block)
+        @controls ||= Controls.new
+        @controls.instance_eval(&block) if block
+        @controls
+      end
+
+      class ActionGroup
+        attr_accessor :name, :event, :args
+
+        def initialize(name,event,args)
+          @name = name
+          @event = event
+          @args = args
+        end
+      end
+
     end
   end
 end

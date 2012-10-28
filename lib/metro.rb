@@ -60,6 +60,7 @@ module Metro
   def run(filename=default_game_filename)
     load_game_files
     load_game_configuration(filename)
+    configure_controls!
     start_game
   end
 
@@ -77,6 +78,10 @@ module Metro
     game_block = lambda {|instance| eval(game_contents) }
     game = Game::DSL.parse(&game_block)
     Game.setup game
+  end
+  
+  def configure_controls!
+    EventRelay.add_controls Game.controls
   end
 
   def start_game

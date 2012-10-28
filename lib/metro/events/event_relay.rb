@@ -41,6 +41,19 @@ module Metro
   #
   class EventRelay
 
+    def self.add_controls(controls)
+      controls.defined_controls.each do |control|
+        add_control control
+      end
+    end
+    
+    def self.add_control(action)
+      define_method action.name do |&block|
+        puts "Performing action: #{action.name}"
+        send(action.event,*action.args,&block)
+      end
+    end
+
     #
     # An event relay is created a with a target and optionally a window.
     #
