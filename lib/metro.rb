@@ -59,8 +59,15 @@ module Metro
 
   def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
-    Dir['models/*.rb'].each {|model| require model }
-    Dir['scenes/*.rb'].each {|scene| require scene }
+    load_paths 'models', 'scenes', 'lib'
+  end
+
+  def load_paths(*paths)
+    paths.flatten.compact.each {|path| load_path path }
+  end
+
+  def load_path(path)
+    Dir["#{path}/**/*.rb"].each {|model| require model }
   end
 
   def load_game_configuration(filename)
