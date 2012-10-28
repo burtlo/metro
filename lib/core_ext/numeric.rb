@@ -1,19 +1,21 @@
-class Fixnum
+class Numeric
 
   #
   # Set the tick interval which is used in conversion of seconds to
   # ticks. By default
   #
   def self.tick_interval=(value)
-    @tick_interval = value
+    @tick_interval = value.to_f
   end
 
   #
   # @return the game tick interval.
   #
   def self.tick_interval
-    @tick_interval.to_i == 0 ? 16.666666 : @tick_interval.to_i
+    @tick_interval.to_f == 0 ? 16.666666 : @tick_interval.to_f
   end
+
+
 
   #
   # Provides the suffix 'second' which will translate seconds to
@@ -29,7 +31,7 @@ class Fixnum
   #     end
   #
   def second
-    (self * 1000 / self.class.tick_interval).floor
+    (self * 1000 / Numeric.tick_interval).floor
   end
 
   alias_method :seconds, :second

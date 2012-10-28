@@ -3,7 +3,7 @@ require 'gosu_ext/color'
 require 'sender'
 
 require 'core_ext/string'
-require 'core_ext/fix_num'
+require 'core_ext/numeric'
 require 'logger'
 require 'erb'
 
