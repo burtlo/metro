@@ -81,7 +81,7 @@ module Metro
   end
   
   def configure_controls!
-    EventRelay.add_controls Game.controls
+    EventRelay.define_controls Game.controls
   end
 
   def start_game

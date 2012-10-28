@@ -55,7 +55,7 @@ module Metro
     end
     
     def controls
-      config.controls
+      config.controls.defined_controls
     end
     
   end

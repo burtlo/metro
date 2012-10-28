@@ -41,16 +41,27 @@ module Metro
   #
   class EventRelay
 
-    def self.add_controls(controls)
-      controls.defined_controls.each do |control|
-        add_control control
-      end
+    #
+    # Defines the provided controls for every EventRelay that is created.
+    #
+    # @see #define_control
+    #
+    # @param [Array<ControlDefinition>] controls the definitions of controls
+    #   that should be added to all EventRelays.
+    #
+    def self.define_controls(controls)
+      controls.each { |control| define_control control }
     end
-    
-    def self.add_control(action)
-      define_method action.name do |&block|
-        puts "Performing action: #{action.name}"
-        send(action.event,*action.args,&block)
+
+    #
+    # Defines a control from a ControlDefinition for all EventRelays. A
+    # control is a way of defining a shortcut for a common event. This
+    # could be the use of a common set of keys for confirmation or canceling.
+    # 
+    def self.define_control(control)
+      
+      define_method control.name do |&block|
+        send(control.event,*control.args,&block)
       end
     end
 
