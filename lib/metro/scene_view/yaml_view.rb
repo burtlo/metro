@@ -12,7 +12,7 @@ module Metro
       # @return a true if the yaml view exists and false if it does not exist.
       #
       def self.exists?(view_name)
-        File.exists? yaml_view_name(view_name)
+        yaml_view_names(view_name).find { |view_name| File.exists? view_name }
       end
 
       #
@@ -29,8 +29,8 @@ module Metro
       # A helper method to generate the name of the yaml view file. In this case
       # it is the view name with the suffix .yaml.
       #
-      def self.yaml_view_name(view_name)
-        File.extname(view_name) == "" ? "#{view_name}.yaml" : view_name
+      def self.yaml_view_names(view_name)
+        File.extname(view_name) == "" ? [ "#{view_name}.yaml", "#{view_name}.yml" ] : [ view_name ]
       end
     end
 
