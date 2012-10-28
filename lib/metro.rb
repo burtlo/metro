@@ -50,6 +50,7 @@ module Metro
   #
   def run(filename=default_game_filename)
     load_game_files
+    change_into_game_directory(filename)
     load_game_configuration(filename)
     configure_controls!
     start_game
@@ -61,6 +62,11 @@ module Metro
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
     load_paths 'models', 'scenes', 'lib'
   end
+  
+  def change_into_game_directory(filename)
+    game_directory = File.dirname(filename)
+    Dir.chdir game_directory
+  end
 
   def load_paths(*paths)
     paths.flatten.compact.each {|path| load_path path }
@@ -71,8 +77,9 @@ module Metro
   end
 
   def load_game_configuration(filename)
-    game_files_exist!(filename)
-    game_contents = File.read(filename)
+    gamefile = File.basename(filename)
+    game_files_exist!(gamefile)
+    game_contents = File.read(gamefile)
     game_block = lambda {|instance| eval(game_contents) }
     game = Game::DSL.parse(&game_block)
     Game.setup game
