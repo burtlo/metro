@@ -10,7 +10,7 @@ module Metro
     def show
       rectangle.color = starting_color
 
-      animate actor: :rectangle, to: { color: final_color }, interval: interval do
+      animate :rectangle, to: { color: final_color }, interval: interval do
         transition_to next_scene
       end
     end

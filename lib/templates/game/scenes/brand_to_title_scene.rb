@@ -2,7 +2,7 @@ class BrandToTitleScene < Metro::Scene
 
   draws :title
 
-  animate actor: :title, to: { alpha: 255 }, interval: 120 do
+  animate :title, to: { alpha: 255 }, interval: 120 do
     transition_to :title
   end
 

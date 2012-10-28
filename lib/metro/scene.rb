@@ -91,8 +91,12 @@ module Metro
     #
     # @return the actor with the given name.
     #
-    def actor(name)
-      send(name)
+    def actor(actor_or_actor_name)
+      if actor_or_actor_name.is_a? String or actor_or_actor_name.is_a? Symbol
+        send(actor_or_actor_name)
+      else
+        actor_or_actor_name
+      end
     end
 
     #
@@ -189,7 +193,7 @@ module Metro
     #
     def register_animations!
       self.class.animations.each do |animation|
-        animate animation.options, &animation.on_complete_block
+        animate animation.actor, animation.options, &animation.on_complete_block
       end
     end
 
@@ -282,8 +286,8 @@ module Metro
     # A simplier syntax to enqueue an animation. At the moment this animation is going
     # to be an implicit animation.
     #
-    def animate(options,&block)
-      options[:actor] = actor(options[:actor]) if options[:actor].is_a? Symbol
+    def animate(actor_or_actor_name,options,&block)
+      options[:actor] = actor(actor_or_actor_name)
       options[:context] = self
       animation_group = SceneAnimation.build options, &block
       enqueue animation_group

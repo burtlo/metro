@@ -27,7 +27,7 @@ class Numeric
   #     class ExampleScene < Metro::Scene
   #       draws :title
   #
-  #       animate actor: :title, to: { x: 320, y: 444 }, interval: 3.seconds
+  #       animate :title, to: { x: 320, y: 444 }, interval: 3.seconds
   #     end
   #
   def second
@@ -47,7 +47,7 @@ class Numeric
   #     class ExampleScene < Metro::Scene
   #       draws :title
   #
-  #       animate actor: :title, to: { x: 320, y: 444 }, interval: 60.ticks
+  #       animate :title, to: { x: 320, y: 444 }, interval: 60.ticks
   #     end
   #
   def tick

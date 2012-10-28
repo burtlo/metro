@@ -15,12 +15,12 @@ module Metro
       # @example Defining an animation that fades in and moves a logo when it is
       #   done, transition to the title scene.
       #
-      #     animate actor: :logo, to: { y: 80, alpha: 50 }, interval: 120 do
+      #     animate :logo, to: { y: 80, alpha: 50 }, interval: 120 do
       #       transition_to :title
       #     end
       #
-      def animate(options,&block)
-        scene_animation = AnimationFactory.new options, &block
+      def animate(actor_name,options,&block)
+        scene_animation = AnimationFactory.new actor_name, options, &block
         animations.push scene_animation
       end
 

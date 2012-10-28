@@ -26,8 +26,15 @@ module Metro
       end
 
       #
+      # A helper method to get the view file.
+      # 
+      def self.yaml_view_name(view_name)
+        yaml_view_names(view_name).find { |view_name| File.exists? view_name }
+      end
+
+      #
       # A helper method to generate the name of the yaml view file. In this case
-      # it is the view name with the suffix .yaml.
+      # it is the view name with the suffix `.yaml` or `.yml`.
       #
       def self.yaml_view_names(view_name)
         File.extname(view_name) == "" ? [ "#{view_name}.yaml", "#{view_name}.yml" ] : [ view_name ]
