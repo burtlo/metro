@@ -68,7 +68,7 @@ module Metro
 
     def self.check_for_already_defined_control!(control)
       if instance_methods.include? control.name
-        error "error.reserved_control_name", name: control.name
+        error! "error.reserved_control_name", name: control.name
       end
     end
 

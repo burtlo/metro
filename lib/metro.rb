@@ -10,6 +10,8 @@ require 'logger'
 require 'erb'
 
 require 'locale/locale'
+require 'metro/asset_path'
+require 'metro/logging'
 require 'metro/version'
 require 'metro/template_message'
 require 'metro/window'
@@ -26,28 +28,6 @@ require_relative 'metro/missing_scene'
 # They do not have to use the `Metro::Game` an instead use the `Game` constant.
 #
 Game = Metro::Game
-
-def asset_path(name)
-  File.join Dir.pwd, "assets", name
-end
-
-def log
-  @log ||= begin
-    logger = Logger.new(STDOUT)
-    logger.level = Logger::DEBUG
-    logger
-  end
-end
-
-def error(messages, details = {})
-  details = { show: true }.merge details
-
-  message = TemplateMessage.new messages: messages, details: details,
-    website: Game.website, contact: Game.contact
-
-  warn message if details[:show]
-  exit 1
-end
 
 module Metro
   extend self
@@ -109,7 +89,7 @@ module Metro
 
   def game_file_exists?(file)
     unless File.exists? file
-      error "error.missing_metro_file", file: file
+      error! "error.missing_metro_file", file: file
     end
   end
 
