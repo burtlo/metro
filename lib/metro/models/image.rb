@@ -9,7 +9,7 @@ module Metro
     # 
     class Image < Model
 
-      attr_accessor :angle, :center_x, :center_y, :x_factor, :y_factor, :z_order
+      attr_accessor :x, :y, :angle, :center_x, :center_y, :x_factor, :y_factor, :z_order
 
       def after_initialize
         @angle = 0
@@ -17,6 +17,8 @@ module Metro
         @x_factor = @y_factor = 1
         @z_order = 0
         @color = Gosu::Color.new "rgba(255,255,255,1.0)"
+        @x = Game.width / 2
+        @y = Game.height / 2
       end
 
       def image
