@@ -19,6 +19,12 @@ require 'metro/models/generic'
 
 require_relative 'metro/missing_scene'
 
+#
+# To allow an author an easier time accessing the Game object from within their game.
+# They do not have to use the `Metro::Game` an instead use the `Game` constant.
+# 
+Game = Metro::Game
+
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
