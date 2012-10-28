@@ -45,11 +45,11 @@ class <%= scene_class_name %> < Metro::Scene
   #
   # @example Registering the keyboard up key to execute the method `leave_scene`
   #
-  # event :on_up, Gosu::KbEscape, do: :leave_scene
+  # event :on_up, KbEscape, do: :leave_scene
   #
   # @example Registering for button held events that would move an actor named `player`
   #
-  # event :on_hold, Gosu::KbRight, Gosu::GpRight do
+  # event :on_hold, KbRight, Gosu::GpRight do
   #   title.alpha = title.alpha - 1
   # end
   # Keystroke and Game Event Reference

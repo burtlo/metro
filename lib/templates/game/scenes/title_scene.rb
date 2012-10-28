@@ -4,7 +4,7 @@ class TitleScene < Metro::Scene
 
   draw :menu, options: [ 'Start Game', 'Exit' ]
 
-  event :on_up, Gosu::KbEscape do
+  event :on_up, KbEscape do
     exit
   end
 

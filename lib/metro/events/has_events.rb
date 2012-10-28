@@ -6,6 +6,7 @@ module Metro
 
     def self.included(base)
       base.extend ClassMethods
+      base.extend GosuConstants
     end
 
     module ClassMethods
@@ -24,15 +25,15 @@ module Metro
       # @example Registering for button held events
       #
       #     class ExampleScene
-      #       event :on_hold Gosu::KbLeft, Gosu::GpLeft do
+      #       event :on_hold KbLeft, Gosu::GpLeft do
       #         player.turn_left
       #       end
       #
-      #       event :on_hold, Gosu::KbRight, Gosu::GpRight do
+      #       event :on_hold, KbRight, Gosu::GpRight do
       #         player.turn_right
       #       end
       #
-      #       event :on_hold, Gosu::KbUp, Gosu::GpButton0, do: :calculate_accleration
+      #       event :on_hold, KbUp, Gosu::GpButton0, do: :calculate_accleration
       #
       #       def calculate_acceleration
       #         long_complicated_calculated_result = 0
@@ -44,7 +45,7 @@ module Metro
       # @example Registering for a button down event to call a method named 'next_option'
       #
       #     class ExampleScene
-      #        event :on_up, Gosu::KbEscape, do: :leave_scene
+      #        event :on_up, KbEscape, do: :leave_scene
       #
       #       def leave_scene
       #         transition_to :title
@@ -57,7 +58,7 @@ module Metro
       # @example Registering for a button up event with a block of code to execute
       #
       #     class ExampleScene
-      #       event :on_up, Gosu::KbEscape do
+      #       event :on_up, KbEscape do
       #        transition_to :title
       #       end
       #     end

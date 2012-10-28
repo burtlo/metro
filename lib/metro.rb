@@ -1,5 +1,6 @@
 require 'gosu'
 require 'gosu_ext/color'
+require 'gosu_ext/gosu_constants'
 require 'sender'
 
 require 'core_ext/string'

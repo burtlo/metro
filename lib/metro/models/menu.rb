@@ -10,15 +10,15 @@ module Metro
     #
     class Menu < Model
 
-      event :on_up, Gosu::KbLeft, Gosu::GpLeft, Gosu::KbUp, Gosu::GpUp do
+      event :on_up, KbLeft, GpLeft, KbUp, GpUp do
         previous_option
       end
 
-      event :on_up, Gosu::KbRight, Gosu::GpRight, Gosu::KbDown, Gosu::GpDown do
+      event :on_up, KbRight, GpRight, KbDown, GpDown do
         next_option
       end
 
-      event :on_up, Gosu::KbEnter, Gosu::KbReturn, Gosu::GpButton0 do
+      event :on_up, KbEnter, KbReturn, GpButton0 do
         selection
       end
 

@@ -11,11 +11,11 @@ class <%= model_name %> < Metro::Model
   #
   # @example Registering the keyboard up key to execute the method `jump`
   #
-  # event :on_up, Gosu::KbEscape, do: :jump
+  # event :on_up, KbEscape, do: :jump
   #
   # @example Registering for button held events that would build the model's acceleration
   #
-  # event :on_hold, Gosu::KbRight, Gosu::GpRight do
+  # event :on_hold, KbRight, Gosu::GpRight do
   #   acceleration += 1
   # end
   #
