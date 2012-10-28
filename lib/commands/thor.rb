@@ -62,7 +62,7 @@ module Metro
     end
 
     desc "help", "This commoand"
-    def help(topic)
+    def help
       say banner
       print_table self.class.printable_tasks, indent: 4
     end
