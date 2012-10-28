@@ -97,6 +97,8 @@ module Metro
       _on(@down_actions,args,block)
     end
 
+    alias_method :button_down, :on_down
+
     #
     # Register for a button_up event. These events are fired when
     # the button is released (from being pressed down). This event only fires
@@ -130,6 +132,8 @@ module Metro
       _on(@up_actions,args,block)
     end
 
+    alias_method :button_up, :on_up
+
     #
     # Register for a button_held event. These events are fired when
     # the button is currently in the downstate. This event continues to fire at the
@@ -161,6 +165,9 @@ module Metro
       log.warn "Registering for a on_hold event requires that a window be provided." unless window
       _on(@held_actions,args,block)
     end
+
+    alias_method :button_hold, :on_hold
+    alias_method :button_held, :on_hold
 
     #
     # Register for a custom notification event. These events are fired when
@@ -214,7 +221,7 @@ module Metro
     # This is called by external or parent source of events, usually a Scene, when a button up event
     # has been triggered.
     #
-    def button_up(id)
+    def fire_button_up(id)
       target.instance_eval( &up_action(id) )
     end
 
@@ -222,7 +229,7 @@ module Metro
     # This is called by external or parent source of events, usually a Scene, when a button down
     # event has been triggered.
     #
-    def button_down(id)
+    def fire_button_down(id)
       target.instance_eval( &down_action(id) )
     end
 
@@ -265,10 +272,10 @@ module Metro
     # An action without any parameters is assumed to be executed within the contexxt
     # of the target. If there are two parameters we will simply execute the action and
     # pass it both the target and the sender.
-    # 
+    #
     # @TODO: Allow for the blocks to be specified with one parameter: source (and executed
     #   within the context of the target)
-    # 
+    #
     # @TODO: Allow for the blocks to be specified with three parameters: source, target, event
     #
     def _fire_event_for_notification(event,sender,action)

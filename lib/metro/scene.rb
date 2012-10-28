@@ -473,7 +473,7 @@ module Metro
     #
     def button_up(id)
       event_relays.each do |relay|
-        relay.button_up(id)
+        relay.fire_button_up(id)
       end
     end
 
@@ -483,7 +483,7 @@ module Metro
     #
     def button_down(id)
       event_relays.each do |relay|
-        relay.button_down(id)
+        relay.fire_button_down(id)
       end
     end
 
