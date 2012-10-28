@@ -1,5 +1,15 @@
 # Metro
 
+## 0.1.3 / 2012-10-28
+
+* Fade Scene Transition support added
+* Numeric#seconds and Numeric#ticks helpers added
+* Scenes can now define delayed events `after 2.seconds do ; end`
+* Labels have more defaults and more font options and size
+* Labels and images will default to center of screen
+* Able to define game controls within your metro file
+* Implicit animations support color change.
+
 ## 0.1.2 / 2012-10-26
 
 * Generators for games, scenes, models, and views
