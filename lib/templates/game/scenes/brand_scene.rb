@@ -2,8 +2,16 @@ class BrandScene < Metro::Scene
 
   draws :brand
 
+  after 2.seconds do
+    transition_to_brand_to_title
+  end
+
   event :confirmation do
-    animate :brand, to: { alpha: 0 }, interval: 60 do
+    transition_to_brand_to_title
+  end
+
+  def transition_to_brand_to_title
+    animate :brand, to: { alpha: 0 }, interval: 1.second do
       transition_to :brand_to_title
     end
   end
