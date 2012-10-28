@@ -41,6 +41,11 @@ module Metro
   #
   class EventRelay
 
+    class ControlNameReserved < RuntimeError
+
+    end
+
+
     #
     # Defines the provided controls for every EventRelay that is created.
     #
@@ -57,11 +62,23 @@ module Metro
     # Defines a control from a ControlDefinition for all EventRelays. A
     # control is a way of defining a shortcut for a common event. This
     # could be the use of a common set of keys for confirmation or canceling.
-    # 
+    #
     def self.define_control(control)
-      
+      check_for_already_defined_control!(control)
+
       define_method control.name do |&block|
         send(control.event,*control.args,&block)
+      end
+    end
+
+    def self.check_for_already_defined_control!(control)
+      if instance_methods.include? control.name
+        message = Error.new title: "Unable to define control: #{control.name}",
+          message: "The specified control name `#{control.name}` is RESERVED or ALREADY DEFINED.",
+          details: [ "Ensure that the control name is not already defined.", "Replace the use of this control name with name" ]
+
+        warn TemplateMessage.new message: message, website: WEBSITE, email: CONTACT_EMAILS
+        exit
       end
     end
 
