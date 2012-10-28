@@ -24,11 +24,12 @@ module Metro
 
       attr_reader :selected_index, :menu_options
 
-      attr_accessor :padding
+      attr_accessor :padding, :z_order
 
       def after_initialize
         @selected_index = 0
         @padding = 40
+        @z_order = 1
       end
 
       def window=(value)
@@ -79,7 +80,7 @@ module Metro
           draw_color = highlight_color if index == selected_index
 
           y_position = y + padding * index
-          font.draw option_name, x, y_position, Metro::Game::UI, 1.0, 1.0, draw_color
+          font.draw option_name, x, y_position, z_order, 1.0, 1.0, draw_color
         end
       end
 

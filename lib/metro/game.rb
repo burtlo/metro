@@ -54,8 +54,5 @@ module Metro
       config.contact
     end
 
-    # TODO: ZOrder related constants that belong to Starry Knight
-    Background, Stars, Players, UI = *0..3
-
   end
 end
