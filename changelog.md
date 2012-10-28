@@ -1,5 +1,9 @@
 # Metro
 
+## 0.1.4 / 2012-10-28
+
+* Removed dependency on the sender gem so metro is playable on Windows
+
 ## 0.1.3 / 2012-10-28
 
 * Fade Scene Transition support added
