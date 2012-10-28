@@ -50,7 +50,7 @@ module Metro
     # @param [Symbol] event the name of the notification to generate.
     #
     def notification(event)
-      scene.notification(event.to_sym)
+      scene.notification(event.to_sym,self)
     end
 
     #

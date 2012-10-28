@@ -104,16 +104,9 @@ module Metro
     # Post a custom notification event. This will trigger any objects that are listening
     # for custom events.
     #
-    def notification(event)
+    def notification(event,sender=nil)
 
-      # __sender__ is made available through the sender gem, this is solely to make the
-      # the api call to generate a notification simply `#notification`. Freeing the caller
-      # from having to include themself in the execution.
-      #
-      # @note if the sender functionality proves troublesome across platforms this can
-      #   be dropped and simply require the sender to be included.
-      #
-      sender = __sender__ rescue UnknownSender
+      sender = sender || UnknownSender
 
       event_relays.each do |relay|
         relay.fire_events_for_notification(event,sender)

@@ -10,8 +10,8 @@ class <%= scene_class_name %> < Metro::Scene
   #
   # draw :title, 'text' => 'Title Screen',
   #   'x' => 20, 'y' => 20, 'z-order' => 0,
-  #   'x-factor' => 3, 'y-factor' => 3,
-  #   'color' => 0xffffffff,
+  #   'size' => 40,
+  #   'color' => 'rgb(255,255,255)',
   #   'model' => 'metro::models::label'
   #
   # The draw method can be simplier for models that have content defined
@@ -39,7 +39,7 @@ class <%= scene_class_name %> < Metro::Scene
   #
   # @example Registering the keyboard down event to execute a block of code
   #
-  # event :on_down, Gosu::GpLeft, Gosu::GpUp, do
+  # event :on_down, GpLeft, GpUp, do
   #   transition_to :next_scene
   # end
   #
@@ -49,7 +49,7 @@ class <%= scene_class_name %> < Metro::Scene
   #
   # @example Registering for button held events that would move an actor named `player`
   #
-  # event :on_hold, KbRight, Gosu::GpRight do
+  # event :on_hold, KbRight, GpRight do
   #   title.alpha = title.alpha - 1
   # end
   # Keystroke and Game Event Reference
