@@ -42,6 +42,19 @@ resolution 640, 480
 #
 first_scene :brand
 
+
+#
+# Defines controls which are meta events. They can be used group button
+# events together under a single name so that you can use it throughout
+# the game and also will allow for players of your game to redefine the
+# keys.
+#
+controls do
+  # NAME_OF_EVENT, is: EVENT TYPE, with: [ ALL_EVENTS ]
+  confirmation is: :button_up, with: [ KbReturn, KbEnter, KbSpace, GpButton0 ]
+  cancel is: :button_up, with: [ KbEscape, KbDelete ]
+end
+
 #
 # Enable debug mode for the game. Which could
 # allow different logic. When this is set the

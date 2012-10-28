@@ -6,7 +6,7 @@ class BrandToTitleScene < Metro::Scene
     transition_to :title
   end
 
-  event :on_up, KbEscape do
+  event :cancel do
     transition_to :title
   end
 
