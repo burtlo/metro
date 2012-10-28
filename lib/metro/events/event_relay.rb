@@ -41,11 +41,6 @@ module Metro
   #
   class EventRelay
 
-    class ControlNameReserved < RuntimeError
-
-    end
-
-
     #
     # Defines the provided controls for every EventRelay that is created.
     #
@@ -73,12 +68,7 @@ module Metro
 
     def self.check_for_already_defined_control!(control)
       if instance_methods.include? control.name
-        message = Error.new title: "Unable to define control: #{control.name}",
-          message: "The specified control name `#{control.name}` is RESERVED or ALREADY DEFINED.",
-          details: [ "Ensure that the control name is not already defined.", "Replace the use of this control name with name" ]
-
-        warn TemplateMessage.new message: message, website: WEBSITE, email: CONTACT_EMAILS
-        exit
+        error "error.reserved_control_name", name: control.name
       end
     end
 

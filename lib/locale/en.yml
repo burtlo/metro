@@ -1,0 +1,16 @@
+---
+en:
+  website: "%{website}"
+  error:
+    missing_metro_file:
+      title: "Unable to find Metro game file"
+      message: "The specified file `%{file}` which is required to run the game could not be found."
+      actions:
+      - "Ensure you have specified the correct file"
+      - "Ensure that the file exists at that location"
+    reserved_control_name:
+      title: "Unable to define control: %{name}"
+      message: "The specified control name `%{name}` is RESERVED or ALREADY DEFINED."
+      actions:
+      - "Ensure that the control name is not already defined."
+      - "Replace the use of this control name with name"

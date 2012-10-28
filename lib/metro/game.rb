@@ -3,7 +3,7 @@ require 'metro/game/dsl'
 module Metro
   module Game
     extend self
-    
+
     def setup(game_configuration)
       @config = game_configuration
     end
@@ -11,15 +11,15 @@ module Metro
     attr_reader :config
 
     def first_scene
-      config.first_scene
+      fetch(:first_scene)
     end
 
     def width
-      config.width || 640
+      fetch(:width,640)
     end
 
     def height
-      config.height || 480
+      fetch(:height,480)
     end
 
     def dimensions
@@ -31,32 +31,37 @@ module Metro
     end
 
     def fullscreen?
-      !!config.fullscreen
+      !!fetch(:fullscreen)
     end
 
     def debug?
-      !!config.debug
+      !!fetch(:debug)
     end
 
     def name
-      config.name
+      fetch(:name)
     end
 
     def authors
-      config.authors
+      fetch(:authors)
     end
 
     def website
-      config.website
+      fetch(:website,Metro::WEBSITE)
     end
 
     def contact
-      config.contact
+      fetch(:contact)
     end
-    
+
     def controls
       config.controls.defined_controls
     end
-    
+
+    def fetch(name,fallback = nil)
+      config.send(name) rescue fallback
+    end
+
+
   end
 end
