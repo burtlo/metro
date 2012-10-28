@@ -52,6 +52,7 @@ end
 
 module Metro
   extend self
+  extend GosuConstants
 
   #
   # @return [String] the default filename that contains the game contents
