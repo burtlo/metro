@@ -42,6 +42,37 @@ module Metro
   class EventRelay
 
     #
+    # Defines the provided controls for every EventRelay that is created.
+    #
+    # @see #define_control
+    #
+    # @param [Array<ControlDefinition>] controls the definitions of controls
+    #   that should be added to all EventRelays.
+    #
+    def self.define_controls(controls)
+      controls.each { |control| define_control control }
+    end
+
+    #
+    # Defines a control from a ControlDefinition for all EventRelays. A
+    # control is a way of defining a shortcut for a common event. This
+    # could be the use of a common set of keys for confirmation or canceling.
+    #
+    def self.define_control(control)
+      check_for_already_defined_control!(control)
+
+      define_method control.name do |&block|
+        send(control.event,*control.args,&block)
+      end
+    end
+
+    def self.check_for_already_defined_control!(control)
+      if instance_methods.include? control.name
+        error "error.reserved_control_name", name: control.name
+      end
+    end
+
+    #
     # An event relay is created a with a target and optionally a window.
     #
     # @param [Object] target the object that will execute the code when

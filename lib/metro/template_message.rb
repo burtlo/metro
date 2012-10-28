@@ -2,18 +2,47 @@ class TemplateMessage
 
   def initialize(details = {})
     @messages = Array(details[:message]) + Array(details[:messages])
+    @details = details[:details]
     @website = details[:website]
-    @email = Array(details[:email])
+    @email = details[:contact]
   end
 
-  attr_reader :messages
+  class Message
+    
+    attr_reader :name, :details
+    
+    def initialize(name,details)
+      @name = name
+      @details = details
+    end
+
+    def field_locale(field)
+      I18n.t("#{name}.#{field}",details)
+    end
+
+    def title
+      field_locale 'title'
+    end
+
+    def message
+      field_locale 'message'
+    end
+
+    def actions
+      Array( field_locale('actions') ).map {|action| "* #{action}" }.join("\n")
+    end
+  end
+
+  def messages
+    @messages.map {|m| Message.new m, @details }
+  end
 
   def website
-    "* #{@website}"
+    Array(@website).map {|website| "* #{website}" }.join("\n")
   end
 
   def email
-    @email.map {|email| "* #{email}" }.join("\n")
+    Array(@email).map {|email| "* #{email}" }.join("\n")
   end
 
   def message_filename

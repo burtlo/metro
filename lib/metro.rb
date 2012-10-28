@@ -2,14 +2,16 @@ require 'gosu'
 require 'gosu_ext/color'
 require 'gosu_ext/gosu_constants'
 require 'sender'
+require 'i18n'
+
 
 require 'core_ext/string'
 require 'core_ext/numeric'
 require 'logger'
 require 'erb'
 
+require 'locale/locale'
 require 'metro/version'
-require 'metro/error'
 require 'metro/template_message'
 require 'metro/window'
 require 'metro/game'
@@ -23,9 +25,8 @@ require_relative 'metro/missing_scene'
 #
 # To allow an author an easier time accessing the Game object from within their game.
 # They do not have to use the `Metro::Game` an instead use the `Game` constant.
-# 
+#
 Game = Metro::Game
-
 
 def asset_path(name)
   File.join Dir.pwd, "assets", name
@@ -39,8 +40,19 @@ def log
   end
 end
 
+def error(messages, details = {})
+  details = { show: true }.merge details
+
+  message = TemplateMessage.new messages: messages, details: details,
+    website: Game.website, contact: Game.contact
+
+  warn message if details[:show]
+  exit 1
+end
+
 module Metro
   extend self
+  extend GosuConstants
 
   #
   # @return [String] the default filename that contains the game contents
@@ -60,6 +72,7 @@ module Metro
   def run(filename=default_game_filename)
     load_game_files
     load_game_configuration(filename)
+    configure_controls!
     start_game
   end
 
@@ -79,6 +92,10 @@ module Metro
     Game.setup game
   end
 
+  def configure_controls!
+    EventRelay.define_controls Game.controls
+  end
+
   def start_game
     window = Window.new Game.width, Game.height, Game.fullscreen?
     window.caption = Game.name
@@ -87,26 +104,14 @@ module Metro
   end
 
   def game_files_exist!(*files)
-    error_messages = files.compact.flatten.map { |file| game_file_exists?(file) }.reject {|exist| exist == true }
-    unless error_messages.empty?
-      display_error_message(error_messages)
-      exit 1
-    end
+    files.compact.flatten.each { |file| game_file_exists?(file) }
   end
+
 
   def game_file_exists?(file)
     unless File.exists? file
-      Error.new title: "Unable to find Metro game file",
-        message: "The specified file `#{file}` which is required to run the game could not be found.",
-        details: [ "Ensure you have specified the correct file", "Ensure that the file exists at that location" ]
-    else
-      true
+      error "error.missing_metro_file", file: file
     end
-  end
-
-  def display_error_message(messages)
-    message = TemplateMessage.new messages: messages, website: WEBSITE, email: CONTACT_EMAILS
-    warn message
   end
 
 end

@@ -1,3 +1,5 @@
+require_relative '../events/controls'
+
 module Metro
   module Game
     class DSL
@@ -53,6 +55,12 @@ module Metro
 
       def contact(game_contact = nil)
         game_contact ? @contact = game_contact : @contact
+      end
+
+      def controls(&block)
+        @controls ||= Controls.new
+        @controls.instance_eval(&block) if block
+        @controls
       end
 
     end
