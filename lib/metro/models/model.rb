@@ -32,13 +32,13 @@ module Metro
     # 
     def completed? ; false ; end
 
-    def self.property(name,property_type)
+    def self.property(name,property_type,options={})
       define_method name do
-        property_type.new(self).get properties[name]
+        property_type.new(self,options).get properties[name]
       end
 
       define_method "#{name}=" do |value|
-        properties[name] = property_type.new(self).set(value)
+        properties[name] = property_type.new(self,options).set(value)
       end
     end
 

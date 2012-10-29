@@ -2,9 +2,10 @@ module Metro
   class Model
 
     class Property
-      attr_reader :model
-      def initialize(model)
+      attr_reader :model, :options
+      def initialize(model,options={})
         @model = model
+        @options = options
       end
     end
 
@@ -21,3 +22,4 @@ require_relative 'string'
 require_relative 'x_position'
 require_relative 'y_position'
 require_relative 'ratio'
+require_relative 'image'

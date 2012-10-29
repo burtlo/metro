@@ -29,7 +29,7 @@ module Metro
       end
 
       property :font, FontProperty
-      property :font_family, FontProperty
+      property :font_family, StringProperty
       property :font_size, FontSizeProperty
 
 

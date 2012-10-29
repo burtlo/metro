@@ -18,7 +18,7 @@ module Metro
       property :alpha, AlphaProperty
 
       property :font, FontProperty
-      property :font_family, FontProperty
+      property :font_family, StringProperty
       property :font_size, FontSizeProperty
       property :text, StringProperty
 
