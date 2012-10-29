@@ -253,9 +253,9 @@ module Metro
   end
 end
 
-require_relative 'generic'
-require_relative 'label'
-require_relative 'menu'
-require_relative 'image'
-require_relative 'rectangle'
+require_relative 'models/generic'
+require_relative 'models/label'
+require_relative 'models/menu'
+require_relative 'models/image'
+require_relative 'models/rectangle'
 require_relative 'grid_drawer'

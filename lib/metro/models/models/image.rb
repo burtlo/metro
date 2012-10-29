@@ -22,12 +22,12 @@ module Metro
 
       property :center_x, RatioProperty
       property :center_y, RatioProperty
-  
+
       def after_initialize
         self.center_x = 0.5
         self.center_y = 0.5
       end
-      
+
       def image
         @image ||= Gosu::Image.new(window,asset_path(path))
       end
