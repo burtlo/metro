@@ -1,5 +1,6 @@
 require_relative 'key_value_coding'
 require_relative 'rectangle_bounds'
+require_relative 'properties/property'
 
 module Metro
 
@@ -30,6 +31,21 @@ module Metro
     #   are interested in having the model be removed from the scene.
     # 
     def completed? ; false ; end
+
+    def self.property(name,property_type)
+      define_method name do
+        property_type.new(self).get properties[name]
+      end
+
+      define_method "#{name}=" do |value|
+        puts "#{name}=#{value}" if name == :padding
+        properties[name] = property_type.new(self).set(value)
+      end
+    end
+
+    def properties
+      @properties ||= {}
+    end
 
     #
     # This is called after every {#update} and when the OS wants the window to
@@ -83,46 +99,6 @@ module Metro
     # Allows for the definition of events within the scene.
     #
     include HasEvents
-
-    #
-    # Returns the color of the model. In most cases where color is a prominent
-    # attribute (e.g. label) this will be the color. In the cases where color
-    # is less promenint (e.g. image) this will likely be a color that can be
-    # used to influence the drawing of it.
-    #
-    # @see #alpha
-    #
-    def color
-      @color
-    end
-
-    #
-    # Sets the color of the model.
-    #
-    # @param [String,Fixnum,Gosu::Color] value the new color to set.
-    #
-    def color=(value)
-      @color = Gosu::Color.new(value)
-    end
-
-    #
-    # @return the alpha value of the model's color. This is an integer value
-    #   between 0 and 255.
-    #
-    def alpha
-      color.alpha
-    end
-
-    #
-    # Sets the alpha of the model.
-    #
-    # @param [String,Fixnum] value the new value of the alpha level for the model.
-    #   This value should be between 0 and 255.
-    #
-    def alpha=(value)
-      # TODO: coerce the value is between 0 and 255
-      color.alpha = value.to_i
-    end
 
     def saveable?
       true

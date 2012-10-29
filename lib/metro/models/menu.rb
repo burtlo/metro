@@ -10,6 +10,29 @@ module Metro
     #
     class Menu < Model
 
+      property :x, XPositionProperty
+      property :y, YPositionProperty
+
+      property :x_factor, MultiplierProperty
+      property :y_factor, MultiplierProperty
+
+      property :z_order, NumericProperty
+
+      property :padding, NumericProperty
+
+      property :color, ColorProperty
+      property :highlight_color, ColorProperty
+
+      def alpha=(value)
+        color.alpha = value.floor
+        highlight_color.alpha = value.floor
+      end
+
+      property :font, FontProperty
+      property :font_family, FontProperty
+      property :size, FontSizeProperty
+
+
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
         previous_option
       end
@@ -24,12 +47,12 @@ module Metro
 
       attr_reader :selected_index, :menu_options
 
-      attr_accessor :padding, :z_order
+      attr_accessor :padding
 
       def after_initialize
         @selected_index = 0
-        @padding = 40
-        @z_order = 1
+        self.padding = 40
+        self.z_order = 1
       end
 
       def window=(value)
@@ -100,7 +123,7 @@ module Metro
           draw_color = highlight_color if index == selected_index
 
           y_position = y + padding * index
-          font.draw option_name, x, y_position, z_order, 1.0, 1.0, draw_color
+          font.draw option_name, x, y_position, z_order, x_factor, y_factor, draw_color
         end
       end
 
