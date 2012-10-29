@@ -19,13 +19,15 @@ module Metro
       property :alpha, AlphaProperty
 
       property :angle, NumericProperty
-      
-      attr_accessor :center_x, :center_y
 
+      property :center_x, RatioProperty
+      property :center_y, RatioProperty
+  
       def after_initialize
-        @center_x = @center_y = 0.5
+        self.center_x = 0.5
+        self.center_y = 0.5
       end
-
+      
       def image
         @image ||= Gosu::Image.new(window,asset_path(path))
       end
