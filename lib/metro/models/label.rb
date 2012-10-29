@@ -19,7 +19,7 @@ module Metro
 
       property :font, FontProperty
       property :font_family, FontProperty
-      property :size, FontSizeProperty
+      property :font_size, FontSizeProperty
       property :text, StringProperty
 
       def after_initialize

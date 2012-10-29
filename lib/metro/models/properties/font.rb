@@ -4,7 +4,7 @@ module Metro
     class FontProperty < Property
       # when retrieved from the properties a font-family and size is returned
       def get(value)
-        value = value || { name: Gosu::default_font_name, size: model.size, window: model.window }
+        value = value || { name: Gosu::default_font_name, size: model.font_size, window: model.window }
         self.class.font_for(value)
       end
 

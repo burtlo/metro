@@ -30,7 +30,7 @@ module Metro
 
       property :font, FontProperty
       property :font_family, FontProperty
-      property :size, FontSizeProperty
+      property :font_size, FontSizeProperty
 
 
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
