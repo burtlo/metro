@@ -38,7 +38,6 @@ module Metro
       end
 
       define_method "#{name}=" do |value|
-        puts "#{name}=#{value}" if name == :padding
         properties[name] = property_type.new(self).set(value)
       end
     end
