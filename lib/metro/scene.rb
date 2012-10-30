@@ -356,6 +356,7 @@ module Metro
     def base_update
       updaters.each { |updater| updater.update }
       update
+      updaters.reject! { |updater| updater.completed? }
     end
 
     #
