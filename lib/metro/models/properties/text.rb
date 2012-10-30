@@ -1,7 +1,7 @@
 module Metro
   class Model
     
-    class StringProperty < Property
+    class TextProperty < Property
       def get(value)
         model.scene.instance_eval( "\"#{value}\"" )
       end

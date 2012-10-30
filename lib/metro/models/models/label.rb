@@ -9,18 +9,20 @@ module Metro
     #
     class Label < Model
 
-      property :x, XPositionProperty
-      property :y, YPositionProperty
-      property :x_factor, MultiplierProperty
-      property :y_factor, MultiplierProperty
-      property :z_order, NumericProperty
-      property :color, ColorProperty
-      property :alpha, AlphaProperty
+      property :x, :position, width: :font_width
+      property :y, :position
 
-      property :font, FontProperty
-      property :font_family, StringProperty
-      property :font_size, FontSizeProperty
-      property :text, StringProperty
+      property :x_factor, :multiplier, default: 1.0
+      property :y_factor, :multiplier, default: 1.0
+      property :z_order, :numeric, default: 1
+
+      property :color
+      property :alpha
+
+      property :font
+      property :font_family, :string
+      property :font_size
+      property :text
 
       def after_initialize
         @text = ""

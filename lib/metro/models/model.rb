@@ -32,13 +32,25 @@ module Metro
     # 
     def completed? ; false ; end
 
-    def self.property(name,property_type,options={})
+    def self.property(name,property_type = nil,options={})
+
+      property_type = name unless property_type
+
+      property_class = Property.property(property_type)
+
+      property_class.new options
+
       define_method name do
-        property_type.new(self,options).get properties[name]
+        prop_preparer = property_class.new self, options
+        prop_preparer.get properties[name]
       end
 
       define_method "#{name}=" do |value|
-        properties[name] = property_type.new(self,options).set(value)
+        unless value.is_a? property_class
+          value = property_class.new(self,options).set(value)
+        end
+
+        properties[name] = value
       end
     end
 
