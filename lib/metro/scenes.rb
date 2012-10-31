@@ -34,12 +34,12 @@ module Metro
     #
     def find(scene_name)
       found_scene = scenes_hash[scene_name]
-
-      unless found_scene
-        found_scene = create_missing_scene(scene_name)
+      
+      if found_scene
+        ActiveSupport::Dependencies.constantize found_scene
+      else
+        create_missing_scene(scene_name)
       end
-
-      found_scene
     end
 
     def create_missing_scene(scene_name)
@@ -87,7 +87,8 @@ module Metro
     #   as well as the class name constants to allow for the scenes to be found.
     #
     def scenes_hash
-      @scenes_hash ||= Scene.scenes.inject({}) do |dict,scene|
+      @scenes_hash ||= Scene.scenes.inject({}) do |dict,scene_classname|
+        scene = ActiveSupport::Dependencies.constantize scene_classname
         name = scene.scene_name
         dict[name] = scene
         dict[name.to_sym] = scene
