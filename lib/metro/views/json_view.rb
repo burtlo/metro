@@ -1,7 +1,7 @@
 require 'json'
 
 module Metro
-  module SceneView
+  module Views
 
     #
     # Provides support for a JSON Representation of a view.

@@ -1,4 +1,4 @@
-require_relative 'scene_view/scene_view'
+require_relative 'views/scene_view'
 
 require_relative 'events/has_events'
 require_relative 'events/event_relay'

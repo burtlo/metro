@@ -1,6 +1,4 @@
-require_relative 'yaml_view'
-require_relative 'json_view'
-require_relative 'no_view'
+require_relative 'view'
 
 module Metro
 
@@ -9,14 +7,6 @@ module Metro
   # additional tools to also help draw that view.
   #
   module SceneView
-
-    #
-    # When the module is included insure that all the class helper methods are added
-    # at the same time.
-    #
-    def self.included(base)
-      base.extend ClassMethods
-    end
 
     #
     # A Scene by default uses the name of the Scene to find it's associated
@@ -49,12 +39,19 @@ module Metro
     # Loads and caches the view content based on the avilable view parsers and
     # the view files defined.
     #
-    # @return a Hash of view content.
+    # @return the content contained within the view
     #
     def view
-      self.class.view
+      self.class.view_content
     end
 
+    #
+    # When the module is included insure that all the class helper methods are added
+    # at the same time.
+    #
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
     module ClassMethods
 
@@ -70,53 +67,31 @@ module Metro
       #
       #     ClosingScene.view_name # => views/alternative
       #
-      def view_name(filename = nil)
-        if filename
-          @view_name = filename.to_s
-        else
-          @view_name ||= scene_name
-        end
+      def view_name(name = nil)
+        name ? view.name = name : view.name
+        view.name
       end
-
+      
       #
-      # A Scene view path is based on the view name.
-      #
-      # @example Standard View Path
-      #
-      #     class OpeningScene < Metro::Scene
-      #     end
-      #
-      #     OpeniningScene.view_path # => views/opening
-      #
-      # @example Custom View Path
-      #
-      #     class ClosingScene < Metro::Scene
-      #       view_name 'alternative'
-      #     end
-      #
-      #     ClosingScene.view_path # => views/alternative
-      #
-      def view_path
-        File.join "views", view_name
-      end
-
-      #
-      # Supported view formats
-      #
-      def _view_parsers
-        [ YAMLView, JSONView, NoView ]
+      # Returns the content loaded from the view.
+      # 
+      # @return Hash of view content found in the view.
+      # 
+      def view_content
+        view.content
       end
 
       #
       # Loads and caches the view content based on the avilable view parsers and
       # the view files defined.
       #
-      # @return a Hash of view content.
+      # @return a view object
       #
       def view
-        @view ||= begin
-          parser = _view_parsers.find { |parser| parser.exists? view_path }
-          parser.parse view_path
+        @view ||=begin
+          view = View.new
+          view.name = scene_name
+          view
         end
       end
 

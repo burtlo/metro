@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Metro
-  module SceneView
+  module Views
 
     class YAMLView
 

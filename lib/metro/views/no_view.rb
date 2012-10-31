@@ -1,5 +1,5 @@
 module Metro
-  module SceneView
+  module Views
 
     class NoView
 
