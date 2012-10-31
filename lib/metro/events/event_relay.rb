@@ -1,3 +1,5 @@
+require_relative 'event_data'
+
 module Metro
 
   #
@@ -253,7 +255,7 @@ module Metro
     # has been triggered.
     #
     def fire_button_up(id)
-      target.instance_eval( &up_action(id) )
+      execute_block_for_target( &up_action(id) )
     end
 
     #
@@ -261,7 +263,7 @@ module Metro
     # event has been triggered.
     #
     def fire_button_down(id)
-      target.instance_eval( &down_action(id) )
+      execute_block_for_target( &down_action(id) )
     end
 
     #
@@ -271,8 +273,13 @@ module Metro
     #
     def fire_events_for_held_buttons
       held_actions.each do |key,action|
-        target.instance_eval(&action) if window and window.button_down?(key)
+        execute_block_for_target(&action) if window and window.button_down?(key)
       end
+    end
+    
+    def execute_block_for_target(&block)
+      event_data = EventData.new(window)
+      target.instance_exec(event_data,&block)
     end
 
     # @return a block of code that is mapped for the 'button_up' id or a block that will attempt to call out
