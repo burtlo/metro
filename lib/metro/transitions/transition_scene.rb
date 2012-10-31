@@ -16,3 +16,4 @@ module Metro
 end
 
 require_relative 'fade_transition_scene'
+require_relative 'edit_transition_scene'
