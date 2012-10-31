@@ -60,5 +60,16 @@ module Metro
       scene.button_down(id)
     end
 
+    #
+    # Define an acessor that enables/disables the use of a cursor
+    # within the window. The value should be truthy/falsy.
+    #
+    attr_accessor :cursor
+
+    #
+    # Gosu uses this method to determine if the cursor should be shown.
+    #
+    alias_method :needs_cursor?, :cursor
+
   end
 end
