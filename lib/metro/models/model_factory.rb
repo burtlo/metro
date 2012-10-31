@@ -25,7 +25,7 @@ module Metro
     end
 
     def class_for_actor(model_name)
-      Model.model(model_name)
+      ActiveSupport::Dependencies.constantize Model.model(model_name)
     end
   end
 end
