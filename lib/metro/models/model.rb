@@ -121,7 +121,7 @@ module Metro
       options.each do |raw_key,value|
 
         key = raw_key.to_s.dup
-        key = key.gsub(/-/,'_').snake_case
+        key = key.gsub(/-/,'_').underscore
 
         unless respond_to? key
           self.class.send :define_method, key do
@@ -185,7 +185,7 @@ module Metro
         hash = Hash.new("Models::Generic")
 
         models.each do |model|
-          common_name = model.to_s.snake_case
+          common_name = model.to_s.underscore
           hash[common_name] = model
         end
         hash

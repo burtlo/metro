@@ -6,7 +6,7 @@ module Metro
 
       def view_filename
         view_name = name.to_s.gsub(/_?Scene$/i,'')
-        view_name.snake_case
+        view_name.underscore
       end
 
     end

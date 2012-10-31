@@ -6,12 +6,12 @@ module Metro
 
       def scene_filename
         scene_name = name.gsub(/_?Scene$/i,'')
-        "#{scene_name.snake_case}_scene"
+        "#{scene_name.underscore}_scene"
       end
 
       def scene_class_name
         scene_name = name.gsub(/_?Scene$/i,'')
-        "#{scene_name.camel_case}Scene"
+        "#{scene_name.classify}Scene"
       end
 
     end

@@ -6,7 +6,6 @@ require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/inflector'
 
-require 'core_ext/string'
 require 'core_ext/numeric'
 require 'logger'
 require 'erb'

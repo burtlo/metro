@@ -5,11 +5,11 @@ module Metro
     no_tasks do
 
       def model_filename
-        name.snake_case
+        name.underscore
       end
 
       def model_name
-        name.camel_case
+        name.classify
       end
 
     end

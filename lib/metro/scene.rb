@@ -283,7 +283,7 @@ module Metro
     #
     def self.scene_name(scene_name=nil)
       @scene_name ||= begin
-        to_s.gsub(/_?Scene$/i,'').snake_case
+        to_s.gsub(/_?Scene$/i,'').underscore
       end
 
       scene_name ? @scene_name = scene_name.to_s : @scene_name
