@@ -6,6 +6,7 @@ module Metro
 
     def insert_transition(scene,options)
       return scene unless options.key?(:with)
+      name = options[:with]
       generate_transition(name,scene,options)
     end
 
