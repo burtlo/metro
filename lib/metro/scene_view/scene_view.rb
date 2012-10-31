@@ -19,10 +19,30 @@ module Metro
     end
 
     #
-    # Supported view formats
+    # A Scene by default uses the name of the Scene to find it's associated
+    # view.
     #
-    def _view_parsers
-      self.class._view_parsers
+    # @example Standard View Name
+    #
+    #     class OpeningScene < Metro::Scene
+    #
+    #       def show
+    #         puts "View Brought To You By: #{view_name} # => View Brought To You By opening
+    #       end
+    #     end
+    #
+    # @example Custom View Name
+    #
+    #     class ClosingScene < Metro::Scene
+    #       view_name 'alternative'
+    #
+    #       def show
+    #         puts "View Brought To You By: #{view_name} # => View Brought To You By alternative
+    #       end
+    #     end
+    #
+    def view_name
+      self.class.view_name
     end
 
     #
@@ -34,6 +54,7 @@ module Metro
     def view
       self.class.view
     end
+
 
     module ClassMethods
 
@@ -51,10 +72,32 @@ module Metro
       #
       def view_name(filename = nil)
         if filename
-          @view_name = File.join "views", filename.to_s
+          @view_name = filename.to_s
         else
-          @view_name ||= File.join "views", scene_name
+          @view_name ||= scene_name
         end
+      end
+
+      #
+      # A Scene view path is based on the view name.
+      #
+      # @example Standard View Path
+      #
+      #     class OpeningScene < Metro::Scene
+      #     end
+      #
+      #     OpeniningScene.view_path # => views/opening
+      #
+      # @example Custom View Path
+      #
+      #     class ClosingScene < Metro::Scene
+      #       view_name 'alternative'
+      #     end
+      #
+      #     ClosingScene.view_path # => views/alternative
+      #
+      def view_path
+        File.join "views", view_name
       end
 
       #
@@ -72,8 +115,8 @@ module Metro
       #
       def view
         @view ||= begin
-          parser = _view_parsers.find { |parser| parser.exists? view_name }
-          parser.parse view_name
+          parser = _view_parsers.find { |parser| parser.exists? view_path }
+          parser.parse view_path
         end
       end
 

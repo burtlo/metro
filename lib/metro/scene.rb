@@ -262,18 +262,17 @@ module Metro
     # @example Retrieving the default scene name
     #
     #     class ExampleScene
-    #       def show
-    #         puts "Showing Scene: #{self.class.scene_name}"
-    #       end
     #     end
     #
-    #     ExampleScene.scene_name
+    #     ExampleScene.scene_name # => "example"
     #
     # @example Setting a custom name for the Scene
     #
     #     class RollingCreditsScene
     #       scene_name "credits"
     #     end
+    #
+    #     RollingCreditsScene.scene_name # => "credits"
     #
     # @param [String] scene_name when specified it will set the scene name for the class
     #   to the value specified.
@@ -287,6 +286,24 @@ module Metro
       end
 
       scene_name ? @scene_name = scene_name.to_s : @scene_name
+    end
+
+
+    #
+    # Allows you to set or retrieve the scene name for the Scene.
+    #
+    # @example Retrieving the default scene name
+    #
+    #     class ExampleScene
+    #       def show
+    #         puts "Showing Scene: #{self.scene_name}" # => Showing Scene: example
+    #       end
+    #     end
+    #
+    # @return the string name of the Scene.
+    #
+    def scene_name
+      self.class.scene_name
     end
 
     #
