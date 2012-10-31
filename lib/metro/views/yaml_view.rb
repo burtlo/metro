@@ -26,8 +26,55 @@ module Metro
       end
 
       #
+      # @return the file type format of this view.
+      #
+      def self.format
+        :yaml
+      end
+
+      #
+      # @param [String] view_path the file path to the view which to save the content
+      # @param [Hash] content the content to save within the view
+      #
+      def self.write(view_path,content)
+        filename = write_filepath(view_path)
+        yaml_content = content.to_yaml
+        File.write(filename,yaml_content)
+      end
+
+      #
+      # @return the default extension to use when saving yaml files.
+      #
+      def default_extname
+        @default_extname || ".yaml"
+      end
+
+      #
+      # Set the default extname
+      #
+      # @example
+      #
+      #     Metro::Views::YAMLView.default_extname = ".yml"
+      #
+      attr_writer :default_extname
+
+      private
+
+      #
+      # If a file already exists with .yaml or .yml use that extension. Otherwise, we
+      # will fall back to the default extension name.
+      #
+      def write_filepath(view_path)
+        if existing_file = exists?(view_path)
+          existing_file
+        else
+          "#{view_path}#{default_extname}"
+        end
+      end
+
+      #
       # A helper method to get the view file.
-      # 
+      #
       def self.yaml_view_path(view_path)
         yaml_view_paths(view_path).find { |view_path| File.exists? view_path }
       end

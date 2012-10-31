@@ -20,6 +20,14 @@ module Metro
       def self.parse(view_path)
         {}
       end
+
+      #
+      # @return the file type format of this view.
+      #
+      def self.format
+        :none
+      end
+
     end
 
   end

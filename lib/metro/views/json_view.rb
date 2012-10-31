@@ -29,6 +29,24 @@ module Metro
       end
 
       #
+      # @return the file type format of this view.
+      # 
+      def self.format
+        :json
+      end
+
+      #
+      # Writes the content out to the spcified view path
+      #
+      def self.write(view_path,content)
+        filename = json_view_path(view_path)
+        json_content = content.to_json
+        File.write(filename,json_content)
+      end
+
+      private
+
+      #
       # A helper method to generate the name of the json view file. In this case
       # it is the view name with the suffix .json.
       #

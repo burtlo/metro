@@ -1,4 +1,5 @@
-require_relative 'view_parsers'
+require_relative 'parsers'
+require_relative 'writers'
 
 module Metro
 
@@ -20,6 +21,8 @@ module Metro
     def content
       @content ||= parse
     end
+
+    attr_writer :content
 
     #
     # A Scene view path is based on the view name.
@@ -58,22 +61,39 @@ module Metro
     # load.
     #
     def parser
-      @parser ||= supported_view_parsers.find { |parser| parser.exists? view_path }
+      @parser ||= supported_parsers.find { |parser| parser.exists? view_path }
     end
-
-    #
-    # Ask the parser to write the view content back.
-    #
-    def save
-      parser.write(self)
-    end
-
 
     #
     # Supported view formats
     #
-    def supported_view_parsers
+    def supported_parsers
       Views::Parsers.parsers
+    end
+
+    #
+    # Ask the parser to save the current content of the view at the view path
+    #
+    def save
+      writer.write(view_path,content)
+    end
+
+    #
+    # The writer for this view. If the view has already been parsed then use
+    #
+    def writer
+      @writer ||= begin
+        writer_matching_existing_parser = supported_writers.find { |writer| parser.format == writer.format }
+        writer_matching_existing_parser || default_writer
+      end
+    end
+
+    def supported_writers
+      Views::Writers.writers
+    end
+    
+    def default_writer
+      Views::Writers.default_writer
     end
 
   end
