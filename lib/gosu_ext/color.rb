@@ -22,9 +22,9 @@ class Gosu::Color
   end
 
   def self.parse_string(value)
-    parse_hex(value) || parse_rgb(value) || parse_rgba(value) || [ 255, 255, 255, 255 ]
+    parse_hex(value) || parse_rgb(value) || parse_rgba(value) || parse_gosu_color_string(value) || [ 255, 255, 255, 255 ]
   end
-  
+
   def self.parse_rgba(rgba)
     if rgba =~ /rgba\(([\d]{1,3}),([\d]{1,3}),([\d]{1,3}),(\d(?:\.\d)?)\)/
       [ (255 * $4.to_f).floor.to_i, $1.to_i, $2.to_i, $3.to_i ]
@@ -43,6 +43,20 @@ class Gosu::Color
     elsif hex =~ /#([A-Fa-f0-9]{6})/
       "0xFF#{$1}".to_i(16)
     end
+  end
+
+  def self.parse_gosu_color_string(string)
+    if string =~ /\(ARGB: ([\d]{1,3})\/([\d]{1,3})\/([\d]{1,3})\/([\d]{1,3})\)/
+      [ $1.to_i, $2.to_i, $3.to_i, $4.to_i ]
+    end
+  end
+
+  def to_s
+    "rgba(#{red},#{green},#{blue},#{alpha / 255.to_f})"
+  end
+
+  def to_json(*params)
+    to_s.to_json
   end
 
 end
