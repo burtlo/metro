@@ -2,7 +2,8 @@ require 'gosu'
 require 'gosu_ext/color'
 require 'gosu_ext/gosu_constants'
 require 'i18n'
-
+require 'active_support'
+require 'active_support/dependencies'
 
 require 'core_ext/string'
 require 'core_ext/numeric'
@@ -49,23 +50,64 @@ module Metro
   #   the value uses the default filename.
   #
   def run(filename=default_game_filename)
-    load_game_files
-    change_into_game_directory(filename)
+    move_to_game_directory!(filename)
+    load_game_files!
     load_game_configuration(filename)
     configure_controls!
     start_game
   end
 
+  def load_game_files!
+    prepare_watcher!
+    load_game_files
+    execute_watcher!
+  end
+
+  alias_method :reload!, :load_game_files!
+
   private
+
+  def move_to_game_directory!(filename)
+    game_directory = File.dirname(filename)
+    Dir.chdir game_directory
+  end
+
+  #
+  # The watcher will keep track of all the constants that were added to the Object
+  # Namespace after the start of the execution of the game. This will allow for only
+  # those objects to be reloaded.
+  #
+  def watcher
+    @watcher ||= ActiveSupport::Dependencies::WatchStack.new
+  end
+
+  #
+  # The watcher should watch the Object Namespace for any changes. Any constants
+  # that are added will be tracked from this point forward.
+  #
+  def prepare_watcher!
+    ActiveSupport::Dependencies.clear
+    watcher.watch_namespaces([ Object ])
+  end
+
+  #
+  # The watcher will now mark all the constants that it has watched being loaded
+  # as unloadable. Doing so exhausts the list of constants found so the watcher
+  # will be empty.
+  #
+  # @note an exception is raised if the watcher is not prepared every time this
+  #   is called.
+  #
+  def execute_watcher!
+    watcher.new_constants.each do |constant|
+      puts "Marking clas: #{constant} unloadable"
+      unloadable constant
+    end
+  end
 
   def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
     load_paths 'models', 'scenes', 'lib'
-  end
-  
-  def change_into_game_directory(filename)
-    game_directory = File.dirname(filename)
-    Dir.chdir game_directory
   end
 
   def load_paths(*paths)
@@ -73,8 +115,9 @@ module Metro
   end
 
   def load_path(path)
-    Dir["#{path}/**/*.rb"].each {|model| require model }
+    Dir["#{path}/**/*.rb"].each {|model| require_or_load model }
   end
+
 
   def load_game_configuration(filename)
     gamefile = File.basename(filename)

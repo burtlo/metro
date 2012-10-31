@@ -163,7 +163,7 @@ module Metro
     # @see #self.scenes
     #
     def self.inherited(base)
-      models << base
+      models << base.to_s
     end
 
     #
@@ -182,7 +182,7 @@ module Metro
     def self.model(name)
       @models_hash ||= begin
 
-        hash = Hash.new(Models::Generic)
+        hash = Hash.new("Models::Generic")
 
         models.each do |model|
           common_name = model.to_s.snake_case

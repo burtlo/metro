@@ -172,14 +172,17 @@ module Metro
     # @see #after_initialize
     #
     def initialize
+      add_actors_to_scene
+      after_initialize
+    end
+
+    def add_actors_to_scene
       self.class.actors.each do |scene_actor|
         actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
         actor_instance = scene_actor.create(actor_data)
         actor_instance.scene = self
         send "#{scene_actor.name}=", actor_instance
       end
-
-      after_initialize
     end
 
     #
@@ -299,7 +302,7 @@ module Metro
     # @see #self.scenes
     #
     def self.inherited(base)
-      scenes << base
+      scenes << base.to_s
     end
 
     #
