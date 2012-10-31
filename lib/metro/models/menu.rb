@@ -56,6 +56,26 @@ module Metro
         @font ||= Gosu::Font.new(window, Gosu::default_font_name, 20)
       end
 
+      def contains?(x,y)
+        bounds.contains?(x,y)
+      end
+
+      def bounds
+        Metro::Models::Bounds.new x, y, x + width, y + height
+      end
+
+      def width
+        font.text_width(longest_option_text)# * x_factor
+      end
+
+      def longest_option_text
+        longest = options.map {|opt| opt }.inject("") {|longest,opt| opt.length > longest.length ? opt : longest }
+      end
+
+      def height
+        options.length * font.height + (options.length - 1) * padding
+      end
+
       attr_reader :highlight_color
 
       def highlight_color=(value)

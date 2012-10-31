@@ -1,4 +1,5 @@
 require_relative 'key_value_coding'
+require_relative 'rectangle_bounds'
 
 module Metro
 
@@ -100,6 +101,17 @@ module Metro
 
     def saveable?
       true
+    end
+
+    # Belongs to positionable items only
+    def contains?(x,y)
+      false
+    end
+    
+    # Belongs to positionable items only
+    def offset(x,y)
+      self.x += x
+      self.y += y
     end
 
     #
