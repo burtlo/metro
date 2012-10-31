@@ -20,11 +20,12 @@ module Metro
     end
 
     def find_transition(name)
-      supported_transitions[name]
+      transition_name = supported_transitions[name]
+      ActiveSupport::Dependencies.constantize transition_name
     end
 
     def supported_transitions
-      Hash.new(FadeTransitionScene)
+      Hash.new("FadeTransitionScene")
     end
 
   end
