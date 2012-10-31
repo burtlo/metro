@@ -4,6 +4,7 @@ require 'gosu_ext/gosu_constants'
 require 'i18n'
 require 'active_support'
 require 'active_support/dependencies'
+require 'active_support/inflector'
 
 require 'core_ext/string'
 require 'core_ext/numeric'

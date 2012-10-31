@@ -21,7 +21,7 @@ module Metro
 
     def find_transition(name)
       transition_name = supported_transitions[name]
-      ActiveSupport::Dependencies.constantize transition_name
+      transition_name.constantize
     end
 
     def supported_transitions

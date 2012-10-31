@@ -36,7 +36,7 @@ module Metro
       found_scene = scenes_hash[scene_name]
       
       if found_scene
-        ActiveSupport::Dependencies.constantize found_scene
+        found_scene.constantize
       else
         create_missing_scene(scene_name)
       end
@@ -88,11 +88,11 @@ module Metro
     #
     def scenes_hash
       @scenes_hash ||= Scene.scenes.inject({}) do |dict,scene_classname|
-        scene = ActiveSupport::Dependencies.constantize scene_classname
+        scene = scene_classname.constantize
         name = scene.scene_name
-        dict[name] = scene
-        dict[name.to_sym] = scene
-        dict[scene] = scene
+        dict[name] = scene_classname
+        dict[name.to_sym] = scene_classname
+        dict[scene] = scene_classname
         dict
       end
     end
