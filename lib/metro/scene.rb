@@ -178,7 +178,8 @@ module Metro
 
     def add_actors_to_scene
       self.class.actors.each do |scene_actor|
-        actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
+        view_content_for_actor = view_content[scene_actor.name]
+        actor_data = { 'name' => scene_actor.name }.merge view_content_for_actor
         actor_instance = scene_actor.create(actor_data)
         actor_instance.scene = self
         send "#{scene_actor.name}=", actor_instance
@@ -495,6 +496,21 @@ module Metro
       event_relays.each do |relay|
         relay.fire_button_down(id)
       end
+    end
+
+
+    #
+    # A Scene represented as a hash currently only contains the drawers
+    #
+    # @return a hash of all the drawers
+    #
+    def to_hash
+      drawn = drawers.find_all{|draw| draw.saveable? }.inject({}) do |hash,drawer|
+        drawer_hash = drawer.to_hash
+        hash.merge drawer_hash
+      end
+
+      drawn
     end
 
   end

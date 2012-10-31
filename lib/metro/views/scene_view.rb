@@ -36,13 +36,28 @@ module Metro
     end
 
     #
+    # @return the view for this scene.
+    #
+    def view
+      self.class.view
+    end
+
+    #
     # Loads and caches the view content based on the avilable view parsers and
     # the view files defined.
     #
     # @return the content contained within the view
     #
-    def view
-      self.class.view_content
+    def view_content
+      view.content
+    end
+
+    #
+    # Saves the current content of the view back through the view's writer
+    #
+    def save_view
+      view.content = self.to_hash
+      view.save
     end
 
     #
@@ -70,15 +85,6 @@ module Metro
       def view_name(name = nil)
         name ? view.name = name : view.name
         view.name
-      end
-      
-      #
-      # Returns the content loaded from the view.
-      # 
-      # @return Hash of view content found in the view.
-      # 
-      def view_content
-        view.content
       end
 
       #

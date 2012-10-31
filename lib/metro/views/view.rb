@@ -19,7 +19,11 @@ module Metro
     # The content contained within the view.
     #
     def content
-      @content ||= parse
+      @content ||= begin
+        parsed_content = parse
+        parsed_content.default = {}
+        parsed_content
+      end
     end
 
     attr_writer :content
