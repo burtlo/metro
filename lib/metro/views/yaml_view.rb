@@ -45,7 +45,7 @@ module Metro
       #
       # @return the default extension to use when saving yaml files.
       #
-      def default_extname
+      def self.default_extname
         @default_extname || ".yaml"
       end
 
@@ -56,7 +56,9 @@ module Metro
       #
       #     Metro::Views::YAMLView.default_extname = ".yml"
       #
-      attr_writer :default_extname
+      def self.default_extname=(value)
+        @default_extname = value
+      end
 
       private
 
