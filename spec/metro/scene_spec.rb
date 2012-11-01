@@ -12,10 +12,4 @@ describe Metro::Scene do
   let(:expected_scene_name) { "spec" }
   its(:scene_name) { should eq expected_scene_name }
 
-  let(:expected_view_path) { "views/spec" }
-  
-  it "should have the correct view_path" do
-    SpecScene.view_path.should eq expected_view_path
-  end
-
 end

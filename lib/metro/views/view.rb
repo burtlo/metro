@@ -83,11 +83,31 @@ module Metro
     end
 
     #
+    # Return the format of the view. By default the format of the view is dictated
+    # by the format of the content that is parsed.
+    #
+    def format
+      @format || parser.format
+    end
+
+    #
+    # Setting the format allows the view to be changed from the current format as
+    # dictated what is parsed by the parser.
+    #
+    # This is mostly to benefit the edit transition scene which inherits all the view
+    # related data from the scene that is being edited but does not inherit the
+    # the view (which would have the parser).
+    #
+    # @see EditTransitionScene
+    #
+    attr_writer :format
+
+    #
     # The writer for this view. If the view has already been parsed then use
     #
     def writer
       @writer ||= begin
-        writer_matching_existing_parser = supported_writers.find { |writer| parser.format == writer.format }
+        writer_matching_existing_parser = supported_writers.find { |writer| writer.format == format }
         writer_matching_existing_parser || default_writer
       end
     end
@@ -95,7 +115,7 @@ module Metro
     def supported_writers
       Views::Writers.writers
     end
-    
+
     def default_writer
       Views::Writers.default_writer
     end

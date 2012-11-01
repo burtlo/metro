@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metro::SceneView::JSONView do
+describe Metro::Views::JSONView do
 
   subject { described_class }
   let(:view_name) { "example" }
@@ -23,23 +23,5 @@ describe Metro::SceneView::JSONView do
 
     end
   end
-
-  # describe ".write" do
-  #   context "when given a scene" do
-  # 
-  #     let(:scene) do
-  #       mock "Scene", to_json: expected_data,
-  #         view_name: "testscene"
-  #     end
-  # 
-  #     let(:expected_data) { '{ "expected" : "json" }' }
-  #     let(:expected_filename) { "testscene.json" }
-  # 
-  #     it "should write the scene to view name" do
-  #       File.should_receive(:write).with(expected_filename,expected_data)
-  #       subject.write(scene)
-  #     end
-  #   end
-  # end
 
 end

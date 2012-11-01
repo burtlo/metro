@@ -8,7 +8,7 @@ module Metro
       @options = options
     end
 
-    def create(contents = {})
+    def create
       contents = {} unless contents
       actor_class = class_for_actor(model_name(contents))
       instance = actor_class.new

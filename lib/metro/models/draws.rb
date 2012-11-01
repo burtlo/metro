@@ -30,7 +30,12 @@ module Metro
       #     end
       #
       def draw(actor_name,options = {})
-        scene_actor = ModelFactory.new actor_name, options
+
+        view_content_for_actor = view.content[actor_name.to_s]
+        actor_data = view_content_for_actor.merge(options)
+        actor_data[:name] = actor_name
+
+        scene_actor = ModelFactory.new actor_name, actor_data
 
         define_method actor_name do
           instance_variable_get("@#{actor_name}")

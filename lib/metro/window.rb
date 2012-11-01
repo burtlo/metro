@@ -71,5 +71,13 @@ module Metro
     #
     alias_method :needs_cursor?, :cursor
 
+    def show_cursor
+      self.cursor = true
+    end
+
+    def hide_cursor
+      self.cursor = false
+    end
+
   end
 end
