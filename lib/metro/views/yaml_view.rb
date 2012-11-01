@@ -64,7 +64,7 @@ module Metro
       # If a file already exists with .yaml or .yml use that extension. Otherwise, we
       # will fall back to the default extension name.
       #
-      def write_filepath(view_path)
+      def self.write_filepath(view_path)
         if existing_file = exists?(view_path)
           existing_file
         else
