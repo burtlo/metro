@@ -40,7 +40,7 @@ module Metro
       #
       def self.write(view_path,content)
         filename = json_view_path(view_path)
-        json_content = content.to_json
+        json_content = JSON.pretty_generate(content)
         File.write(filename,json_content)
       end
 
