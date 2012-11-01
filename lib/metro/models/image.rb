@@ -3,10 +3,10 @@ module Metro
 
     #
     # Draws an Image
-    # 
+    #
     # @example Using the Image in a view file
     #    model: "metro::models::image"
-    # 
+    #
     class Image < Model
 
       attr_accessor :x, :y, :angle, :center_x, :center_y, :x_factor, :y_factor, :z_order
@@ -23,6 +23,22 @@ module Metro
 
       def image
         @image ||= Gosu::Image.new(window,asset_path(path))
+      end
+
+      def contains?(x,y)
+        bounds.contains?(x,y)
+      end
+
+      def bounds
+        Bounds.new x - (width * center_x), y - (height * center_y), x + (width * center_x), y + (height * center_y)
+      end
+
+      def width
+        image.width
+      end
+
+      def height
+        image.height
       end
 
       def draw

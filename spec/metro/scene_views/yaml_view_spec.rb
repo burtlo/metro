@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metro::SceneView::YAMLView do
+describe Metro::Views::YAMLView do
 
   subject { described_class }
   let(:view_name) { "example" }

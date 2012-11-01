@@ -1,4 +1,4 @@
-require_relative 'scene_view/scene_view'
+require_relative 'views/scene_view'
 
 require_relative 'events/has_events'
 require_relative 'events/event_relay'
@@ -178,8 +178,7 @@ module Metro
 
     def add_actors_to_scene
       self.class.actors.each do |scene_actor|
-        actor_data = { 'name' => scene_actor.name }.merge (view[scene_actor.name] || {})
-        actor_instance = scene_actor.create(actor_data)
+        actor_instance = scene_actor.create
         actor_instance.scene = self
         send "#{scene_actor.name}=", actor_instance
       end
@@ -262,18 +261,17 @@ module Metro
     # @example Retrieving the default scene name
     #
     #     class ExampleScene
-    #       def show
-    #         puts "Showing Scene: #{self.class.scene_name}"
-    #       end
     #     end
     #
-    #     ExampleScene.scene_name
+    #     ExampleScene.scene_name # => "example"
     #
     # @example Setting a custom name for the Scene
     #
     #     class RollingCreditsScene
     #       scene_name "credits"
     #     end
+    #
+    #     RollingCreditsScene.scene_name # => "credits"
     #
     # @param [String] scene_name when specified it will set the scene name for the class
     #   to the value specified.
@@ -287,6 +285,24 @@ module Metro
       end
 
       scene_name ? @scene_name = scene_name.to_s : @scene_name
+    end
+
+
+    #
+    # Allows you to set or retrieve the scene name for the Scene.
+    #
+    # @example Retrieving the default scene name
+    #
+    #     class ExampleScene
+    #       def show
+    #         puts "Showing Scene: #{self.scene_name}" # => Showing Scene: example
+    #       end
+    #     end
+    #
+    # @return the string name of the Scene.
+    #
+    def scene_name
+      self.class.scene_name
     end
 
     #
@@ -478,6 +494,21 @@ module Metro
       event_relays.each do |relay|
         relay.fire_button_down(id)
       end
+    end
+
+
+    #
+    # A Scene represented as a hash currently only contains the drawers
+    #
+    # @return a hash of all the drawers
+    #
+    def to_hash
+      drawn = drawers.find_all{|draw| draw.saveable? }.inject({}) do |hash,drawer|
+        drawer_hash = drawer.to_hash
+        hash.merge drawer_hash
+      end
+
+      drawn
     end
 
   end

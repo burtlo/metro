@@ -99,10 +99,7 @@ module Metro
   #   is called.
   #
   def execute_watcher!
-    watcher.new_constants.each do |constant|
-      puts "Marking clas: #{constant} unloadable"
-      unloadable constant
-    end
+    watcher.new_constants.each { |constant| unloadable constant }
   end
 
   def load_game_files

@@ -1,4 +1,5 @@
 require_relative 'key_value_coding'
+require_relative 'rectangle_bounds'
 
 module Metro
 
@@ -98,6 +99,21 @@ module Metro
       color.alpha = value.to_i
     end
 
+    def saveable?
+      true
+    end
+
+    # Belongs to positionable items only
+    def contains?(x,y)
+      false
+    end
+    
+    # Belongs to positionable items only
+    def offset(x,y)
+      self.x += x
+      self.y += y
+    end
+
     #
     # Create an instance of a model.
     #
@@ -153,8 +169,29 @@ module Metro
     # to another model.
     #
     def _save
-      data_export = @_loaded_options.map {|option| [ option, send(option) ] }.flatten
+      data_export = _loaded_options.map {|option| [ option, send(option) ] }.flatten
       Hash[*data_export]
+    end
+
+    #
+    # Generate a hash representation of the model. Currently this is ugly
+    #
+    def to_hash
+      export = _loaded_options.map {|option| [ option, send(option) ] }
+      export_with_name = export.reject {|item| item.first == "name" }
+
+      hash = export_with_name.inject({}) {|hash,elem| hash[elem.first] = elem.last ; hash }
+
+      # TODO:: color is a class that cannot be yamlized as it is and needs to be turned into a string.
+      # TODO: Hack to save the Gosu::Color class as a string value (this is
+      # what I hoped that the properties would solve)
+      hash.each do |subkey,subvalue|
+        if subvalue.is_a? Gosu::Color
+          hash[subkey] = subvalue.to_s
+        end
+      end
+
+      { name => hash }
     end
 
     #
@@ -205,3 +242,4 @@ require_relative 'label'
 require_relative 'menu'
 require_relative 'image'
 require_relative 'rectangle'
+require_relative 'grid_drawer'
