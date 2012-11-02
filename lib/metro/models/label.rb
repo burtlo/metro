@@ -53,6 +53,8 @@ module Metro
         scene.instance_eval( "\"#{@text}\"" )
       end
 
+      attr_writer :text
+
       def draw
         label_text = text
         font.draw label_text, x, y, z_order, x_factor, y_factor, color
