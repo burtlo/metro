@@ -9,10 +9,9 @@ module Metro
     end
 
     def create
-      contents = {} unless contents
-      actor_class = class_for_actor(model_name(contents))
+      actor_class = class_for_actor(model_name)
       instance = actor_class.new
-      instance._load options.merge(contents)
+      instance._load options
       instance
     end
 
@@ -20,8 +19,8 @@ module Metro
       options[:from] == :previous_scene
     end
 
-    def model_name(contents = {})
-      contents['model'] || contents[:model] || options['model'] || options[:model] || name
+    def model_name
+      options['model'] || options[:model] || name
     end
 
     def class_for_actor(model_name)
