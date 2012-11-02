@@ -1,6 +1,6 @@
 title:
   model: metro::models::label
-  text: "#{Metro::Game.name}"
+  text: "#{Game.name}"
   size: 40
   y: 100
   color: rgba(255,255,255,0.0)

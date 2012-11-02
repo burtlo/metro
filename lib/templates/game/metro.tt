@@ -58,7 +58,7 @@ end
 #
 # Enable debug mode for the game. Which could
 # allow different logic. When this is set the
-# Metro::Game.debug? method will return a true
+# Game.debug? method will return a true
 # value.
 #
 # debug true
