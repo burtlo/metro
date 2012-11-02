@@ -26,7 +26,15 @@ module Metro
       end
     end
 
-    attr_writer :content
+    #
+    # Set the content of the view.
+    #
+    # @param [Hash] value the hash content that will represent this view
+    #
+    def content=(value)
+      value.default = {}
+      @content = value
+    end
 
     #
     # A Scene view path is based on the view name.
