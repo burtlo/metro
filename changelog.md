@@ -1,5 +1,14 @@
 # Metro
 
+## 0.1.5 / 2012-11-01
+
+* Metro.reload! will reload all game classes
+* Scenes can now an editable state where the position of items can be
+  updated and saved.
+* Event blocks can optionally receive an event object. The event object
+  includes modifier key information.
+
+
 ## 0.1.4 / 2012-10-28
 
 * Removed dependency on the sender gem so metro is playable on Windows
