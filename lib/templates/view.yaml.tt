@@ -1,0 +1,6 @@
+# title:
+#   model: metro::models::label
+#   x: 30
+#   y: 50
+#   z-order: 4
+#   color: "rgba(255,255,0,0.0)"

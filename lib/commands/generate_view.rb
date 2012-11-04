@@ -14,7 +14,7 @@ module Metro
     argument :name
 
     def create_view_file
-      template "view.yaml.erb", "views/#{view_filename}.yaml"
+      template "view.yaml.tt", "views/#{view_filename}.yaml"
     end
   end
 

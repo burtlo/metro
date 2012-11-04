@@ -17,7 +17,7 @@ module Metro
     argument :name
 
     def create_model_file
-      template "model.rb.erb", "models/#{model_filename}.rb"
+      template "model.rb.tt", "models/#{model_filename}.rb"
     end
 
   end
