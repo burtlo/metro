@@ -105,8 +105,9 @@ module Metro
 
   def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
-    load_paths 'models', 'lib'
+    load_paths 'lib'
     load_path 'scenes', prioritize: 'game_scene.rb'
+    load_path 'models', prioritize: 'game_model.rb'
   end
 
   def load_paths(*paths)
