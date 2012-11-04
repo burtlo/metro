@@ -1,4 +1,4 @@
-class BrandScene < Metro::Scene
+class BrandScene < GameScene
 
   draws :brand
 

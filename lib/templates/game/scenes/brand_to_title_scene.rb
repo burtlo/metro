@@ -1,4 +1,4 @@
-class BrandToTitleScene < Metro::Scene
+class BrandToTitleScene < GameScene
 
   draws :title
 

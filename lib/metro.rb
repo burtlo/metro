@@ -105,17 +105,19 @@ module Metro
 
   def load_game_files
     $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
-    load_paths 'models', 'scenes', 'lib'
+    load_paths 'models', 'lib'
+    load_path 'scenes', prioritize: 'game_scene.rb'
   end
 
   def load_paths(*paths)
     paths.flatten.compact.each {|path| load_path path }
   end
 
-  def load_path(path)
-    Dir["#{path}/**/*.rb"].each {|model| require_or_load model }
+  def load_path(path,options = {})
+    files = Dir["#{path}/**/*.rb"]
+    files.sort! {|file| File.basename(file) == options[:prioritize] ? -1 : 1 }
+    files.each {|model| require_or_load model }
   end
-
 
   def load_game_configuration(filename)
     gamefile = File.basename(filename)

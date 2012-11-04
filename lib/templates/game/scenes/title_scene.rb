@@ -1,4 +1,4 @@
-class TitleScene < Metro::Scene
+class TitleScene < GameScene
 
   draw :title
 
