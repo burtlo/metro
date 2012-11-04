@@ -121,6 +121,7 @@ module Metro
     # method or done with care to ensure that functionality is preserved.
     #
     def initialize(options = {})
+      _load(options)
       after_initialize
     end
 
