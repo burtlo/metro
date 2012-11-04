@@ -33,4 +33,12 @@ module Metro
     end
 
   end
+
+  #
+  # The Scene Transition should act as a filter and allow for
+  # common or custom scenes to be inserted between the scene
+  # that was about to be displayed.
+  #
+  Scenes.register_post_filter SceneTransitions
+
 end

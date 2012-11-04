@@ -5,6 +5,7 @@ require 'i18n'
 require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/inflector'
+require 'active_support/hash_with_indifferent_access'
 
 require 'core_ext/numeric'
 require 'logger'
