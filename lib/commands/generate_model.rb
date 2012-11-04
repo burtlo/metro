@@ -9,7 +9,7 @@ module Metro
       end
 
       def model_name
-        name.classify
+        name.camelize
       end
 
     end

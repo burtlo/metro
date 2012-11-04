@@ -11,7 +11,7 @@ module Metro
 
       def scene_class_name
         scene_name = name.gsub(/_?Scene$/i,'')
-        "#{scene_name.classify}Scene"
+        "#{scene_name.camelize}Scene"
       end
 
       def view_filename
