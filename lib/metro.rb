@@ -59,6 +59,7 @@ module Metro
   end
 
   def load_game_files!
+    EventDictionary.reset!
     prepare_watcher!
     load_game_files
     execute_watcher!

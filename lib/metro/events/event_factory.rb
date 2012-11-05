@@ -2,11 +2,13 @@ module Metro
 
   class EventFactory
 
-    attr_reader :event, :buttons, :block
+    attr_reader :event, :args, :block
 
-    def initialize(event,buttons = [],&block)
+    alias_method :buttons, :args
+
+    def initialize(event,args=[],&block)
       @event = event
-      @buttons = buttons
+      @args = args
       @block = block
     end
 

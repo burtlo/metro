@@ -281,12 +281,29 @@ module Metro
     #
     def self.scene_name(scene_name=nil)
       @scene_name ||= begin
-        to_s.gsub(/_?Scene$/i,'').underscore
+        if to_s == "Metro::Scene"
+          to_s.underscore
+        else
+          to_s.gsub(/_?Scene$/i,'').underscore
+        end
       end
 
       scene_name ? @scene_name = scene_name.to_s : @scene_name
     end
 
+    #
+    # @return a common name that can be used through the system as a common identifier.
+    #
+    def self.metro_name
+      scene_name
+    end
+
+    #
+    # @return an array of all the scene names of all the ancestor scenes
+    #
+    def self.hierarchy
+      ancestors.find_all {|a| a.respond_to? :metro_name }.map(&:metro_name)
+    end
 
     #
     # Allows you to set or retrieve the scene name for the Scene.
