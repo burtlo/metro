@@ -107,7 +107,7 @@ module Metro
     def contains?(x,y)
       false
     end
-    
+
     # Belongs to positionable items only
     def offset(x,y)
       self.x += x
@@ -193,6 +193,20 @@ module Metro
       end
 
       { name => hash }
+    end
+
+    #
+    # @return a common name that can be used through the system as a common identifier.
+    #
+    def self.metro_name
+      name.underscore
+    end
+
+    #
+    # @return an array of all ancestor models by name
+    #
+    def self.hierarchy
+      ancestors.find_all {|a| a.respond_to? :metro_name }.map(&:metro_name)
     end
 
     #

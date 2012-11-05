@@ -1,4 +1,4 @@
-require_relative 'event_factory'
+require_relative 'event_dictionary'
 
 module Metro
 
@@ -90,16 +90,15 @@ module Metro
       # This example uses a block instead of a method name but it is absolultey the same
       # as the last example.
       #
-      def event(event_type,*buttons,&block)
-        scene_event = EventFactory.new event_type, buttons, &block
-        events.push scene_event
+      def event(event_type,*args,&block)
+        EventDictionary.add target: metro_name, type: event_type, args: args, block: block
       end
 
       #
-      # @return a list of all the EventFactories defined for the scene
+      # @return a list of all the EventFactories defined for this event holding object
       #
       def events
-        @events ||= []
+        EventDictionary.events_for_targets(hierarchy)
       end
 
     end
