@@ -4,18 +4,12 @@ module Metro
     class PositionProperty < Property
 
       define_property :x,
-        get: lambda { position.x },
-        set: lambda {|val|
-          current_pos = self.position
-          current_pos.x = val
-          self.position = current_pos }
+        get: lambda {|position| position.x },
+        set: lambda {|position,val| position.x = val ; position }
 
       define_property :y,
-         get: lambda { position.y },
-         set: lambda {|val| 
-           current_pos = self.position
-           current_pos.y = val
-           self.position = current_pos }
+         get: lambda {|position| position.y },
+         set: lambda {|position,val| position.y = val ; position }
 
       get_or_set do |value|
         Point.new default_x, default_y

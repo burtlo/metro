@@ -34,11 +34,9 @@ module Metro
 
 
     def self.property(name,options={})
-      
-      puts "Creating: #{name}"
-      
+
       # Use the name as the property type if one has not been provided.
-      
+
       property_type = options[:type] || name
       property_class = Property.property(property_type)
 
@@ -47,26 +45,54 @@ module Metro
         property subproperty.name, subproperty.options.merge(parent: name)
       end
 
-      # Define getter and setter methods for this property. With getter
-      # and setters specified, the values are simply stored or retrieved
-      # in the properties hash.
+      # To ensure that our sub-properties are aware of the of their
+      # parent property for which they are dependent on we will need
+      # to know this information because we need to behave appropriately
+      # within the getter and setter blocks below.
+
+      is_a_dependency = true if options[:parent]
+      property_name = options.delete(:parent) || name
+
+      # Define getter for this property name. When no get property block
+      # is provided the default operation is to simply retrieve the data
+      # from the model's properties. A get property block is usually
+      # defined for sub-properties.
 
       getter_block = options.delete(:get)
-      getter_block = lambda { properties[name] } unless getter_block
+      getter_block = lambda {|property_name| properties[property_name] } unless getter_block
 
-      setter_block = options.delete(:set)
-      setter_block = lambda {|value| properties[name] = value } unless setter_block
+      # If thie is a sub-property then we want to retrieve the value of
+      # the parent property so we can pass it to the sub-property. Otherwise
+      # we are simply using the property name we are using the above lambda
+      # that is going to ask the properties.
 
       define_method name do
-        raw_value = instance_exec(&getter_block)
-        prop_preparer = property_class.new self, options
-        prop_preparer.get raw_value
+        property = is_a_dependency ? send(property_name) : property_name
+
+        raw_value = instance_exec(property,&getter_block)
+        property_class.new(self,options).get raw_value
       end
 
+      # Define setter for this property name. When no get property block
+      # is provided the default operation is to simply set the data
+      # from the model's properties. A set property block is usually
+      # defined for sub-properties.
+
+      setter_block = options.delete(:set)
+      setter_block = lambda {|property_name,value| properties[property_name] = value } unless setter_block
+
+      # If this is a sub-property then we want to retrieve the value of
+      # the parent property so we can pass it to the sub-property. We also
+      # want to set it again at the end. Otherwise we are simply using the property
+      # name we are using the above lambda that is going to set the properties.
+
       define_method "#{name}=" do |value|
-        prop_preparer = property_class.new self, options
-        prepared_value = prop_preparer.set value
-        instance_exec(value,&setter_block)
+        property = is_a_dependency ? send(property_name) : property_name
+
+        prepared_value = property_class.new(self,options).set(value)
+        result = instance_exec(property,value,&setter_block)
+
+        send("#{property_name}=",result) if is_a_dependency
       end
 
     end
