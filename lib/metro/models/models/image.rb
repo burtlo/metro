@@ -9,19 +9,19 @@ module Metro
     #
     class Image < Model
 
-      property :x, XPositionProperty
-      property :y, YPositionProperty
-      property :x_factor, MultiplierProperty
-      property :y_factor, MultiplierProperty
-      property :z_order, NumericProperty
-
-      property :color, ColorProperty
-      property :alpha, AlphaProperty
-
-      property :angle, NumericProperty
-
-      property :center_x, RatioProperty
-      property :center_y, RatioProperty
+      # property :x, XPositionProperty
+      # property :y, YPositionProperty
+      # property :x_factor, MultiplierProperty
+      # property :y_factor, MultiplierProperty
+      # property :z_order, NumericProperty
+      # 
+      # property :color, ColorProperty
+      # property :alpha, AlphaProperty
+      # 
+      # property :angle, NumericProperty
+      # 
+      # property :center_x, RatioProperty
+      # property :center_y, RatioProperty
 
       def after_initialize
         self.center_x = 0.5

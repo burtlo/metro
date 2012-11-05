@@ -22,7 +22,6 @@ require 'metro/game'
 require 'metro/scene'
 require 'metro/scenes'
 require 'metro/models/model'
-require 'metro/models/generic'
 
 require_relative 'metro/missing_scene'
 

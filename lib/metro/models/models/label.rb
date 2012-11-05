@@ -9,18 +9,32 @@ module Metro
     #
     class Label < Model
 
-      property :x, :position, width: :font_width
-      property :y, :position
+      property :position, default: Game.center
 
-      property :x_factor, :multiplier, default: 1.0
-      property :y_factor, :multiplier, default: 1.0
-      property :z_order, :numeric, default: 1
+      property :scaleable, type: ScaleableProperty, default: Scale.default
+
+      # property :x_factor, type: :multiplier, default: 1.0
+      # property :y_factor, type: :multiplier, default: 1.0
+
+      # property :scaleable
+      #
+      # scale (which sets both)
+      # x_factor
+      # y_factor
+      #
+
+      property :z_order, type: :numeric, default: 1
 
       property :color
+      # alpha depends on color being present
       property :alpha
 
       property :font
-      property :font_family, :string
+      # This should be grouped together as a font
+      # font
+      # font_family
+      # font_size
+      property :font_family, type: :string
       property :font_size
       property :text
 
@@ -35,14 +49,6 @@ module Metro
 
       def font
         @font ||= Gosu::Font.new(window, font_family, size)
-      end
-
-      def x
-        @x || (Game.width/2 - font.text_width(text)/2)
-      end
-
-      def y
-        @y || (Game.height/2 - font.height/2)
       end
 
       def bounds

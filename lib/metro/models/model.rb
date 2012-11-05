@@ -14,7 +14,7 @@ module Metro
   # @see Models::Generic
   #
   class Model
-    
+
     #
     # This is called every update interval while the actor is in the scene
     #
@@ -26,32 +26,49 @@ module Metro
     # This is called after an update. A model normally is not removed after
     # an update, however if the model responds true to #completed? then it
     # will be removed.
-    # 
+    #
     # @note This method should be implemented in the Model sublclass if you
     #   are interested in having the model be removed from the scene.
-    # 
+    #
     def completed? ; false ; end
 
-    def self.property(name,property_type = nil,options={})
 
-      property_type = name unless property_type
-
+    def self.property(name,options={})
+      
+      puts "Creating: #{name}"
+      
+      # Use the name as the property type if one has not been provided.
+      
+      property_type = options[:type] || name
       property_class = Property.property(property_type)
 
-      property_class.new options
+      # Define any properties defined on this property
+      property_class.defined_properties.each do |subproperty|
+        property subproperty.name, subproperty.options.merge(parent: name)
+      end
+
+      # Define getter and setter methods for this property. With getter
+      # and setters specified, the values are simply stored or retrieved
+      # in the properties hash.
+
+      getter_block = options.delete(:get)
+      getter_block = lambda { properties[name] } unless getter_block
+
+      setter_block = options.delete(:set)
+      setter_block = lambda {|value| properties[name] = value } unless setter_block
 
       define_method name do
+        raw_value = instance_exec(&getter_block)
         prop_preparer = property_class.new self, options
-        prop_preparer.get properties[name]
+        prop_preparer.get raw_value
       end
 
       define_method "#{name}=" do |value|
-        unless value.is_a? property_class
-          value = property_class.new(self,options).set(value)
-        end
-
-        properties[name] = value
+        prop_preparer = property_class.new self, options
+        prepared_value = prop_preparer.set value
+        instance_exec(value,&setter_block)
       end
+
     end
 
     def properties
@@ -65,7 +82,7 @@ module Metro
     # @note This method should be implemented in the Model subclass.
     #
     def draw ; end
-    
+
     #
     # The window that this model that this window is currently being
     # displayed.
@@ -269,4 +286,4 @@ require_relative 'models/label'
 require_relative 'models/menu'
 require_relative 'models/image'
 require_relative 'models/rectangle'
-require_relative 'grid_drawer'
+require_relative 'models/grid_drawer'
