@@ -251,6 +251,7 @@ module Metro
       registering_actor.window = window
 
       drawers.push(registering_actor)
+      updaters.push(registering_actor)
 
       register_events_for_target(registering_actor,registering_actor.class.events)
     end

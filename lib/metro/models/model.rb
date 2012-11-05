@@ -13,7 +13,32 @@ module Metro
   # @see Models::Generic
   #
   class Model
+    
+    #
+    # This is called every update interval while the actor is in the scene
+    #
+    # @note This method should be implemented in the Model subclass
+    #
+    def update ; end
 
+    #
+    # This is called after an update. A model normally is not removed after
+    # an update, however if the model responds true to #completed? then it
+    # will be removed.
+    # 
+    # @note This method should be implemented in the Model sublclass if you
+    #   are interested in having the model be removed from the scene.
+    # 
+    def completed? ; false ; end
+
+    #
+    # This is called after every {#update} and when the OS wants the window to
+    # repaint itself.
+    #
+    # @note This method should be implemented in the Model subclass.
+    #
+    def draw ; end
+    
     #
     # The window that this model that this window is currently being
     # displayed.
