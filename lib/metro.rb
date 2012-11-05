@@ -13,6 +13,7 @@ require 'erb'
 
 require 'locale/locale'
 require 'metro/asset_path'
+require 'metro/point'
 require 'metro/logging'
 require 'metro/version'
 require 'metro/template_message'
