@@ -103,15 +103,11 @@ module Metro
 
 end
 
-require_relative 'alpha'
 require_relative 'color'
-require_relative 'font_size'
 require_relative 'font'
 require_relative 'numeric'
 require_relative 'multiplier'
 require_relative 'text'
-require_relative 'x_position'
-require_relative 'y_position'
 require_relative 'scaleable'
 require_relative 'position'
 require_relative 'ratio'
