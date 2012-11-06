@@ -53,3 +53,18 @@ $ metro generate scene first
 ```
 
 This should generate a scene in the scenes directory. The scene file contains a lot of examples of how to draw, animate and have your scene listen to events.
+
+
+### Resources
+
+#### Books
+
+* [Rules of Play](http://www.amazon.com/dp/0262240459)
+* [Game Programming Gems 8](http://www.amazon.com/dp/1584507020)
+* [Game Feel](http://www.amazon.com/dp/0123743281)
+* [Game Coding Complete](http://www.amazon.com/dp/1584506806)
+* [Game Design Workshop](http://www.amazon.com/dp/0240809742)
+* [Challenges For Game Designers](http://www.amazon.com/dp/158450580X)
+* [The Art of Game Design: A book of lenses](http://www.amazon.com/dp/0123694965)
+* [A Theory of Fun](http://www.theoryoffun.com)
+* [Andrew Rollings and Ernest Adams on Game Design](http://www.amazon.com/dp/1592730019)
