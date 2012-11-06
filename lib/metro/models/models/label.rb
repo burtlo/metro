@@ -9,11 +9,10 @@ module Metro
     #
     class Label < Model
 
+      # TODO: I think that this Game.center is incorrect if the resolution changes from 640x480
       property :position, default: Game.center
 
       property :scale, default: Scale.default
-
-      property :z_order, type: :numeric, default: 1
 
       property :color, default: "rgba(255,255,255,1.0)"
 

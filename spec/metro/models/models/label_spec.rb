@@ -8,14 +8,24 @@ describe Metro::Models::Label do
     label
   end
 
-  let(:expected_position) { Metro::Point.new 320, 240 }
+  before do
+    # Reset the position of the label to the default
+    subject.position = nil
+  end
+
+  let(:expected_position) { Metro::Point.at 320, 240 }
   its(:position) { should eq expected_position }
 
-  context "when setting the position" do
+  its(:x) { should eq expected_position.x }
+  its(:y) { should eq expected_position.y }
+  its(:z) { should eq expected_position.z }
+  its(:z_order) { should eq expected_position.z_order }
 
+  context "when setting the position" do
+    
     it "should be set succesfully" do
       subject.position = "10,10"
-      subject.position.should eq Metro::Point.new 10, 10
+      subject.position.should eq Metro::Point.at(10,10)
     end
 
     context "when setting the x property" do
@@ -36,6 +46,10 @@ describe Metro::Models::Label do
     end
 
     context "when setting the y property" do
+      before do
+        subject.position = "#{expected_x},#{expected_y}"
+      end
+
       let(:expected_x) { 320 }
       let(:expected_y) { 66 }
 
@@ -52,9 +66,6 @@ describe Metro::Models::Label do
     end
 
   end
-
-  its(:x) { should eq expected_position.x }
-  its(:y) { should eq expected_position.y }
 
   let(:expected_scale) { Metro::Scale.default }
 
