@@ -98,14 +98,12 @@ module Metro
 
 end
 
+require_relative 'angle'
 require_relative 'color'
 require_relative 'font'
-require_relative 'numeric'
-require_relative 'multiplier'
-require_relative 'text'
-require_relative 'scale'
-require_relative 'position'
-require_relative 'ratio'
 require_relative 'image'
-require_relative 'angle'
+require_relative 'numeric'
+require_relative 'position'
+require_relative 'scale'
+require_relative 'text'
 require_relative 'velocity'
