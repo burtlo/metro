@@ -26,7 +26,7 @@ class Gosu::Color
   end
 
   def self.parse_rgba(rgba)
-    if rgba =~ /rgba\(([\d]{1,3}),([\d]{1,3}),([\d]{1,3}),(\d(?:\.\d)?)\)/
+    if rgba =~ /rgba\(([\d]{1,3}(?:\.\d*)?),([\d]{1,3}(?:\.\d*)?),([\d]{1,3}(?:\.\d*)?),(\d(?:\.\d*)?)\)/
       [ (255 * $4.to_f).floor.to_i, $1.to_i, $2.to_i, $3.to_i ]
     end
   end
