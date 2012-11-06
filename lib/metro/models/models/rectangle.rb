@@ -4,7 +4,7 @@ module Metro
     class Rectangle < ::Metro::Model
 
       property :position
-      
+
       property :z_order, type: :numeric, default: 0
 
       property :color

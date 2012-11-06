@@ -1,8 +1,4 @@
 module Metro
-  class Point < Struct.new(:x,:y)
-
-  end
-
   class Scale < Struct.new(:x_factor,:y_factor)
 
     def self.default
@@ -15,4 +11,3 @@ module Metro
 
   end
 end
-

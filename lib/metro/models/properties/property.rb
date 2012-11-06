@@ -53,7 +53,6 @@ module Metro
       end
 
       def self.define_property(name,options = {})
-        puts "Defining Property: #{name} #{options}"
         defined_properties.push PropertyDefinition.new name, options
       end
 
