@@ -11,7 +11,7 @@ module Metro
 
       property :position
 
-      property :scale, default: Scale.default
+      property :scale, default: Scale.one
 
       property :z_order, type: :numeric, default: 1
 

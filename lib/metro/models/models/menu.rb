@@ -12,7 +12,7 @@ module Metro
 
       property :position, default: Game.center
 
-      property :scale, default: Scale.default
+      property :scale, default: Scale.one
 
       property :padding, type: :numeric, default: 40
 

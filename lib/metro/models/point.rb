@@ -9,7 +9,7 @@ module Metro
     end
 
     def self.parse(string)
-      at *string.split(",").map(&:to_f)
+      at *string.split(",",3).map(&:to_f)
     end
 
     alias_method :z_order, :z

@@ -75,7 +75,7 @@ module Metro
       end
 
       def default_point
-        (options[:default] and options[:default].is_a? Point) ? options[:default] : Point.at(0.0, 0.0, 0.0)
+        (options[:default] and options[:default].is_a? Point) ? options[:default] : Point.zero
       end
 
     end

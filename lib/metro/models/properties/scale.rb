@@ -59,25 +59,28 @@ module Metro
 
       define_property :y_factor
 
-      get_or_set do |value|
-        Scale.new default_x, default_y
+      get do |value|
+        default_scale
       end
 
-      get_or_set Scale do |value|
+      get String do |value|
+        Scale.parse(value)
+      end
+
+      set do |value|
+        default_scale.to_s
+      end
+
+      set String do |value|
         value
       end
 
-      get_or_set String do |value|
-        x,y = value.split(",")
-        Scale.new x.to_f, y.to_f
+      set Scale do |value|
+        value.to_s
       end
 
-      def default_x
-        options[:default] ? options[:default].x_factor : 1.0
-      end
-
-      def default_y
-        options[:default] ? options[:default].y_factor : 1.0
+      def default_scale
+        (options[:default] and options[:default].is_a? Scale) ? options[:default] : Scale.one
       end
 
     end
