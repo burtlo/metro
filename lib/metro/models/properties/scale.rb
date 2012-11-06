@@ -1,7 +1,7 @@
 module Metro
   class Model
 
-    class ScaleableProperty < Property
+    class ScaleProperty < Property
 
       define_property :x_factor
 

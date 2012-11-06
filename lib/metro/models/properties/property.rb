@@ -70,17 +70,13 @@ module Metro
 
       def self.properties_hash
         @properties_hash ||= begin
-          # TODO: hash with indifference
-          # TODO: do not store classes within the structure
-          # TODO: this will misbehave on reloading
-          hash = Hash.new(NumericProperty)
+          hash = ActiveSupport::HashWithIndifferentAccess.new(NumericProperty)
+          # TODO: do not store classes within the structure - this will misbehave on reloading
           properties.each do |prop|
-            hash[prop] = prop
             prop_name = prop.to_s.gsub(/Property$/,'').split("::").last.underscore
             hash[prop_name] = prop
             hash[prop_name.to_sym] = prop
           end
-
           # puts hash
           hash
         end
@@ -107,7 +103,7 @@ require_relative 'font'
 require_relative 'numeric'
 require_relative 'multiplier'
 require_relative 'text'
-require_relative 'scaleable'
+require_relative 'scale'
 require_relative 'position'
 require_relative 'ratio'
 require_relative 'image'

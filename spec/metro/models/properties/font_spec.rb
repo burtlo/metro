@@ -126,5 +126,4 @@ describe Metro::Model::FontProperty do
     end
   end
 
-
 end

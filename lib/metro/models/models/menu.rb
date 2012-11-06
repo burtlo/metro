@@ -12,14 +12,14 @@ module Metro
 
       property :position, default: Game.center
 
-      property :scale, type: ScaleableProperty, default: Scale.default
+      property :scale, default: Scale.default
 
       property :z_order, type: :numeric, default: 1
 
       property :padding, type: :numeric, default: 40
 
       property :color
-      property :highlight_color, type: ColorProperty
+      property :highlight_color, type: :color
 
       def alpha=(value)
         color.alpha = value.floor

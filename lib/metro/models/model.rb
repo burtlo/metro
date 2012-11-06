@@ -38,16 +38,23 @@ module Metro
       # Use the name as the property type if one has not been provided.
 
       property_type = options[:type] || name
+
       property_class = Property.property(property_type)
 
+      # When the name does not match the property type then we want to force
+      # the prefixing to be on for our sub-properties. This is to make sure
+      # that when people define multiple fonts and colors that they do not
+      # overlap.
+
+      override_prefix = !(name == property_type)
+
       # Define any properties defined on this property
+
       property_class.defined_properties.each do |subproperty|
-        sub_options = subproperty.options
-        if sub_options[:parents]
-          property subproperty.name, sub_options.merge(parents: (sub_options[:parents] + [name]))
-        else
-          property subproperty.name, sub_options.merge(parents: [name])
-        end
+        sub_options = { prefix: override_prefix }.merge(subproperty.options)
+        sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
+
+        property subproperty.name, sub_options
       end
 
       # To ensure that our sub-properties are aware of the of their
@@ -222,11 +229,11 @@ module Metro
           self.class.send(:define_method,"#{key}=") do |value|
             properties[key] = value
           end
-          
+
           # raise "Do not know (#{key}=) property"
         end
 
-        
+
 
         _loaded_options.push key
         send "#{key}=", value
