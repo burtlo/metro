@@ -13,8 +13,6 @@ module Metro
 
       property :scale, default: Scale.one
 
-      property :z_order, type: :numeric, default: 1
-
       property :color
 
       property :angle, type: :numeric, default: 0
