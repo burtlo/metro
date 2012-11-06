@@ -45,7 +45,6 @@ module Metro
       # Define a y position property
       define_property :y
 
-
       # Define a z position property which is used for the z order
       define_property :z
       define_property :z_order

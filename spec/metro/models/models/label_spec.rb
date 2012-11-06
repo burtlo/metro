@@ -13,7 +13,7 @@ describe Metro::Models::Label do
     subject.position = nil
   end
 
-  let(:expected_position) { Metro::Point.at 320, 240 }
+  let(:expected_position) { Metro::Point.zero }
   its(:position) { should eq expected_position }
 
   its(:x) { should eq expected_position.x }
@@ -30,7 +30,7 @@ describe Metro::Models::Label do
 
     context "when setting the x property" do
       let(:expected_x) { 11 }
-      let(:expected_y) { 240 }
+      let(:expected_y) { 0 }
 
       it "should update successfully" do
         subject.x = expected_x

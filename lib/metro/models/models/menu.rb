@@ -14,16 +14,18 @@ module Metro
 
       property :scale, default: Scale.default
 
-      property :z_order, type: :numeric, default: 1
-
       property :padding, type: :numeric, default: 40
 
-      property :color
-      property :highlight_color, type: :color
+      property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
+      property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
+
+      def alpha
+        self.unselected_color_alpha
+      end
 
       def alpha=(value)
-        color.alpha = value.floor
-        highlight_color.alpha = value.floor
+        self.unselected_color_alpha = value.floor
+        self.selected_color_alpha = value.floor
       end
 
       property :font
@@ -90,17 +92,6 @@ module Metro
         options.length * font.height + (options.length - 1) * padding
       end
 
-      attr_reader :highlight_color
-
-      def highlight_color=(value)
-        @highlight_color = Gosu::Color.new(value)
-      end
-
-      def alpha=(value)
-        color.alpha = value.floor
-        highlight_color.alpha = value.floor
-      end
-
       def option_at_index(index)
         menu_options[index]
       end
@@ -110,8 +101,8 @@ module Metro
 
           option_name = option_at_index(index).name
 
-          draw_color = color
-          draw_color = highlight_color if index == selected_index
+          draw_color = unselected_color
+          draw_color = selected_color if index == selected_index
 
           y_position = y + padding * index
           font.draw option_name, x, y_position, z_order, x_factor, y_factor, draw_color

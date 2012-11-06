@@ -10,7 +10,7 @@ module Metro
     class Label < Model
 
       # TODO: I think that this Game.center is incorrect if the resolution changes from 640x480
-      property :position, default: Game.center
+      property :position, default: Point.zero
 
       property :scale, default: Scale.default
 
@@ -36,15 +36,8 @@ module Metro
         bounds.contains?(x,y)
       end
 
-      def text
-        scene.instance_eval( "\"#{@text}\"" )
-      end
-
-      attr_writer :text
-
       def draw
-        label_text = text
-        font.draw label_text, x, y, z_order, x_factor, y_factor, color
+        font.draw text, x, y, z_order, x_factor, y_factor, color
       end
 
     end
