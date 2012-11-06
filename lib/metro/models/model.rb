@@ -90,7 +90,6 @@ module Metro
         #   deep setter will not be valid.
         #
         define_method "#{method_name}=" do |value|
-          #puts "Setting #{method_name}= #{parents} #{options[:parents]} with #{value}"
           parent_value = parents.inject(self) {|current,method| current.send(method) }
 
           prepared_value = property_class.new(self,options).set(value)
@@ -217,7 +216,7 @@ module Metro
 
 
         unless respond_to? key
-          log.warn "Unknwon Property #{key}"
+          log.warn "Unknown Property #{key}"
           self.class.send(:define_method,key) do
             properties[key]
           end
