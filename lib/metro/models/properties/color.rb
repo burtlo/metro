@@ -5,20 +5,36 @@ module Metro
 
       define_property :alpha
 
-      get_or_set NilClass do |value|
+      get do |value|
         default_color
+      end
+      
+      set do |value|
+        default_color_string
       end
 
       get_or_set String do |value|
-        Gosu::Color.new value
+        create_color value
       end
 
-      get_or_set Gosu::Color do |value|
+      get Gosu::Color do |value|
         value
+      end
+      
+      set Gosu::Color do |value|
+        value.to_s
       end
 
       def default_color
-        Gosu::Color.new(options[:default] || "rgb(255,255,255)")
+        create_color(default_color_string)
+      end
+      
+      def default_color_string
+        options[:default] || "rgba(255,255,255,1.0)"
+      end
+      
+      def create_color(value)
+        Gosu::Color.new value
       end
 
     end
