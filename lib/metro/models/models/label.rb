@@ -15,20 +15,11 @@ module Metro
 
       property :z_order, type: :numeric, default: 1
 
-      property :color
+      property :color, default: "rgba(255,255,255,1.0)"
 
-      property :font
+      property :font, default: { size: 20 }
 
       property :text
-
-      def after_initialize
-        @text = ""
-        @x_factor = @y_factor = 1.0
-        @z_order = 0
-        @color = Gosu::Color.new "rgba(255,255,255,1.0)"
-        @size = 20
-        @font_family = Gosu::default_font_name
-      end
 
       def bounds
         Bounds.new x, y, x + width, y + height

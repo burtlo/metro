@@ -16,7 +16,7 @@ module Metro
 
       property :z_order, type: :numeric, default: 1
 
-      property :padding, type: :numeric
+      property :padding, type: :numeric, default: 40
 
       property :color
       property :highlight_color, type: ColorProperty
@@ -27,7 +27,6 @@ module Metro
       end
 
       property :font
-
 
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
         previous_option
@@ -43,12 +42,8 @@ module Metro
 
       attr_reader :selected_index, :menu_options
 
-      attr_accessor :padding
-
       def after_initialize
         @selected_index = 0
-        self.padding = 40
-        self.z_order = 1
       end
 
       def window=(value)
