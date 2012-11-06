@@ -57,6 +57,10 @@ This should generate a scene in the scenes directory. The scene file contains a 
 
 ### Resources
 
+#### Art
+
+* [Lost Garden](http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html)
+
 #### Books
 
 * [Rules of Play](http://www.amazon.com/dp/0262240459)
