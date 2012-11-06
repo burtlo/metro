@@ -42,7 +42,12 @@ module Metro
 
       # Define any properties defined on this property
       property_class.defined_properties.each do |subproperty|
-        property subproperty.name, subproperty.options.merge(parent: name)
+        sub_options = subproperty.options
+        if sub_options[:parents]
+          property subproperty.name, sub_options.merge(parents: (sub_options[:parents] + [name]))
+        else
+          property subproperty.name, sub_options.merge(parents: [name])
+        end
       end
 
       # To ensure that our sub-properties are aware of the of their
@@ -50,49 +55,55 @@ module Metro
       # to know this information because we need to behave appropriately
       # within the getter and setter blocks below.
 
-      is_a_dependency = true if options[:parent]
-      property_name = options.delete(:parent) || name
+      is_a_dependency = true if options[:parents]
 
-      # Define getter for this property name. When no get property block
-      # is provided the default operation is to simply retrieve the data
-      # from the model's properties. A get property block is usually
-      # defined for sub-properties.
+      if is_a_dependency
 
-      getter_block = options.delete(:get)
-      getter_block = lambda {|property_name| properties[property_name] } unless getter_block
+        parents = Array(options[:parents])
 
-      # If thie is a sub-property then we want to retrieve the value of
-      # the parent property so we can pass it to the sub-property. Otherwise
-      # we are simply using the property name we are using the above lambda
-      # that is going to ask the properties.
+        method_name = name
 
-      define_method name do
-        property = is_a_dependency ? send(property_name) : property_name
+        if options[:prefix]
+          method_name = (parents + [name]).join("_")
+        end
 
-        raw_value = instance_exec(property,&getter_block)
-        property_class.new(self,options).get raw_value
-      end
+        # Define a getter for the sub-property that will traverse the
+        # parent properties, finally returning the filtered value
 
-      # Define setter for this property name. When no get property block
-      # is provided the default operation is to simply set the data
-      # from the model's properties. A set property block is usually
-      # defined for sub-properties.
+        define_method method_name do
+          raw_value = (parents + [name]).inject(self) {|current,method| current.send(method) }
+          property_class.new(self,options).get raw_value
+        end
 
-      setter_block = options.delete(:set)
-      setter_block = lambda {|property_name,value| properties[property_name] = value } unless setter_block
+        # Define a setter for the sub-property that will find the parent
+        # value and set itself on that with the filtered value. The parent
+        # is then set.
+        #
+        # @TODO: If getters return dups and not instances of the original object then a very
+        #   deep setter will not be valid.
+        #
+        define_method "#{method_name}=" do |value|
+          #puts "Setting #{method_name}= #{parents} #{options[:parents]} with #{value}"
+          parent_value = parents.inject(self) {|current,method| current.send(method) }
 
-      # If this is a sub-property then we want to retrieve the value of
-      # the parent property so we can pass it to the sub-property. We also
-      # want to set it again at the end. Otherwise we are simply using the property
-      # name we are using the above lambda that is going to set the properties.
+          prepared_value = property_class.new(self,options).set(value)
+          parent_value.send("#{name}=",prepared_value)
 
-      define_method "#{name}=" do |value|
-        property = is_a_dependency ? send(property_name) : property_name
+          send("#{parents.last}=",parent_value)
+        end
 
-        prepared_value = property_class.new(self,options).set(value)
-        result = instance_exec(property,value,&setter_block)
+      else
 
-        send("#{property_name}=",result) if is_a_dependency
+        define_method name do
+          raw_value = properties[name]
+          property_class.new(self,options).get raw_value
+        end
+
+        define_method "#{name}=" do |value|
+          prepared_value = property_class.new(self,options).set(value)
+          properties[name] = prepared_value
+        end
+
       end
 
     end
@@ -100,6 +111,9 @@ module Metro
     def properties
       @properties ||= {}
     end
+
+    property :model, type: :text
+    property :name, type: :text
 
     #
     # This is called after every {#update} and when the OS wants the window to
@@ -191,21 +205,28 @@ module Metro
       options = {} unless options
 
       options.each do |raw_key,value|
-
         key = raw_key.to_s.dup
         key = key.gsub(/-/,'_').underscore
 
+
         unless respond_to? key
-          self.class.send :define_method, key do
-            instance_variable_get("@#{key}")
+          log.warn "Unknwon Property #{key}"
+          self.class.send(:define_method,key) do
+            properties[key]
           end
+          #raise "Do not know (#{key}) property"
         end
 
         unless respond_to? "#{key}="
-          self.class.send :define_method, "#{key}=" do |value|
-            instance_variable_set("@#{key}",value)
+          log.warn "Unknown Property #{key}="
+          self.class.send(:define_method,"#{key}=") do |value|
+            properties[key] = value
           end
+          
+          # raise "Do not know (#{key}=) property"
         end
+
+        
 
         _loaded_options.push key
         send "#{key}=", value

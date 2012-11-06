@@ -2,13 +2,15 @@ module Metro
   class Model
 
     class NumericProperty < Property
-      def get(value)
-        value.to_f
+
+      get_or_set do |value|
+        value ? value.to_f : default_number
       end
 
-      def set(value)
-        value.to_f
+      def default_number
+        options[:default].to_f
       end
+
     end
 
   end

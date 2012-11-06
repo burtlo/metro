@@ -10,27 +10,23 @@ module Metro
     #
     class Menu < Model
 
-      # property :x, XPositionProperty
-      # property :y, YPositionProperty
-      # 
-      # property :x_factor, MultiplierProperty
-      # property :y_factor, MultiplierProperty
-      # 
-      # property :z_order, NumericProperty
-      # 
-      # property :padding, NumericProperty
-      # 
-      # property :color, ColorProperty
-      # property :highlight_color, ColorProperty
-      # 
-      # def alpha=(value)
-      #   color.alpha = value.floor
-      #   highlight_color.alpha = value.floor
-      # end
-      # 
-      # property :font, FontProperty
-      # property :font_family, TextProperty
-      # property :font_size, FontSizeProperty
+      property :position, default: Game.center
+
+      property :scale, type: ScaleableProperty, default: Scale.default
+
+      property :z_order, type: :numeric, default: 1
+
+      property :padding, type: :numeric
+
+      property :color
+      property :highlight_color, type: ColorProperty
+
+      def alpha=(value)
+        color.alpha = value.floor
+        highlight_color.alpha = value.floor
+      end
+
+      property :font
 
 
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do

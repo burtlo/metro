@@ -3,13 +3,9 @@ module Metro
 
     class PositionProperty < Property
 
-      define_property :x,
-        get: lambda {|position| position.x },
-        set: lambda {|position,val| position.x = val ; position }
+      define_property :x
 
-      define_property :y,
-         get: lambda {|position| position.y },
-         set: lambda {|position,val| position.y = val ; position }
+      define_property :y
 
       get_or_set do |value|
         Point.new default_x, default_y

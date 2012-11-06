@@ -9,28 +9,20 @@ module Metro
     #
     class Image < Model
 
-      # property :x, XPositionProperty
-      # property :y, YPositionProperty
-      # property :x_factor, MultiplierProperty
-      # property :y_factor, MultiplierProperty
-      # property :z_order, NumericProperty
-      # 
-      # property :color, ColorProperty
-      # property :alpha, AlphaProperty
-      # 
-      # property :angle, NumericProperty
-      # 
-      # property :center_x, RatioProperty
-      # property :center_y, RatioProperty
+      property :position
 
-      def after_initialize
-        self.center_x = 0.5
-        self.center_y = 0.5
-      end
+      property :scale, type: ScaleableProperty, default: Scale.default
 
-      def image
-        @image ||= Gosu::Image.new(window,asset_path(path))
-      end
+      property :z_order, type: :numeric, default: 1
+
+      property :color
+
+      property :angle, type: :numeric, default: 0
+
+      property :center_x, type: :numeric, default: 0.5
+      property :center_y, type: :numeric, default: 0.5
+
+      property :image
 
       def contains?(x,y)
         bounds.contains?(x,y)

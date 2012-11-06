@@ -3,17 +3,24 @@ module Metro
 
     class ColorProperty < Property
 
-      def default_color
-        @default_color ||= Gosu::Color.new "rgb(255,255,255)"
+      define_property :alpha
+
+      get_or_set NilClass do |value|
+        default_color
       end
 
-      def get(value)
-        value || default_color
-      end
-
-      def set(value)
+      get_or_set String do |value|
         Gosu::Color.new value
       end
+
+      get_or_set Gosu::Color do |value|
+        value
+      end
+
+      def default_color
+        Gosu::Color.new(options[:default] || "rgb(255,255,255)")
+      end
+
     end
 
   end

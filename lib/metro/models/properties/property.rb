@@ -10,7 +10,11 @@ module Metro
       end
 
       def self.gets
-        @gets ||= {}
+        @gets ||= begin
+          hash = Hash.new { |hash,key| hash["NilClass"] }
+          hash["NilClass"] = lambda { |value| raise "#{self} is not able to translate the #{value} (#{value.class})" }
+          hash
+        end
       end
 
       def self.get(type=NilClass,&block)
@@ -23,7 +27,11 @@ module Metro
       end
 
       def self.sets
-        @sets ||= {}
+        @sets ||= begin
+          hash = Hash.new { |hash,key| hash["NilClass"] }
+          hash["NilClass"] = lambda { |value| raise "#{self} is not able to translate the #{value} (#{value.class})" }
+          hash
+        end
       end
 
       def self.set(type=NilClass,&block)
@@ -45,6 +53,7 @@ module Metro
       end
 
       def self.define_property(name,options = {})
+        puts "Defining Property: #{name} #{options}"
         defined_properties.push PropertyDefinition.new name, options
       end
 

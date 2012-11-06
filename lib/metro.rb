@@ -1,10 +1,12 @@
 require 'gosu'
 require 'gosu_ext/color'
+require 'gosu_ext/image'
 require 'gosu_ext/gosu_constants'
 require 'i18n'
 require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/inflector'
+require 'active_support/core_ext/hash'
 require 'active_support/hash_with_indifferent_access'
 
 require 'core_ext/numeric'

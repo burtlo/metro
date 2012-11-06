@@ -3,13 +3,9 @@ module Metro
 
     class ScaleableProperty < Property
 
-      define_property :x_factor,
-        get: lambda {|scale| scale.x_factor },
-        set: lambda {|scale,val| scale.x_factor = val ; scale }
+      define_property :x_factor
 
-      define_property :y_factor,
-        get: lambda {|scale| scale.y_factor },
-        set: lambda {|scale,val| scale.y_factor = val ; scale }
+      define_property :y_factor
 
       get_or_set do |value|
         Scale.new default_x, default_y
