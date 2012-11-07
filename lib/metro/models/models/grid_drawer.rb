@@ -34,14 +34,14 @@ module Metro
       end
 
       def draw_vertical_lines
-        xs = (width / spacing + 1).times.map {|segment| segment * spacing }
+        xs = (width / spacing + 1).to_i.times.map {|segment| segment * spacing }
         xs.each do |x|
           window.draw_line(x, 1, color, x, height, color, 0, :additive)
         end
       end
 
       def draw_horizontal_lines
-        ys = (height / spacing + 1).times.map {|segment| segment * spacing }
+        ys = (height / spacing + 1).to_i.times.map {|segment| segment * spacing }
         ys.each do |y|
           window.draw_line(1, y, color, width, y, color, 0, :additive)
         end
