@@ -1,5 +1,16 @@
 # Metro
 
+## 0.2.0 / 2012-11-07
+
+* Views now use position instead of `x`, `y`, and `z-order`
+* Point, Scale, and Dimensions is available in model and scenes.
+* Events are shared from superclasses to subclases.
+* Templates updated to use GameScene and GameModel for each game.
+* Models are automatically added to the update loop
+* Model properties now make it easier to store/retrieve various
+  common numeric, position font, image, and animation properties.
+
+
 ## 0.1.6 / 2012-11-07
 
 * Events are shared from superclasses to subclases.
