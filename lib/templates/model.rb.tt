@@ -1,21 +1,59 @@
 class <%= model_name %> < GameModel
 
   #
-  # Example Event Handling Definitions
+  # Properties
   #
-  # @example Registering the keyboard down event to execute a block of code
+  # Models commonly have properties that you want to be able to get, set, and save.
+  # Usually within ruby you would write attr_accessor methods and initialize them.
+  # Metro provides some shorthand class helper methods that allow you to quickly
+  # define these properties with the added benefit that they will be persisted when
+  # the model is saved within the view and the type will be maintained.
   #
-  # event :on_down, Gosu::GpLeft, Gosu::GpUp, do
+  # # @example of adding a `position` property to your model
+  # # Property defines a `position` accessor as well as `x`, `y`, and `z` (or `z_order`)
+  # # accessors.
+  # property :position
+  #
+  # # @example of adding an `image` property to your model
+  # # An image property can be set up with an image path or that can be set later
+  # # through the `image` accessor that is added.
+  #
+  # property :image, path: "player.png"
+  #
+  # # @example of adding an `numeric` property to your model
+  # # A lot of times you want to track some numeric value like score. Here we
+  # # create a `score` accessor and assign a default value.
+  # property :score, type: numeric, default: 0
+  #
+  # # @example of adding an `text` property to your model
+  # # A lot of times you want to track some numeric value like score. Here we
+  # # create a `text` accessor and assign a default value.
+  # property :description, type: text, default: 'Greetings Earthling!'
+  #
+  # For more information see the other defined properties.
+  #
+  # @see Metro::Model::AnimationProperty
+  # @see Metro::Model::ImageProperty
+  # @see Metro::Model::NumericProperty
+  # @see Metro::Model::ScaleProperty
+  # @see Metro::Model::TextProperty
+  # @see Metro::Model::PositionProperty
+  # @see Metro::Model::FontProperty
+  #
+
+  #
+  # Events
+  #
+  # # @example Registering the keyboard down event to execute a block of code
+  # event :on_down, GpLeft, GpUp, do
   #   turn_left
   # end
   #
-  # @example Registering the keyboard up key to execute the method `jump`
-  #
+  # # @example Registering the keyboard up key to execute the method `jump`
   # event :on_up, KbEscape, do: :jump
   #
-  # @example Registering for button held events that would build the model's acceleration
-  #
-  # event :on_hold, KbRight, Gosu::GpRight do
+  # # @example Registering for button held events that would build the model's acceleration
+  # event :on_hold, KbRight, GpRight do
   #   acceleration += 1
   # end
   #
@@ -26,8 +64,8 @@ class <%= model_name %> < GameModel
   # @see https://github.com/jlnr/gosu/blob/master/Gosu/ButtonsWin.hpp
   #
   #
-  # @example Registering for an event called 'save_complete' event that anyone
-  #   can generate and this scene block will execute this code.
+  # # @example Registering for an event called 'save_complete' event that anyone
+  # #   can generate and this scene block will execute this code.
   #
   # event :notification, :game_over do
   #   puts "Game is Over!"
@@ -37,10 +75,11 @@ class <%= model_name %> < GameModel
   # to generate the notification
   #
   # def update_score
-  #   score = score + 1
+  #   @score = score + 1
   #   if score >= winning_score
   #     notification :game_over
   #   end
+  # end
   #
 
   #
