@@ -3,12 +3,13 @@ module Metro
 
     class Rectangle < ::Metro::Model
 
-      attr_accessor :x, :y, :z_order, :width, :height
+      property :position
 
-      def after_initialize
-        @x = @y = 0
-        @z_order = 1
-      end
+      property :z_order, type: :numeric, default: 0
+
+      property :color
+
+      attr_writer :width, :height
 
       def width
         @width || window.width

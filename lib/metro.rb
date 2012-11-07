@@ -1,10 +1,12 @@
 require 'gosu'
 require 'gosu_ext/color'
+require 'gosu_ext/image'
 require 'gosu_ext/gosu_constants'
 require 'i18n'
 require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/inflector'
+require 'active_support/core_ext/hash'
 require 'active_support/hash_with_indifferent_access'
 
 require 'core_ext/numeric'
@@ -13,7 +15,9 @@ require 'erb'
 
 require 'locale/locale'
 require 'metro/asset_path'
-require 'metro/point'
+require 'metro/models/point'
+require 'metro/models/scale'
+require 'metro/models/dimensions'
 require 'metro/logging'
 require 'metro/version'
 require 'metro/template_message'
@@ -22,7 +26,6 @@ require 'metro/game'
 require 'metro/scene'
 require 'metro/scenes'
 require 'metro/models/model'
-require 'metro/models/generic'
 
 require_relative 'metro/missing_scene'
 
@@ -41,6 +44,10 @@ module Metro
   #
   def default_game_filename
     'metro'
+  end
+
+  def asset_dir
+    File.join File.dirname(__FILE__), "assets"
   end
 
   #

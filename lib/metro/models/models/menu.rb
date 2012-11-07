@@ -10,6 +10,26 @@ module Metro
     #
     class Menu < Model
 
+      property :position, default: Game.center
+
+      property :scale, default: Scale.one
+
+      property :padding, type: :numeric, default: 40
+
+      property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
+      property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
+
+      def alpha
+        self.unselected_color_alpha
+      end
+
+      def alpha=(value)
+        self.unselected_color_alpha = value.floor
+        self.selected_color_alpha = value.floor
+      end
+
+      property :font
+
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
         previous_option
       end
@@ -24,12 +44,8 @@ module Metro
 
       attr_reader :selected_index, :menu_options
 
-      attr_accessor :padding, :z_order
-
       def after_initialize
         @selected_index = 0
-        @padding = 40
-        @z_order = 1
       end
 
       def window=(value)
@@ -76,17 +92,6 @@ module Metro
         options.length * font.height + (options.length - 1) * padding
       end
 
-      attr_reader :highlight_color
-
-      def highlight_color=(value)
-        @highlight_color = Gosu::Color.new(value)
-      end
-
-      def alpha=(value)
-        color.alpha = value.floor
-        highlight_color.alpha = value.floor
-      end
-
       def option_at_index(index)
         menu_options[index]
       end
@@ -96,11 +101,11 @@ module Metro
 
           option_name = option_at_index(index).name
 
-          draw_color = color
-          draw_color = highlight_color if index == selected_index
+          draw_color = unselected_color
+          draw_color = selected_color if index == selected_index
 
           y_position = y + padding * index
-          font.draw option_name, x, y_position, z_order, 1.0, 1.0, draw_color
+          font.draw option_name, x, y_position, z_order, x_factor, y_factor, draw_color
         end
       end
 

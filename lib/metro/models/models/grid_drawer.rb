@@ -3,14 +3,13 @@ module Metro
     
     class GridDrawer < Model
 
-      attr_writer :color, :spacing, :height, :width
+      property :color, default: "rgba(255,255,255,0.1)"
+      property :spacing, type: :numeric, default: 10
+
+      attr_writer :spacing, :height, :width
 
       def name
         self.class.name
-      end
-
-      def spacing
-        @spacing ||= 10
       end
 
       def height
@@ -19,10 +18,6 @@ module Metro
 
       def width
         @width || Game.width
-      end
-
-      def color
-        @color ||= Gosu::Color.new("rgba(255,255,255,0.1)")
       end
 
       def saveable?

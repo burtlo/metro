@@ -20,3 +20,12 @@
 def asset_path(name)
   File.join Dir.pwd, "assets", name
 end
+
+
+#
+# The metro_asset_path is a helper which will generate a filepath based on the directory
+# of the metro library. This is used to retrieve assets internally for missing images.
+# 
+def metro_asset_path(name)
+  File.join Metro.asset_dir, name
+end

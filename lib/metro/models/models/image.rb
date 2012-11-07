@@ -9,21 +9,18 @@ module Metro
     #
     class Image < Model
 
-      attr_accessor :x, :y, :angle, :center_x, :center_y, :x_factor, :y_factor, :z_order
+      property :position
 
-      def after_initialize
-        @angle = 0
-        @center_x = @center_y = 0.5
-        @x_factor = @y_factor = 1
-        @z_order = 0
-        @color = Gosu::Color.new "rgba(255,255,255,1.0)"
-        @x = Game.width / 2
-        @y = Game.height / 2
-      end
+      property :scale, default: Scale.one
 
-      def image
-        @image ||= Gosu::Image.new(window,asset_path(path))
-      end
+      property :color
+
+      property :angle, type: :numeric, default: 0
+
+      property :center_x, type: :numeric, default: 0.5
+      property :center_y, type: :numeric, default: 0.5
+
+      property :image
 
       def contains?(x,y)
         bounds.contains?(x,y)

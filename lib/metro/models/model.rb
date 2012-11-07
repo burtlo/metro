@@ -1,5 +1,6 @@
 require_relative 'key_value_coding'
 require_relative 'rectangle_bounds'
+require_relative 'properties/property'
 
 module Metro
 
@@ -13,7 +14,7 @@ module Metro
   # @see Models::Generic
   #
   class Model
-    
+
     #
     # This is called every update interval while the actor is in the scene
     #
@@ -25,11 +26,100 @@ module Metro
     # This is called after an update. A model normally is not removed after
     # an update, however if the model responds true to #completed? then it
     # will be removed.
-    # 
+    #
     # @note This method should be implemented in the Model sublclass if you
     #   are interested in having the model be removed from the scene.
-    # 
+    #
     def completed? ; false ; end
+
+
+    def self.property(name,options={})
+
+      # Use the name as the property type if one has not been provided.
+
+      property_type = options[:type] || name
+
+      property_class = Property.property(property_type)
+
+      # When the name does not match the property type then we want to force
+      # the prefixing to be on for our sub-properties. This is to make sure
+      # that when people define multiple fonts and colors that they do not
+      # overlap.
+
+      override_prefix = !(name == property_type)
+
+      # Define any properties defined on this property
+
+      property_class.defined_properties.each do |subproperty|
+        sub_options = { prefix: override_prefix }.merge(subproperty.options)
+        sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
+
+        property subproperty.name, sub_options
+      end
+
+      # To ensure that our sub-properties are aware of the of their
+      # parent property for which they are dependent on we will need
+      # to know this information because we need to behave appropriately
+      # within the getter and setter blocks below.
+
+      is_a_dependency = true if options[:parents]
+
+      if is_a_dependency
+
+        parents = Array(options[:parents])
+
+        method_name = name
+
+        if options[:prefix]
+          method_name = (parents + [name]).join("_")
+        end
+
+        # Define a getter for the sub-property that will traverse the
+        # parent properties, finally returning the filtered value
+
+        define_method method_name do
+          raw_value = (parents + [name]).inject(self) {|current,method| current.send(method) }
+          property_class.new(self,options).get raw_value
+        end
+
+        # Define a setter for the sub-property that will find the parent
+        # value and set itself on that with the filtered value. The parent
+        # is then set.
+        #
+        # @TODO: If getters return dups and not instances of the original object then a very
+        #   deep setter will not be valid.
+        #
+        define_method "#{method_name}=" do |value|
+          parent_value = parents.inject(self) {|current,method| current.send(method) }
+
+          prepared_value = property_class.new(self,options).set(value)
+          parent_value.send("#{name}=",prepared_value)
+
+          send("#{parents.last}=",parent_value)
+        end
+
+      else
+
+        define_method name do
+          raw_value = properties[name]
+          property_class.new(self,options).get raw_value
+        end
+
+        define_method "#{name}=" do |value|
+          prepared_value = property_class.new(self,options).set(value)
+          properties[name] = prepared_value
+        end
+
+      end
+
+    end
+
+    def properties
+      @properties ||= {}
+    end
+
+    property :model, type: :text
+    property :name, type: :text
 
     #
     # This is called after every {#update} and when the OS wants the window to
@@ -38,7 +128,7 @@ module Metro
     # @note This method should be implemented in the Model subclass.
     #
     def draw ; end
-    
+
     #
     # The window that this model that this window is currently being
     # displayed.
@@ -84,46 +174,6 @@ module Metro
     #
     include HasEvents
 
-    #
-    # Returns the color of the model. In most cases where color is a prominent
-    # attribute (e.g. label) this will be the color. In the cases where color
-    # is less promenint (e.g. image) this will likely be a color that can be
-    # used to influence the drawing of it.
-    #
-    # @see #alpha
-    #
-    def color
-      @color
-    end
-
-    #
-    # Sets the color of the model.
-    #
-    # @param [String,Fixnum,Gosu::Color] value the new color to set.
-    #
-    def color=(value)
-      @color = Gosu::Color.new(value)
-    end
-
-    #
-    # @return the alpha value of the model's color. This is an integer value
-    #   between 0 and 255.
-    #
-    def alpha
-      color.alpha
-    end
-
-    #
-    # Sets the alpha of the model.
-    #
-    # @param [String,Fixnum] value the new value of the alpha level for the model.
-    #   This value should be between 0 and 255.
-    #
-    def alpha=(value)
-      # TODO: coerce the value is between 0 and 255
-      color.alpha = value.to_i
-    end
-
     def saveable?
       true
     end
@@ -161,21 +211,28 @@ module Metro
       options = {} unless options
 
       options.each do |raw_key,value|
-
         key = raw_key.to_s.dup
         key = key.gsub(/-/,'_').underscore
 
+
         unless respond_to? key
-          self.class.send :define_method, key do
-            instance_variable_get("@#{key}")
+          log.warn "Unknown Property #{key}"
+          self.class.send(:define_method,key) do
+            properties[key]
           end
+          #raise "Do not know (#{key}) property"
         end
 
         unless respond_to? "#{key}="
-          self.class.send :define_method, "#{key}=" do |value|
-            instance_variable_set("@#{key}",value)
+          log.warn "Unknown Property #{key}="
+          self.class.send(:define_method,"#{key}=") do |value|
+            properties[key] = value
           end
+
+          # raise "Do not know (#{key}=) property"
         end
+
+
 
         _loaded_options.push key
         send "#{key}=", value
@@ -277,9 +334,9 @@ module Metro
   end
 end
 
-require_relative 'generic'
-require_relative 'label'
-require_relative 'menu'
-require_relative 'image'
-require_relative 'rectangle'
-require_relative 'grid_drawer'
+require_relative 'models/generic'
+require_relative 'models/label'
+require_relative 'models/menu'
+require_relative 'models/image'
+require_relative 'models/rectangle'
+require_relative 'models/grid_drawer'
