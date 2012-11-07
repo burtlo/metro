@@ -27,7 +27,7 @@ module Metro
     end
 
     def center
-      Point.at width / 2 , height / 2
+      Units::Point.at width / 2 , height / 2
     end
 
     def fullscreen?

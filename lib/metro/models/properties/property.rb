@@ -2,6 +2,8 @@ module Metro
   class Model
 
     class Property
+      include Units
+      
       attr_reader :model, :options
 
       def initialize(model,options={})

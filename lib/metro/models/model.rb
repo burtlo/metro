@@ -14,6 +14,7 @@ module Metro
   # @see Models::Generic
   #
   class Model
+    include Units
 
     #
     # This is called every update interval while the actor is in the scene

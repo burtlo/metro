@@ -27,6 +27,7 @@ module Metro
   # so that every subclass does not have to constantly call `super`.
   #
   class Scene
+    include Units
 
     #
     # As Scene does a lot of work for you with regarding to setting up content, it is
