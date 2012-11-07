@@ -99,7 +99,9 @@ module Metro
 end
 
 require_relative 'angle'
+require_relative 'animation'
 require_relative 'color'
+require_relative 'dimensions'
 require_relative 'font'
 require_relative 'image'
 require_relative 'numeric'

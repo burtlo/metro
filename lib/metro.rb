@@ -46,6 +46,10 @@ module Metro
     'metro'
   end
 
+  def asset_dir
+    File.join File.dirname(__FILE__), "assets"
+  end
+
   #
   # Run will load the contents of the game contents and game files
   # within the current working directory and start the game. By default
