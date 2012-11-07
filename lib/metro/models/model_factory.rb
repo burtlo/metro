@@ -1,7 +1,7 @@
 module Metro
   class ModelFactory
 
-    attr_reader :name, :options
+    attr_reader :name
 
     def initialize(name,options)
       @name = name.to_s.downcase
@@ -16,7 +16,11 @@ module Metro
     end
 
     def load_from_previous_scene?
-      options[:from] == :previous_scene
+      @options[:from] == :previous_scene
+    end
+    
+    def options
+      @options.except(:from)
     end
 
     def model_name

@@ -1,5 +1,3 @@
-require_relative '../../animation/animation'
-
 module Metro
   class Model
 
@@ -25,10 +23,10 @@ module Metro
     #       end
     #     end
     #
-    # @example Defining an animation default.
+    # @example Defining an animation with a path.
     #
     #     class Hero < Metro::Model
-    #       property :animation, default: { path: "star.png",
+    #       property :animation, path: "star.png", dimensions: Dimensions.of(25,25)
     #         dimensions: Metro::Dimensions.of(25,25) }
     #
     #       def draw
@@ -39,8 +37,8 @@ module Metro
     # @example Using an animation property with a different property name
     #
     #     class Hero < Metro::Model
-    #       property :walking, type: :animation, default: { path: "star.png",
-    #         dimensions: Metro::Dimensions.of(25,25) }
+    #       property :walking, type: :animation, path: "star.png", 
+    #         dimensions: Metro::Dimensions.of(25,25)
     #
     #       def draw
     #         walking.image.draw text, x, y, z_order, x_factor, y_factor, color
@@ -85,19 +83,11 @@ module Metro
       end
 
       def default_image_path
-        if options[:default] and options[:default][:path]
-          asset_path(options[:default][:path])
-        else
-          metro_asset_path("missing_animation.png")
-        end
+        options[:path] ? options[:path] : metro_asset_path("missing_animation.png")
       end
 
       def default_dimensions
-        if options[:default] and options[:default][:dimensions]
-          options[:default][:dimensions]
-        else
-          Dimensions.of 16.0, 16.0
-        end
+        options[:dimensions] ? options[:dimensions] : Dimensions.of(16.0,16.0)
       end
 
       #
@@ -120,7 +110,7 @@ module Metro
 
         animation_images = images[path]
         unless animation_images
-          animation_images = create_image(window,absolute_path,width,height,tileable)
+          animation_images = create_images(window,absolute_path,width,height,tileable)
           images[path] = animation_images
         end
 
@@ -133,7 +123,7 @@ module Metro
 
       private
 
-      def self.create_image(window,path,width,height,tileable)
+      def self.create_images(window,path,width,height,tileable)
         Gosu::Image.load_tiles(window,path,width,height,tileable)
       end
 

@@ -208,40 +208,13 @@ module Metro
     # with the contents of the view.
     #
     def _load(options = {})
-      options = {} unless options
 
-      options.each do |raw_key,value|
-        key = raw_key.to_s.dup
-        key = key.gsub(/-/,'_').underscore
-
-
-        unless respond_to? key
-          log.warn "Unknown Property #{key}"
-          self.class.send(:define_method,key) do
-            properties[key]
-          end
-          #raise "Do not know (#{key}) property"
-        end
-
-        unless respond_to? "#{key}="
-          log.warn "Unknown Property #{key}="
-          self.class.send(:define_method,"#{key}=") do |value|
-            properties[key] = value
-          end
-
-          # raise "Do not know (#{key}=) property"
-        end
-
-
-
-        _loaded_options.push key
-        send "#{key}=", value
+      # Clean up and symbolize all the keys then merge  that with the existing properties
+      options.keys.each do |key|
+        options[key.to_s.underscore.to_sym] = options.delete(key)
       end
 
-    end
-
-    def _loaded_options
-      @_loaded_options ||= []
+      properties.merge! options
     end
 
     #
@@ -252,29 +225,14 @@ module Metro
     # to another model.
     #
     def _save
-      data_export = _loaded_options.map {|option| [ option, send(option) ] }.flatten
-      Hash[*data_export]
+      properties
     end
 
     #
-    # Generate a hash representation of the model. Currently this is ugly
+    # Generate a hash representation of the model.
     #
     def to_hash
-      export = _loaded_options.map {|option| [ option, send(option) ] }
-      export_with_name = export.reject {|item| item.first == "name" }
-
-      hash = export_with_name.inject({}) {|hash,elem| hash[elem.first] = elem.last ; hash }
-
-      # TODO:: color is a class that cannot be yamlized as it is and needs to be turned into a string.
-      # TODO: Hack to save the Gosu::Color class as a string value (this is
-      # what I hoped that the properties would solve)
-      hash.each do |subkey,subvalue|
-        if subvalue.is_a? Gosu::Color
-          hash[subkey] = subvalue.to_s
-        end
-      end
-
-      { name => hash }
+      { name => properties.except(:name) }
     end
 
     #

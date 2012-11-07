@@ -22,7 +22,7 @@ module Metro
     # @example Defining with a default and text that will be instance evaluated.
     #
     #     class ScoreBoard < Metro::Model
-    #       property :font, default: 'Score is #{player.score}'
+    #       property :text, default: 'Score is #{player.score}'
     #     end
     #
     # @example Using a text property with a different property name
@@ -31,7 +31,7 @@ module Metro
     #       property :description, type: :text
     #
     #       def draw
-    #         description_font.draw text, x, y, z_order, x_factor, y_factor, color
+    #         description_font.draw description, x, y, z_order, x_factor, y_factor, color
     #       end
     #     end
     #
@@ -57,7 +57,7 @@ module Metro
       end
 
       def default_text
-        options[:default] || 'Text for #{model} not specified!'
+        options[:default] || 'TEXT NOT SPECIFIED!'
       end
 
     end

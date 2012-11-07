@@ -19,6 +19,11 @@ module Metro
       property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
       property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
 
+      # This is a temporary method as there is no options propery yet defined
+      def options
+        properties[:options]
+      end
+
       def alpha
         self.unselected_color_alpha
       end

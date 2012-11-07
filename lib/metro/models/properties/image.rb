@@ -23,16 +23,16 @@ module Metro
     #
     #     end
     #
-    # @example Defining an image property providing a default
+    # @example Defining an image property providing a path
     #
     #     class Player < Metro::Model
-    #       property :image, default: "player.png"
+    #       property :image, path: "player.png"
     #     end
     #
     # @example Using an image property with a different property name
     #
     #     class Player < Metro::Model
-    #       property :disconnected_image, type: :image, default: "disconnected_player.png"
+    #       property :disconnected_image, type: :image, path: "disconnected_player.png"
     #
     #       def draw
     #         disconnected_image.draw x, y, z_order, x_factor, y_factor, color, :add)
@@ -41,10 +41,18 @@ module Metro
     #
     class ImageProperty < Property
 
+      get do
+        default_image
+      end
+
       # Return the image at the specified path.
       # @note The path should be the relative path within the game.
       get String do |path|
-        self.class.image_for_path path: path, window: model.window
+        self.class.image_for path: path, window: model.window
+      end
+
+      set do
+        default_image.path
       end
 
       # Set the image with the specified path.
@@ -59,6 +67,15 @@ module Metro
         image.path
       end
 
+      def default_image
+        self.class.image_for path: default_image_path, window: model.window
+      end
+
+      def default_image_path
+        options[:path] || metro_asset_path("missing.png")
+      end
+
+
       #
       # Return an image for the specified path. On first request it will be loaded from
       # the file-system. On subsequent requests it will be pulled from the cache.
@@ -66,18 +83,22 @@ module Metro
       # @param [Hash] options the relative `path` to the image and the window for which it
       #   will be displayed.
       #
-      def self.image_for_path(options)
+      def self.image_for(options)
         options.symbolize_keys!
-        path = options[:path]
+
+        absolute_path = path = options[:path]
+        absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
+
+        tileable = !!options[:tileable]
         window = options[:window]
 
-        image = images[path]
-        unless image
-          image = create_image(window,path,false)
-          images[path] = image
+        gosu_image = images[path]
+        unless gosu_image
+          gosu_image = create_image(window,absolute_path,tileable)
+          images[path] = gosu_image
         end
 
-        image
+        Image.new gosu_image, path, tileable
       end
 
       def self.images
@@ -86,13 +107,8 @@ module Metro
 
       private
 
-      # @TODO The Gosu::Image creation should automatically perform this operation of saving the path
-      #   to the image. This should be monkey-patched onto the image so that images created outside
-      #   of this process will also have a specified path.
       def self.create_image(window,path,tileable)
-        image = Gosu::Image.new(window,asset_path(path),tileable)
-        image.path = path
-        image
+        Gosu::Image.new(window,path,tileable)
       end
 
     end
