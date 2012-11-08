@@ -130,11 +130,13 @@ module Metro
     # Create a hash that will return a setup missing scene by default.
     #
     def hash_with_missing_scene_default
-      ActiveSupport::HashWithIndifferentAccess.new do |hash,key|
+      hash = HashWithIndifferentAccess.new do |hash,key|
         missing_scene = scene_class(hash[:missing_scene])
         missing_scene.missing_scene = key.to_sym
         missing_scene
       end
+      hash[:missing_scene] = "Metro::MissingScene"
+      hash
     end
 
     #
