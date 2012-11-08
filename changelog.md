@@ -1,5 +1,13 @@
 # Metro
 
+## 0.2.1 / 2012-11-08
+
+* FIX Scene fade transition color changing and implicit animations 
+  for colors
+* Games creating custom properties will appear in the property list
+* Properties now correctly default to numeric properties
+* Point objects can be added to other point objects. 
+
 ## 0.2.0 / 2012-11-07
 
 * Views now use position instead of `x`, `y`, and `z-order`
