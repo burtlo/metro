@@ -3,7 +3,7 @@ module Metro
 
     class Property
       include Units
-      
+
       attr_reader :model, :options
 
       def initialize(model,options={})
@@ -59,7 +59,8 @@ module Metro
       end
 
       def self.inherited(subclass)
-        properties << subclass
+        property_name = subclass.to_s.gsub(/Property$/,'').split("::").last.underscore
+        properties_hash[property_name] = subclass.to_s
       end
 
       def self.properties
@@ -72,14 +73,7 @@ module Metro
       end
 
       def self.properties_hash
-        @properties_hash ||= begin
-          hash = ActiveSupport::HashWithIndifferentAccess.new("Metro::Model::NumericProperty")
-          properties.each do |prop|
-            prop_name = prop.to_s.gsub(/Property$/,'').split("::").last.underscore
-            hash[prop_name] = prop.to_s
-          end
-          hash
-        end
+        @properties_hash ||= ActiveSupport::HashWithIndifferentAccess.new { |hash,key| hash[:numeric] }
       end
 
     end
