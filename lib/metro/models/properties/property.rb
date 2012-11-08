@@ -161,7 +161,7 @@ module Metro
       # type cannot be found.
       #
       def self.properties_hash
-        @properties_hash ||= ActiveSupport::HashWithIndifferentAccess.new { |hash,key| hash[:numeric] }
+        @properties_hash ||= HashWithIndifferentAccess.new { |hash,key| hash[:numeric] }
       end
 
       #
