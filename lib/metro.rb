@@ -128,7 +128,7 @@ module Metro
   def load_path(path,options = {})
     files = Dir["#{path}/**/*.rb"]
     files.sort! {|file| File.basename(file) == options[:prioritize] ? -1 : 1 }
-    files.each {|model| require_or_load model }
+    files.each {|file| require_or_load file }
   end
 
   def load_game_configuration(filename)
