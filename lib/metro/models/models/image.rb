@@ -27,7 +27,10 @@ module Metro
       end
 
       def bounds
-        Bounds.new x - (width * center_x), y - (height * center_y), x + (width * center_x), y + (height * center_y)
+        Bounds.new x: x - (width * center_x),
+                   y: y - (height * center_y),
+                   width: width,
+                   height: height
       end
 
       def width

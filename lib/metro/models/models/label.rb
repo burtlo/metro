@@ -20,7 +20,7 @@ module Metro
       property :text
 
       def bounds
-        Bounds.new x, y, x + width, y + height
+        Bounds.new x: x, y: y, width: width, height: height
       end
 
       def width

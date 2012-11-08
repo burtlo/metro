@@ -82,7 +82,7 @@ module Metro
       end
 
       def bounds
-        Metro::Models::Bounds.new x, y, x + width, y + height
+        Metro::Models::Bounds.new x: x, y: y, width: width, height: height
       end
 
       def width
