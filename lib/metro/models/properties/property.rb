@@ -13,7 +13,7 @@ module Metro
 
       def self.gets
         @gets ||= begin
-          hash = Hash.new { |hash,key| hash["NilClass"] }
+          hash = HashWithIndifferentAccess.new { |hash,key| hash["NilClass"] }
           hash["NilClass"] = lambda { |value| raise "#{self} is not able to translate the #{value} (#{value.class})" }
           hash
         end
@@ -30,7 +30,7 @@ module Metro
 
       def self.sets
         @sets ||= begin
-          hash = Hash.new { |hash,key| hash["NilClass"] }
+          hash = HashWithIndifferentAccess.new { |hash,key| hash["NilClass"] }
           hash["NilClass"] = lambda { |value| raise "#{self} is not able to translate the #{value} (#{value.class})" }
           hash
         end

@@ -92,11 +92,11 @@ module Metro
     #
     def stepping(stepping)
       @steppings ||= begin
-        hash = Hash.new(Easing::Linear)
-        hash.merge! linear: Easing::Linear,
-          ease_in: Easing::EaseIn
+        hash = HashWithIndifferentAccess.new("Metro::Easing::Linear")
+        hash.merge! linear: "Metro::Easing::Linear",
+          ease_in: "Metro::Easing::EaseIn"
       end
-      @steppings[stepping]
+      @steppings[stepping].constantize
     end
 
     #

@@ -89,7 +89,7 @@ module Metro
       @up_actions ||= {}
       @down_actions ||= {}
       @held_actions ||= {}
-      @custom_notifications ||= Hash.new([])
+      @custom_notifications ||= HashWithIndifferentAccess.new([])
     end
 
     attr_reader :target, :window

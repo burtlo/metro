@@ -275,13 +275,12 @@ module Metro
     def self.model(name)
       @models_hash ||= begin
 
-        hash = Hash.new("Metro::Models::Generic")
+        hash = HashWithIndifferentAccess.new("Metro::Models::Generic")
 
         models.each do |model|
-          common_name = model.to_s.underscore
           hash[model.to_s] = model
           hash[model.downcase] = model
-          hash[common_name] = model
+          hash[model.to_s.underscore] = model
         end
 
         hash

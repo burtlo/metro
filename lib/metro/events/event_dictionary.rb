@@ -9,7 +9,7 @@ module Metro
     # All defined events within this dictionary.
     #
     def events
-      @events ||= Hash.new
+      @events ||= HashWithIndifferentAccess.new
     end
 
     #

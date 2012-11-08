@@ -26,7 +26,7 @@ module Metro
 
     def supported_transitions
       @supported_transitions ||= begin
-        hash = Hash.new("Metro::FadeTransitionScene")
+        hash = HashWithIndifferentAccess.new("Metro::FadeTransitionScene")
         hash[:edit] = "Metro::EditTransitionScene"
         hash
       end
