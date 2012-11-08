@@ -33,6 +33,47 @@ module Metro
     def completed? ; false ; end
 
 
+    def self._sub_property(name,options={})
+
+      # Use the name as the property type if one has not been provided.
+
+      property_type = options[:type] || name
+
+      property_class = Property.property(property_type)
+
+      parents = Array(options[:parents])
+
+      method_name = name
+
+      if options[:prefix]
+        method_name = (parents + [name]).join("_")
+      end
+
+      # Define a getter for the sub-property that will traverse the
+      # parent properties, finally returning the filtered value
+
+      define_method method_name do
+        raw_value = (parents + [name]).inject(self) {|current,method| current.send(method) }
+        property_class.new(self,options).get raw_value
+      end
+
+      # Define a setter for the sub-property that will find the parent
+      # value and set itself on that with the filtered value. The parent
+      # is then set.
+      #
+      # @TODO: If getters return dups and not instances of the original object then a very
+      #   deep setter will not be valid.
+      #
+      define_method "#{method_name}=" do |value|
+        parent_value = parents.inject(self) {|current,method| current.send(method) }
+
+        prepared_value = property_class.new(self,options).set(value)
+        parent_value.send("#{name}=",prepared_value)
+
+        send("#{parents.last}=",parent_value)
+      end
+    end
+
     def self.property(name,options={})
 
       # Use the name as the property type if one has not been provided.
@@ -41,6 +82,18 @@ module Metro
 
       property_class = Property.property(property_type)
 
+      define_method name do
+        raw_value = properties[name]
+        property_class.new(self,options).get raw_value
+      end
+
+      define_method "#{name}=" do |value|
+        prepared_value = property_class.new(self,options).set(value)
+        properties[name] = prepared_value
+      end
+
+      # Define any sub-properties defined on this property
+
       # When the name does not match the property type then we want to force
       # the prefixing to be on for our sub-properties. This is to make sure
       # that when people define multiple fonts and colors that they do not
@@ -48,68 +101,10 @@ module Metro
 
       override_prefix = !(name == property_type)
 
-      # Define any properties defined on this property
-
       property_class.defined_properties.each do |subproperty|
         sub_options = { prefix: override_prefix }.merge(subproperty.options)
         sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
-
-        property subproperty.name, sub_options
-      end
-
-      # To ensure that our sub-properties are aware of the of their
-      # parent property for which they are dependent on we will need
-      # to know this information because we need to behave appropriately
-      # within the getter and setter blocks below.
-
-      is_a_dependency = true if options[:parents]
-
-      if is_a_dependency
-
-        parents = Array(options[:parents])
-
-        method_name = name
-
-        if options[:prefix]
-          method_name = (parents + [name]).join("_")
-        end
-
-        # Define a getter for the sub-property that will traverse the
-        # parent properties, finally returning the filtered value
-
-        define_method method_name do
-          raw_value = (parents + [name]).inject(self) {|current,method| current.send(method) }
-          property_class.new(self,options).get raw_value
-        end
-
-        # Define a setter for the sub-property that will find the parent
-        # value and set itself on that with the filtered value. The parent
-        # is then set.
-        #
-        # @TODO: If getters return dups and not instances of the original object then a very
-        #   deep setter will not be valid.
-        #
-        define_method "#{method_name}=" do |value|
-          parent_value = parents.inject(self) {|current,method| current.send(method) }
-
-          prepared_value = property_class.new(self,options).set(value)
-          parent_value.send("#{name}=",prepared_value)
-
-          send("#{parents.last}=",parent_value)
-        end
-
-      else
-
-        define_method name do
-          raw_value = properties[name]
-          property_class.new(self,options).get raw_value
-        end
-
-        define_method "#{name}=" do |value|
-          prepared_value = property_class.new(self,options).set(value)
-          properties[name] = prepared_value
-        end
-
+        _sub_property subproperty.name, sub_options
       end
 
     end
