@@ -28,6 +28,16 @@ module Metro
     extend self
 
     #
+    # Add a scene to the hash of scenes with the scene name of the scene as the key
+    # to retrieving this scene.
+    #
+    # @param [Scene] scene the scene to be added to the hash of Scenes.
+    #
+    def add_scene(scene)
+      all_scenes_for(scene).each { |scene| scenes_hash[scene.scene_name] = scene.to_s }
+    end
+
+    #
     # Finds the scene based on the specified scene name.
     #
     # @param [String,Symbol] scene_name the name of the scene to locate.
@@ -101,7 +111,7 @@ module Metro
     #   as well as the class name constants to allow for the scenes to be found.
     #
     def scenes_hash
-      @scenes_hash ||= build_map_of_scenes(Scene.scenes)
+      @scenes_hash ||= hash_with_missing_scene_default
     end
 
     #
@@ -114,11 +124,6 @@ module Metro
     # @see #scenes_hash
     #
     def build_map_of_scenes(scenes)
-      hash = hash_with_missing_scene_default
-      all_scenes_for(scenes).inject(hash) do |hash,scene|
-        hash[scene.scene_name] = scene.to_s
-        hash
-      end
     end
 
     #

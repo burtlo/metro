@@ -337,16 +337,7 @@ module Metro
     # @see #self.scenes
     #
     def self.inherited(base)
-      scenes << base.to_s
-    end
-
-    #
-    # All subclasses of Scene, this should be all the defined scenes within the game.
-    #
-    # @return an Array of Scene subclasses
-    #
-    def self.scenes
-      @scenes ||= []
+      Scenes.add_scene(base)
     end
 
     #
