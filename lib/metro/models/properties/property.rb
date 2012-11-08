@@ -67,19 +67,17 @@ module Metro
       end
 
       def self.property(name)
-        properties_hash[name]
+        property_classname = properties_hash[name]
+        property_classname.constantize
       end
 
       def self.properties_hash
         @properties_hash ||= begin
-          hash = ActiveSupport::HashWithIndifferentAccess.new(NumericProperty)
-          # TODO: do not store classes within the structure - this will misbehave on reloading
+          hash = ActiveSupport::HashWithIndifferentAccess.new("Metro::Model::NumericProperty")
           properties.each do |prop|
             prop_name = prop.to_s.gsub(/Property$/,'').split("::").last.underscore
-            hash[prop_name] = prop
-            hash[prop_name.to_sym] = prop
+            hash[prop_name] = prop.to_s
           end
-          # puts hash
           hash
         end
       end
