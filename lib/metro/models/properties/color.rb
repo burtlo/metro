@@ -56,6 +56,9 @@ module Metro
     class ColorProperty < Property
 
       define_property :alpha
+      define_property :red
+      define_property :green
+      define_property :blue
 
       # By default convert the value to the default color if it
       # cannot be processed by the other get filters.

@@ -55,11 +55,14 @@ module Metro
 
         if attribute == :color
           final = Gosu::Color.new final
+          
+          # @TODO: This is not going to work when the color uses a non-standard
+          # name for the color property.
 
-          animations.push build_animation_step(:"color.red",start.red,final.red)
-          animations.push build_animation_step(:"color.green",start.green,final.green)
-          animations.push build_animation_step(:"color.blue",start.blue,final.blue)
-          animations.push build_animation_step(:"color.alpha",start.alpha,final.alpha)
+          animations.push build_animation_step(:red,start.red,final.red)
+          animations.push build_animation_step(:green,start.green,final.green)
+          animations.push build_animation_step(:blue,start.blue,final.blue)
+          animations.push build_animation_step(:alpha,start.alpha,final.alpha)
         else
           animations.push build_animation_step(attribute,start,final)
         end
