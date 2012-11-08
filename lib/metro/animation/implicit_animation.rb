@@ -52,21 +52,7 @@ module Metro
     def after_initialize
       to.each do |attribute,final|
         start = actor.send(attribute)
-
-        if attribute == :color
-          final = Gosu::Color.new final
-          
-          # @TODO: This is not going to work when the color uses a non-standard
-          # name for the color property.
-
-          animations.push build_animation_step(:red,start.red,final.red)
-          animations.push build_animation_step(:green,start.green,final.green)
-          animations.push build_animation_step(:blue,start.blue,final.blue)
-          animations.push build_animation_step(:alpha,start.alpha,final.alpha)
-        else
-          animations.push build_animation_step(attribute,start,final)
-        end
-
+        animations.push build_animation_step(attribute,start,final)
       end
     end
 
