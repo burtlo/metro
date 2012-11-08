@@ -16,3 +16,5 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+include Metro::Units

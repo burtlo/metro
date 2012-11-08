@@ -10,7 +10,7 @@ describe Metro::Model::PositionProperty do
     context "when the value is nil" do
       context "when no default value has been specified" do
 
-        let(:expected_position) { Metro::Point.at 0.0, 0.0 }
+        let(:expected_position) { Point.at 0.0, 0.0 }
 
         it "should return the default position" do
           subject.get(nil).should eq expected_position
@@ -20,7 +20,7 @@ describe Metro::Model::PositionProperty do
       context "when a default value has been specified" do
 
         subject { described_class.new model, default: expected_position }
-        let(:expected_position) { Metro::Point.at 4.0, 3.3 }
+        let(:expected_position) { Point.at 4.0, 3.3 }
 
         it "should return the specified default position" do
           subject.get(nil).should eq expected_position
@@ -31,7 +31,7 @@ describe Metro::Model::PositionProperty do
     context "when the value is a string" do
 
       let(:point) { "22.0,33.0" }
-      let(:expected_position) { Metro::Point.at 22.0, 33.0 }
+      let(:expected_position) { Point.at 22.0, 33.0 }
 
       it "should return the position" do
         subject.get(point).should eq expected_position
@@ -56,7 +56,7 @@ describe Metro::Model::PositionProperty do
       context "when a default value has been specified" do
 
         subject { described_class.new model, default: default_point }
-        let(:default_point) { Metro::Point.at 12, 24 }
+        let(:default_point) { Point.at 12, 24 }
         let(:expected_position) { "12.0,24.0,0.0" }
 
         it "should return the specified default position" do
@@ -67,7 +67,7 @@ describe Metro::Model::PositionProperty do
 
     context "when the value is a point" do
 
-      let(:point) { Metro::Point.at 10.0, 20.0 }
+      let(:point) { Point.at 10.0, 20.0 }
       let(:expected_position) { "10.0,20.0,0.0" }
 
       it "should return the same position" do

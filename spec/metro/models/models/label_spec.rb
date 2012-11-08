@@ -11,10 +11,10 @@ describe Metro::Models::Label do
   before do
     # Reset the position of the label to the default
     subject.position = nil
-    subject.scale = Metro::Scale.one
+    subject.scale = Scale.one
   end
 
-  let(:expected_position) { Metro::Point.zero }
+  let(:expected_position) { Point.zero }
   its(:position) { should eq expected_position }
 
   its(:x) { should eq expected_position.x }
@@ -26,7 +26,7 @@ describe Metro::Models::Label do
     
     it "should be set succesfully" do
       subject.position = "10,10"
-      subject.position.should eq Metro::Point.at(10,10)
+      subject.position.should eq Point.at(10,10)
     end
 
     context "when setting the x property" do
@@ -93,7 +93,7 @@ describe Metro::Models::Label do
 
   end
 
-  let(:expected_scale) { Metro::Scale.one }
+  let(:expected_scale) { Scale.one }
 
   its(:scale) { should eq expected_scale }
   its(:x_factor) { should eq expected_scale.x_factor }
