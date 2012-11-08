@@ -20,6 +20,11 @@ module Metro
         "#{x},#{y},#{z}"
       end
 
+      def +(value)
+        raise "Unabled to add point to #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
+        self.class.new((x + value.x),(y + value.y),(z + value.z))
+      end
+
     end
   end
 end
