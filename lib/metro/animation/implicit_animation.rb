@@ -60,7 +60,7 @@ module Metro
       step = AnimationStep.new
       step.actor = actor
       step.attribute = attribute
-      step.deltas = stepping(easing).calculate(start.to_f,final.to_f,interval.to_f)
+      step.deltas = easing_for(easing).calculate(start.to_f,final.to_f,interval.to_f)
       step
     end
 
@@ -76,13 +76,8 @@ module Metro
     # @return the correct easing based on the specified name. When the name
     #   provided does not match anything then default to linear easing.
     #
-    def stepping(stepping)
-      @steppings ||= begin
-        hash = HashWithIndifferentAccess.new("Metro::Easing::Linear")
-        hash.merge! linear: "Metro::Easing::Linear",
-          ease_in: "Metro::Easing::EaseIn"
-      end
-      @steppings[stepping].constantize
+    def easing_for(name)
+      self.class.easing_for(name)
     end
 
     #
@@ -99,6 +94,26 @@ module Metro
     #
     def delta_for_step(attribute)
       deltas[attribute].at(current_step)
+    end
+
+
+    #
+    # @return the easing class based on the specified easing name.
+    #
+    def self.easing_for(easing)
+      easing_classname = easings_hash[easing]
+      easing_classname.constantize
+    end
+
+    #
+    # A hash of all the supported easings within the game.
+    #
+    def self.easings_hash
+      @easings_hash ||= begin
+        hash = HashWithIndifferentAccess.new("Metro::Easing::Linear")
+        hash.merge! linear: "Metro::Easing::Linear",
+          ease_in: "Metro::Easing::EaseIn"
+      end
     end
 
   end
