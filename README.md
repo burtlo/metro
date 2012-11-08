@@ -12,6 +12,8 @@ Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D g
 
 > NOTE: This project is very early in development and at this point mostly a prototype to explore more of theses concepts to gain an understanding of core tools necessary to make games.
 
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/burtlo/metro)
+
 ## Installation
 
     $ gem install metro
