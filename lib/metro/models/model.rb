@@ -1,5 +1,4 @@
 require_relative 'key_value_coding'
-require_relative 'rectangle_bounds'
 require_relative 'properties/property'
 
 module Metro

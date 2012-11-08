@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module Units
 
     class RectangleBounds
 
@@ -21,8 +21,6 @@ module Metro
       end
 
     end
-
-    Bounds = RectangleBounds
 
   end
 end

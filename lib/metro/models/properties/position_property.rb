@@ -54,6 +54,12 @@ module Metro
         default_point
       end
 
+      # When getting a point, then simply send that point on. This is often
+      # the case when the property is initailized by a scene.
+      get Point do |point|
+        point
+      end
+
       # When getting a string convert it to a point.
       get String do |value|
         Point.parse(value)
