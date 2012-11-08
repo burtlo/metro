@@ -33,6 +33,69 @@ module Metro
     def completed? ; false ; end
 
 
+    #
+    # Define a property for the model. A property has a name and then can optionally specify
+    # a property type which will receive additional options.
+    #
+    # @example Defining various propertys for a model
+    #
+    #     class Player
+    #       property :position
+    #       property :angle, default: 0.0
+    #       property :turn_amount, default: 4.5
+    #       property :image, path: "player.png"
+    #       property :motto, type: :text, default: 'Hometown Heroes!'
+    #     end
+    #
+    # When the property name matches a property definition with that name they will be used. This is what
+    # happens for the 'position' and 'image' properties defined above. Both of those map to respective
+    # properties with matching names.
+    #
+    # Properties by default are assumed to be numeric properties so the types does not have to be stated.
+    # This is the case for 'angle' and 'turn_amount' properties.
+    #
+    # You may use any particular name for your properties as long as you specify the type. This is the case
+    # for the 'motto' property.
+    #
+    def self.property(name,options={})
+
+      # Use the name as the property type if one has not been provided.
+
+      property_type = options[:type] || name
+
+      property_class = Property.property(property_type)
+
+      define_method name do
+        raw_value = properties[name]
+        property_class.new(self,options).get raw_value
+      end
+
+      define_method "#{name}=" do |value|
+        prepared_value = property_class.new(self,options).set(value)
+        properties[name] = prepared_value
+      end
+
+      # Define any sub-properties defined on this property
+
+      # When the name does not match the property type then we want to force
+      # the prefixing to be on for our sub-properties. This is to make sure
+      # that when people define multiple fonts and colors that they do not
+      # overlap.
+
+      override_prefix = !(name == property_type)
+
+      property_class.defined_properties.each do |subproperty|
+        sub_options = { prefix: override_prefix }.merge(subproperty.options)
+        sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
+        _sub_property subproperty.name, sub_options
+      end
+
+    end
+
+    #
+    # Defines the sub-properties defined within the property. This is to be used internally
+    # by the #property method.
+    #
     def self._sub_property(name,options={})
 
       # Use the name as the property type if one has not been provided.
@@ -74,40 +137,6 @@ module Metro
       end
     end
 
-    def self.property(name,options={})
-
-      # Use the name as the property type if one has not been provided.
-
-      property_type = options[:type] || name
-
-      property_class = Property.property(property_type)
-
-      define_method name do
-        raw_value = properties[name]
-        property_class.new(self,options).get raw_value
-      end
-
-      define_method "#{name}=" do |value|
-        prepared_value = property_class.new(self,options).set(value)
-        properties[name] = prepared_value
-      end
-
-      # Define any sub-properties defined on this property
-
-      # When the name does not match the property type then we want to force
-      # the prefixing to be on for our sub-properties. This is to make sure
-      # that when people define multiple fonts and colors that they do not
-      # overlap.
-
-      override_prefix = !(name == property_type)
-
-      property_class.defined_properties.each do |subproperty|
-        sub_options = { prefix: override_prefix }.merge(subproperty.options)
-        sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
-        _sub_property subproperty.name, sub_options
-      end
-
-    end
 
     def properties
       @properties ||= {}
