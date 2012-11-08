@@ -98,14 +98,13 @@ module Metro
 
 end
 
-require_relative 'angle'
-require_relative 'animation'
-require_relative 'color'
-require_relative 'dimensions'
-require_relative 'font'
-require_relative 'image'
-require_relative 'numeric'
-require_relative 'position'
-require_relative 'scale'
-require_relative 'text'
-require_relative 'velocity'
+require_relative 'numeric_property'
+require_relative 'text_property'
+
+require_relative 'animation_property'
+require_relative 'color_property'
+require_relative 'dimensions_property'
+require_relative 'font_property'
+require_relative 'image_property'
+require_relative 'position_property'
+require_relative 'scale_property'

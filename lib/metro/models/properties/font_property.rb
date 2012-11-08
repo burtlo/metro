@@ -1,5 +1,3 @@
-require_relative 'text'
-
 module Metro
   class Model
 
