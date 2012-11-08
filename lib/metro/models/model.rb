@@ -276,19 +276,12 @@ module Metro
     #
     # Captures all classes that subclass Model.
     #
-    # @see #self.scenes
+    # @see #self.models_hash
     #
-    def self.inherited(base)
-      models << base.to_s
-    end
-
-    #
-    # All subclasses of Model, this should be all the defined model within the game.
-    #
-    # @return an Array of Scene subclasses
-    #
-    def self.models
-      @models ||= []
+    def self.inherited(model)
+      models_hash[model.to_s] = model.to_s
+      models_hash[model.to_s.downcase] = model.to_s
+      models_hash[model.to_s.underscore] = model.to_s
     end
 
     #
@@ -296,20 +289,11 @@ module Metro
     #
     # @return the Model class given the specified model name.
     def self.model(name)
-      @models_hash ||= begin
+      models_hash[name]
+    end
 
-        hash = HashWithIndifferentAccess.new("Metro::Models::Generic")
-
-        models.each do |model|
-          hash[model.to_s] = model
-          hash[model.downcase] = model
-          hash[model.to_s.underscore] = model
-        end
-
-        hash
-      end
-
-      @models_hash[name]
+    def self.models_hash
+      @models_hash ||= HashWithIndifferentAccess.new("Metro::Models::Generic")
     end
 
   end
