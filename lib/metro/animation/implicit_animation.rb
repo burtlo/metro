@@ -1,4 +1,4 @@
-require_relative 'easing'
+require_relative 'easing/easing'
 
 module Metro
 
@@ -77,7 +77,7 @@ module Metro
     #   provided does not match anything then default to linear easing.
     #
     def easing_for(name)
-      self.class.easing_for(name)
+      Metro::Easing.easing_for(name)
     end
 
     #
@@ -94,26 +94,6 @@ module Metro
     #
     def delta_for_step(attribute)
       deltas[attribute].at(current_step)
-    end
-
-
-    #
-    # @return the easing class based on the specified easing name.
-    #
-    def self.easing_for(easing)
-      easing_classname = easings_hash[easing]
-      easing_classname.constantize
-    end
-
-    #
-    # A hash of all the supported easings within the game.
-    #
-    def self.easings_hash
-      @easings_hash ||= begin
-        hash = HashWithIndifferentAccess.new("Metro::Easing::Linear")
-        hash.merge! linear: "Metro::Easing::Linear",
-          ease_in: "Metro::Easing::EaseIn"
-      end
     end
 
   end
