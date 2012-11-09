@@ -16,11 +16,37 @@ module Metro
     include Units
 
     #
+    # This is an entry point for customization. As the model's {#initialize}
+    # method performs may perform some initialization that may be necessary.
+    #
+    # At this point the model has been created. However, the window and scene
+    # of the model will not have been defined and defined properties rely on
+    # the window or scene will return nil values. Other properties also will
+    # likely not be set.
+    #
+    # @note This method should be implemented in the Model subclass.
+    #
+    def after_initialize ; end
+
+
+    #
+    # This is an entry point for customization. After the model's properties
+    # have been set and the model has been assigned to the window and scene
+    # this method is called. Here is where customization of properties or
+    # final positioning can be performed.
+    #
+    # @note This method may be implemented in the Model subclass.
+    #
+    def show ; end
+
+
+    #
     # This is called every update interval while the actor is in the scene
     #
     # @note This method should be implemented in the Model subclass
     #
     def update ; end
+
 
     #
     # This is called after an update. A model normally is not removed after
@@ -31,6 +57,16 @@ module Metro
     #   are interested in having the model be removed from the scene.
     #
     def completed? ; false ; end
+
+
+    #
+    # This is called after every {#update} and when the OS wants the window to
+    # repaint itself.
+    #
+    # @note This method should be implemented in the Model subclass.
+    #
+    def draw ; end
+
 
 
     #
@@ -146,14 +182,6 @@ module Metro
     property :name, type: :text
 
     #
-    # This is called after every {#update} and when the OS wants the window to
-    # repaint itself.
-    #
-    # @note This method should be implemented in the Model subclass.
-    #
-    def draw ; end
-
-    #
     # The window that this model that this window is currently being
     # displayed.
     #
@@ -175,14 +203,6 @@ module Metro
     attr_accessor :scene
 
     include KeyValueCoding
-
-    #
-    # This is an entry point for customization. As the model's {#initialize}
-    # method performs may perform some initialization that may be necessary.
-    #
-    # @note This method should be implemented in the Model subclass.
-    #
-    def after_initialize ; end
 
     #
     # Generate a custom notification event with the given name.

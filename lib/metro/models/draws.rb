@@ -12,7 +12,7 @@ module Metro
       #
       # Define an actor with the given name and options.
       #
-      # As a convience the draw method will define `getter` and `setter`
+      # As a convenience the draw method will define `getter` and `setter`
       # methods for the specified actor.
       #
       # @example Defining a title label within a scene
@@ -46,6 +46,15 @@ module Metro
         end
 
         drawings.push scene_actor
+      end
+
+      #
+      # Define a sound actor with the given anem and options.
+      # 
+      # @see #draw
+      # 
+      def play(song_name,options)
+        draw song_name, options.merge(model: "song")
       end
 
       #

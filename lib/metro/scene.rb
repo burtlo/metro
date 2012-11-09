@@ -250,6 +250,7 @@ module Metro
     def register_actor(actor_factory)
       registering_actor = actor(actor_factory.name)
       registering_actor.window = window
+      registering_actor.show
 
       drawers.push(registering_actor)
       updaters.push(registering_actor)
@@ -357,17 +358,6 @@ module Metro
     #
     def enqueue(updater)
       updaters.push(updater)
-    end
-
-    #
-    # A simplier syntax to enqueue an animation. At the moment this animation is going
-    # to be an implicit animation.
-    #
-    def animate(actor_or_actor_name,options,&block)
-      options[:actor] = actor(actor_or_actor_name)
-      options[:context] = self
-      animation_group = SceneAnimation.build options, &block
-      enqueue animation_group
     end
 
     #
