@@ -34,5 +34,9 @@ module Metro
     # The tileability of the image
     attr_reader :tileable
 
+    def dimensions
+      Metro::Units::Dimensions.of width, height
+    end
+
   end
 end
