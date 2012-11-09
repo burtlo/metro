@@ -54,7 +54,7 @@ module Metro
       # @see #draw
       # 
       def play(song_name,options)
-        draw song_name, options.merge(model: "song")
+        draw song_name, options.merge(model: "metro::models::song")
       end
 
       #
