@@ -61,6 +61,13 @@ module Metro
     end
 
     #
+    # @return the dimensions of the current window.
+    #
+    def dimensions
+      Dimensions.of width, height
+    end
+
+    #
     # Define an acessor that enables/disables the use of a cursor
     # within the window. The value should be truthy/falsy.
     #
