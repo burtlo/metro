@@ -9,7 +9,7 @@ module Metro
 
       property :dimensions do
         # By default the dimensions of the rectangle will be the size of the window
-        model.window.dimensions
+        window.dimensions
       end
 
       def draw

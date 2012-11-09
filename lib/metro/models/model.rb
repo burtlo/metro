@@ -57,7 +57,7 @@ module Metro
     # You may use any particular name for your properties as long as you specify the type. This is the case
     # for the 'motto' property.
     #
-    def self.property(name,options={})
+    def self.property(name,options={},&block)
 
       # Use the name as the property type if one has not been provided.
 
@@ -67,7 +67,7 @@ module Metro
 
       define_method name do
         raw_value = properties[name]
-        property_class.new(self,options).get raw_value
+        property_class.new(self,options,&block).get raw_value
       end
 
       define_method "#{name}=" do |value|
@@ -96,7 +96,7 @@ module Metro
     # Defines the sub-properties defined within the property. This is to be used internally
     # by the #property method.
     #
-    def self._sub_property(name,options={})
+    def self._sub_property(name,options={},&block)
 
       # Use the name as the property type if one has not been provided.
 
@@ -130,7 +130,7 @@ module Metro
       define_method "#{method_name}=" do |value|
         parent_value = parents.inject(self) {|current,method| current.send(method) }
 
-        prepared_value = property_class.new(self,options).set(value)
+        prepared_value = property_class.new(self,options,&block).set(value)
         parent_value.send("#{name}=",prepared_value)
 
         send("#{parents.last}=",parent_value)

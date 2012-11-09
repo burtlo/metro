@@ -22,6 +22,10 @@ module Metro
 
       property :image
 
+      property :dimensions do
+        image.dimensions
+      end
+
       def contains?(x,y)
         bounds.contains?(x,y)
       end
@@ -31,14 +35,6 @@ module Metro
                    y: y - (height * center_y),
                    width: width,
                    height: height
-      end
-
-      def width
-        image.width
-      end
-
-      def height
-        image.height
       end
 
       def draw

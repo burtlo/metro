@@ -19,16 +19,12 @@ module Metro
 
       property :text
 
+      property :dimensions do
+        Dimensions.of (font.text_width(text) * x_factor), (font.height * y_factor)
+      end
+
       def bounds
         Bounds.new x: x, y: y, width: width, height: height
-      end
-
-      def width
-        font.text_width(text) * x_factor
-      end
-
-      def height
-        font.height * y_factor
       end
 
       def contains?(x,y)

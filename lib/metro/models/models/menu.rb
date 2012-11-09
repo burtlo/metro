@@ -19,6 +19,12 @@ module Metro
       property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
       property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
 
+      property :dimensions do
+        width = font.text_width(longest_option_text)
+        height = options.length * font.height + (options.length - 1) * padding
+        Dimensions.of width, height
+      end
+
       # This is a temporary method as there is no options propery yet defined
       def options
         properties[:options]
@@ -82,19 +88,11 @@ module Metro
       end
 
       def bounds
-        Metro::Models::Bounds.new x: x, y: y, width: width, height: height
-      end
-
-      def width
-        font.text_width(longest_option_text)# * x_factor
+        Bounds.new x: x, y: y, width: width, height: height
       end
 
       def longest_option_text
         longest = options.map {|opt| opt }.inject("") {|longest,opt| opt.length > longest.length ? opt : longest }
-      end
-
-      def height
-        options.length * font.height + (options.length - 1) * padding
       end
 
       def option_at_index(index)
