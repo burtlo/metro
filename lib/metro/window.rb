@@ -64,7 +64,7 @@ module Metro
     # @return the dimensions of the current window.
     #
     def dimensions
-      Dimensions.of width, height
+      Metro::Units::Dimensions.of width, height
     end
 
     #
