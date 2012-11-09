@@ -14,6 +14,7 @@ require 'gosu_ext/color'
 require 'gosu_ext/image'
 require 'gosu_ext/animation'
 require 'gosu_ext/song'
+require 'gosu_ext/sample'
 require 'gosu_ext/gosu_constants'
 require 'core_ext/numeric'
 
