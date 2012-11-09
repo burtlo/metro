@@ -12,7 +12,7 @@ module Metro
     class Property
       include Units
 
-      attr_reader :model, :options
+      attr_reader :model, :options, :block
 
       #
       # @param [Model] model the model associated with this property.
@@ -20,9 +20,10 @@ module Metro
       #   this property. This may be default values or options on how
       #   this properby should behave.
       #
-      def initialize(model,options={})
+      def initialize(model,options={},&block)
         @model = model
         @options = options
+        @block = block
       end
 
       # Define a filter block for getting a value of that type.

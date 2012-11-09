@@ -29,6 +29,17 @@ module Metro
     #       property :box, type: dimensions, default: Dimensions.of 100.0, 100.0
     #       # box_width, box_height
     #     end
+    # 
+    # @example Using a dimensions property providing a default block (to be calculated
+    #   when the model retrieves the value - allowing for the model's scene and window
+    #   to be set.)
+    # 
+    #     class Hero < Metro::Model
+    #       property :dimensions do 
+    #         # Return the dimensions of the current window for the hero
+    #         model.window.dimensions
+    #       end
+    #     end
     #
     class DimensionsProperty < Property
 
@@ -57,6 +68,7 @@ module Metro
       end
 
       def default_dimensions
+        return block.call if block
         (options[:default] and options[:default].is_a? Dimensions) ? options[:default] : Dimensions.none
       end
 
