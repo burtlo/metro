@@ -63,7 +63,7 @@ module Metro
 
       # Set the image with the given image. A Gosu::Image does not normally
       # store it's path, however, this functionality has been monkey-patched.
-      set Gosu::Image do |image|
+      set Metro::Image do |image|
         image.path
       end
 
@@ -98,7 +98,7 @@ module Metro
           images[path] = gosu_image
         end
 
-        Image.new gosu_image, path, tileable
+        Metro::Image.new gosu_image, path, tileable
       end
 
       def self.images
