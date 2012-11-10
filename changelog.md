@@ -1,5 +1,15 @@
 # Metro
 
+## 0.2.2 / 2012-11-10
+
+* Song support added (scene methods and model properties)
+* Sample support added (model properties)
+* Added a missing sample/song
+* Implicit Animation easings can now be more easily created and registered.
+* Properties can now be defined with a block
+* FIX Dimensions parse creation called wrong method
+* Removed support for specifying a color in animation
+
 ## 0.2.1 / 2012-11-08
 
 * FIX Scene fade transition color changing and implicit animations 
