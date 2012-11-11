@@ -81,31 +81,7 @@ module Metro
       #   a song.
       #
       def self.song_for(options)
-        options.symbolize_keys!
-        relative_path = options[:path]
-
-        gosu_song = songs[relative_path]
-
-        unless gosu_song
-          window = options[:window]
-          absolute_path = path = options[:path]
-          absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
-
-          gosu_song = create_song(window,absolute_path)
-          songs[relative_path] = gosu_song
-        end
-
-        Metro::Song.new gosu_song, relative_path
-      end
-
-      def self.songs
-        @songs ||= {}
-      end
-
-      private
-
-      def self.create_song(window,filename)
-        Gosu::Song.new(window, filename)
+        Song.find_or_create(options)
       end
 
     end
