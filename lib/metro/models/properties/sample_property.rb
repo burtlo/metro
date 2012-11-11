@@ -25,14 +25,14 @@ module Metro
     #     class Hero < Metro::Model
     #       property :pickup_sample, type: :sample, path: 'pickup.wav'
     #     end
-    #    
+    #
     class SampleProperty < Metro::Model::Property
 
       # By default, getting an unsupported value will return the default sample
       get do |value|
         default_sample
       end
-      
+
       # Bu default, setting sn unsupported value will save the default sample filename
       set do |value|
         default_sample_filename
@@ -52,7 +52,7 @@ module Metro
       set Metro::Sample do |sample|
         sample.path
       end
-      
+
       #
       # @return the default sample for the sample property. This is based on the default
       #   sample name.
@@ -60,15 +60,15 @@ module Metro
       def default_sample
         self.class.sample_for path: default_sample_filename, window: model.window
       end
-      
+
       #
       # @return a string sample name that is default. If the property was not created with
       #   a default value the the default sample is the missing sample found in Metro.
       #
       def default_sample_filename
-        options[:path] || metro_asset_path("missing.wav")
+        options[:path] or "missing.wav"
       end
-      
+
       #
       # Returns a Metro::Sample. This is composed of the metadata provided and a Gosu::Sample.
       #
@@ -76,20 +76,7 @@ module Metro
       #   a sample.
       #
       def self.sample_for(options)
-        options.symbolize_keys!
-        relative_path = options[:path]
-        window = options[:window]
-
-        absolute_path = path = options[:path]
-        absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
-
-        gosu_sample = create_sample(window,absolute_path)
-
-        Metro::Sample.new gosu_sample, relative_path
-      end
-
-      def self.create_sample(window,filename)
-        Gosu::Sample.new(window, filename)
+        Metro::Sample.create(options)
       end
 
     end
