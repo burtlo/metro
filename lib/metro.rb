@@ -159,9 +159,8 @@ module Metro
 
 
   def game_file_exists?(file)
-    unless File.exists? file
-      error! "error.missing_metro_file", file: file
-    end
+    error!("error.missing_metro_file",file: file) unless File.exists?(file)
+    error!("error.specified_directory",directory: file) if File.directory?(file)
   end
 
 end

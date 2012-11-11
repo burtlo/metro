@@ -8,6 +8,14 @@ en:
       actions:
       - "Ensure you have specified the correct file"
       - "Ensure that the file exists at that location"
+      - "Did you mean to generate a new game, scene, or model? Try: `metro help`"
+    specified_directory:
+      title: "Path specified is a directory"
+      message: "The specified path is a `%{directory}` and not a valid Metro game file."
+      actions:
+      - "Ensure you have specified the correct file"
+      - "Specify the path to the metro game file with the directory included."
+      - "Did you mean to generate a new game, scene, or model? Try: `metro help`"
     reserved_control_name:
       title: "Unable to define control: %{name}"
       message: "The specified control name `%{name}` is RESERVED or ALREADY DEFINED."
