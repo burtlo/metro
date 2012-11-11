@@ -40,23 +40,23 @@ module Metro
     #     end
     #
     class ImageProperty < Property
-
+      
+      # By default, getting will use the the default image.
       get do
         default_image
       end
 
       # Return the image at the specified path.
-      # @note The path should be the relative path within the game.
       get String do |path|
         self.class.image_for path: path, window: model.window
       end
 
+      # By default, setting will use the path of the default image.
       set do
         default_image.path
       end
 
       # Set the image with the specified path.
-      # @note The path should be the relative path within the game.
       set String do |path|
         path
       end
@@ -67,6 +67,7 @@ module Metro
         image.path
       end
 
+
       def default_image
         self.class.image_for path: default_image_path, window: model.window
       end
@@ -74,7 +75,6 @@ module Metro
       def default_image_path
         options[:path] || metro_asset_path("missing.png")
       end
-
 
       #
       # Return an image for the specified path. On first request it will be loaded from
@@ -84,33 +84,33 @@ module Metro
       #   will be displayed.
       #
       def self.image_for(options)
+        find_or_create_image(options)
+      end
+
+      private
+
+      def self.find_or_create_image(options)
+        path, absolute_path, window, tileable = find_or_create_params(options)
+        images[path] or create_image(window,absolute_path,tileable)
+      end
+
+      def self.find_or_create_params(options)
         options.symbolize_keys!
-
-        absolute_path = path = options[:path]
-
-        gosu_image = images[path]
-
-        unless gosu_image
-          absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
-
-          tileable = !!options[:tileable]
-          window = options[:window]
-
-          gosu_image = create_image(window,absolute_path,tileable)
-          images[path] = gosu_image
-        end
-
-        Metro::Image.new gosu_image, path, tileable
+        path = options[:path]
+        absolute_path = (path.start_with?("/") ? path : asset_path(path))
+        tileable = !!options[:tileable]
+        window = options[:window]
+        [ path, absolute_path, window, tileable ]
       end
 
       def self.images
         @images ||= {}
       end
 
-      private
-
       def self.create_image(window,path,tileable)
-        Gosu::Image.new(window,path,tileable)
+        gosu_image = Gosu::Image.new(window,path,tileable)
+        images[path] = gosu_image
+        Metro::Image.new gosu_image, path, tileable
       end
 
     end
