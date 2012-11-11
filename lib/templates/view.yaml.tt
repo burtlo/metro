@@ -1,6 +1,5 @@
-# title:
-#   model: metro::models::label
-#   x: 30
-#   y: 50
-#   z-order: 4
-#   color: "rgba(255,255,0,0.0)"
+title:
+  text: "Your scene"
+  model: metro::models::label
+  position: '30,50,4'
+  color: "rgba(255,255,0,0.0)"

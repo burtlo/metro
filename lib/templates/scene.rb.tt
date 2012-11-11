@@ -8,11 +8,11 @@ class <%= scene_class_name %> < GameScene
   #
   # @example Explicitly drawing a text label in the scene
   #
-  # draw :title, 'text' => 'Title Screen',
-  #   'x' => 20, 'y' => 20, 'z-order' => 0,
-  #   'size' => 40,
-  #   'color' => 'rgb(255,255,255)',
-  #   'model' => 'metro::models::label'
+  # draw :title, text: 'Title Screen',
+  #   position: '20,20,0',
+  #   font: {size: 40},
+  #   color: 'rgb(255,255,255)',
+  #   model: 'metro::models::label'
   #
   # The draw method can be simplier for models that have content defined
   # for them in the view or the models themselves define the appropriate
