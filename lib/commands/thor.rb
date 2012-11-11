@@ -48,19 +48,25 @@ module Metro
 
     end
 
-    desc "new [GAMENAME]",
-      "Create a new game within the directory using with the [GAMENAME] given."
+    desc "new GAMENAME",
+      "Create a new game within the directory using with the GAMENAME given."
     def new(game_name)
       Metro::GenerateGame.start [ game_name ]
     end
 
-    desc "generate",
-      "Create a new game model, view, or scene"
+    desc "generate TYPE NAME",
+      "Create a new type: model, view, or scene."
     def generate(type,name)
       gen = generator(type)
       gen.start [ name ]
     end
-
+    
+    desc "g TYPE NAME",
+      "Create a new type: model, view, or scene."
+    def g(type,name)
+      generate(type,name)
+    end
+    
     desc "help", "This commoand"
     def help
       say banner
