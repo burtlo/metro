@@ -115,18 +115,6 @@ module Metro
     end
 
     #
-    # Generate a map from the scene or scenes to include all the sub-classes of
-    # these scenes.
-    #
-    # @param [Scene,Array<Scene>] scenes a scene or scene subclass or an array of
-    #   scene subclasses.
-    #
-    # @see #scenes_hash
-    #
-    def build_map_of_scenes(scenes)
-    end
-
-    #
     # Create a hash that will return a setup missing scene by default.
     #
     def hash_with_missing_scene_default
