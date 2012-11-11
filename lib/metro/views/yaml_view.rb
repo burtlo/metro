@@ -22,7 +22,7 @@ module Metro
       # @return a Hash that contains the contents of the view.
       #
       def self.parse(view_path)
-        YAML.load File.read yaml_view_path(view_path)
+        YAML.load(File.read(yaml_view_path(view_path))) or { }
       end
 
       #
