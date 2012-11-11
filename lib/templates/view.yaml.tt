@@ -1,5 +1,9 @@
+# http://www.yaml.org/YAML_for_ruby.html
+---
 title:
-  text: "Your scene"
-  model: metro::models::label
-  position: '30,50,4'
-  color: "rgba(255,255,0,0.0)"
+  model: "metro::models::label"
+  text: "Your Scene"
+  position: "190,200,4"
+  font:
+    size: 60
+  color: "rgba(255,255,0,1.0)"

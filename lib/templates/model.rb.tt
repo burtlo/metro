@@ -34,6 +34,8 @@ class <%= model_name %> < GameModel
   #
   # @see Metro::Model::AnimationProperty
   # @see Metro::Model::ImageProperty
+  # @see Metro::Model::SongProperty
+  # @see Metro::Model::SampleProperty
   # @see Metro::Model::NumericProperty
   # @see Metro::Model::ScaleProperty
   # @see Metro::Model::TextProperty
@@ -89,6 +91,17 @@ class <%= model_name %> < GameModel
   #
   def after_initialize ; end
 
+  #
+  # This method is called right after the model has been added to the scene and added
+  # to the window.
+  #
+  def show ; end
+
+  #
+  # This is called every update interval while the window is being shown.
+  #
+  def update ; end
+  
   #
   # This is called after every {#update} and when the OS wants the window to
   # repaint itself.

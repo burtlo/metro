@@ -1,0 +1,14 @@
+instruction: &instruction
+  model: metro::models::label
+  font:
+    name: Arial
+    size: 40
+  color: "rgba(255,255,0)"
+first_instruction:
+  <<: *instruction
+  text: "<- to move left |"
+  position: "60,300,1"
+second_instruction:
+  <<: *instruction
+  text: "| to move right ->"
+  position: "320,300,1"

@@ -3,6 +3,8 @@ class <%= scene_class_name %> < GameScene
   # but that can be overriden with the scene_name class method
   # scene_name "credits"
 
+  draw :title
+
   #
   # DRAWING and ACTORS
   #
@@ -10,7 +12,7 @@ class <%= scene_class_name %> < GameScene
   #
   # draw :title, text: 'Title Screen',
   #   position: '20,20,0',
-  #   font: {size: 40},
+  #   font: { size: 60 },
   #   color: 'rgb(255,255,255)',
   #   model: 'metro::models::label'
   #
@@ -21,7 +23,7 @@ class <%= scene_class_name %> < GameScene
   # @example defining multiple things to draw; their visual data would be
   #   stored within the respective view file
   #
-  # draws :menu, :hero, :enemy
+  # draws :title, :hero, :enemy
   #
 
   #
