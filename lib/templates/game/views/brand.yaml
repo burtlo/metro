@@ -1,5 +1,4 @@
 brand:
   model: metro::models::image
-  path: brand.jpg
-  x: 320
-  y: 240
+  image: brand.jpg
+  position: "320,240,1"

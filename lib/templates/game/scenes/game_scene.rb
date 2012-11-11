@@ -20,9 +20,9 @@ class GameScene < Metro::Scene
   # @example Setting up the ability for all subclassed scenes
   #   to be edited with the 'Ctrl+E' event
   #
-  event :on_up, KbR do |event|
+  event :on_up, KbE do |event|
     if event.control?
-      transition_to scene_name, with: edit
+      transition_to scene_name, with: :edit
     end
   end
 

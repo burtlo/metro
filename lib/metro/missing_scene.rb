@@ -7,13 +7,13 @@ module Metro
     end
 
     draw :title, text: "Missing Scene!",
-      x: 20, y: 20, z_order: 1,
-      x_factor: 3, y_factor: 3,
+      position: "20,20,1",
       color: 0xffffffff,
+      font: {size: 40},
       model: "metro::models::label"
 
     draw :message, text: 'The scene `#{self.class.missing_scene}` was requested, but is missing!',
-      x: 20, y: 100, z_order: 1,
+      position: "20,100,1",
       color: 0xffffffff,
       model: "metro::models::label"
 

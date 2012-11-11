@@ -1,12 +1,10 @@
 title:
   model: metro::models::label
   text: "#{Game.name}"
-  font_size: 40
-  y: 100
+  font:
+    size: 40
+  position: "320,100,1"
   color: rgba(255,255,255,1.0)
 menu:
   model: metro::models::menu
-  x: 260
-  y: 200
-  color: rgb(127,127,127)
-  highlight-color: rgb(255,255,255)
+  position: "260,200,1"

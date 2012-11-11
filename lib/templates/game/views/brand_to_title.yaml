@@ -1,7 +1,7 @@
 title:
   model: metro::models::label
   text: "#{Game.name}"
-  font_size: 40
-  y: 100
+  font:
+    size: 40
+  position: "320,100,1"
   color: rgba(255,255,255,0.0)
-  
