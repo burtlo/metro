@@ -83,14 +83,14 @@ module Metro
       def self.song_for(options)
         options.symbolize_keys!
         relative_path = options[:path]
-        window = options[:window]
-
-        absolute_path = path = options[:path]
-        absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
 
         gosu_song = songs[relative_path]
 
         unless gosu_song
+          window = options[:window]
+          absolute_path = path = options[:path]
+          absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
+
           gosu_song = create_song(window,absolute_path)
           songs[relative_path] = gosu_song
         end

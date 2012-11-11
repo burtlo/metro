@@ -87,13 +87,15 @@ module Metro
         options.symbolize_keys!
 
         absolute_path = path = options[:path]
-        absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
-
-        tileable = !!options[:tileable]
-        window = options[:window]
 
         gosu_image = images[path]
+
         unless gosu_image
+          absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
+
+          tileable = !!options[:tileable]
+          window = options[:window]
+
           gosu_image = create_image(window,absolute_path,tileable)
           images[path] = gosu_image
         end
