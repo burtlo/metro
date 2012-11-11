@@ -1,5 +1,13 @@
 # Metro
 
+## 0.2.3 / 2012-11-11
+
+* FIX metro generators and templates generating out-of-date formats
+* FIX YAML views wil now return an empty hash instead of false on empty files
+* Added first scene and model to template.
+* FIX better error message when a directory is specified
+* Added the `g` generator shortcut: `metro g scene NAME`
+
 ## 0.2.2 / 2012-11-10
 
 * Song support added (scene methods and model properties)
