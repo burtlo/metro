@@ -51,7 +51,9 @@ module Metro
     attr_reader :path
 
     def filepath
-      absolute_asset?(path) or game_asset?(path) or metro_asset?(path)
+      @filepath ||= begin
+        absolute_asset?(path) or game_asset?(path) or metro_asset?(path)
+      end
     end
 
     def absolute_asset?(path)
