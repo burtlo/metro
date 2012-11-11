@@ -69,7 +69,7 @@ module Metro
       #   a default value the the default song is the missing song found in Metro.
       #
       def default_song_name
-        options[:path] || metro_asset_path('missing.ogg')
+        options[:path] or 'missing.ogg'
       end
 
       #
