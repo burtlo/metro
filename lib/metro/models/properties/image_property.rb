@@ -9,9 +9,6 @@ module Metro
     # Property will attempt to use a image at that path that already meets that criteria if it has been
     # loaded.
     #
-    # The images are cached within the image property to help performance by reducing the unncessary
-    # creation of similar images.
-    #
     # @example Defining a image property
     #
     #     class Player < Metro::Model
@@ -40,7 +37,7 @@ module Metro
     #     end
     #
     class ImageProperty < Property
-      
+
       # By default, getting will use the the default image.
       get do
         default_image
@@ -67,13 +64,19 @@ module Metro
         image.path
       end
 
-
+      #
+      # @return the default image based on the default image path specified.
+      #
       def default_image
         self.class.image_for path: default_image_path, window: model.window
       end
 
+      #
+      # @return the path provided as the default or if one has not been specified
+      # the default "missing.png"
+      #
       def default_image_path
-        options[:path] || metro_asset_path("missing.png")
+        options[:path] or "missing.png"
       end
 
       #
@@ -84,33 +87,7 @@ module Metro
       #   will be displayed.
       #
       def self.image_for(options)
-        find_or_create_image(options)
-      end
-
-      private
-
-      def self.find_or_create_image(options)
-        path, absolute_path, window, tileable = find_or_create_params(options)
-        images[path] or create_image(window,absolute_path,tileable)
-      end
-
-      def self.find_or_create_params(options)
-        options.symbolize_keys!
-        path = options[:path]
-        absolute_path = (path.start_with?("/") ? path : asset_path(path))
-        tileable = !!options[:tileable]
-        window = options[:window]
-        [ path, absolute_path, window, tileable ]
-      end
-
-      def self.images
-        @images ||= {}
-      end
-
-      def self.create_image(window,path,tileable)
-        gosu_image = Gosu::Image.new(window,path,tileable)
-        images[path] = gosu_image
-        Metro::Image.new gosu_image, path, tileable
+        Metro::Image.find_or_create(options)
       end
 
     end
