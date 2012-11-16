@@ -12,12 +12,28 @@ module Metro
         window.dimensions
       end
 
+      def left_x
+        x
+      end
+
+      def right_x
+        x + width
+      end
+
+      def top_y
+        y
+      end
+
+      def bottom_y
+        y + height
+      end
+
       def draw
-        window.draw_quad(x,y,color,
-                         width,x,color,
-                         width,height,color,
-                         y,height,color,
-                         z_order)
+        window.draw_quad(left_x,top_y,color,
+          right_x,top_y,color,
+          right_x,bottom_y,color,
+          left_x,bottom_y,color,
+          z_order)
       end
     end
   end
