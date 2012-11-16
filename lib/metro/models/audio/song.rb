@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module Audio
 
     #
     # A song represents an audio representation.

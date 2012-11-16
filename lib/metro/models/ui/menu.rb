@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module UI
 
     #
     # Draws a a menu of options. A menu model inserts itself into the scene as an event

@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module UI
 
     #
     # Draws a string of text

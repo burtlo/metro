@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module UI
 
     #
     # Generic model is used when no model is cannot not be found

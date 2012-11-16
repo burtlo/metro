@@ -326,10 +326,10 @@ module Metro
   end
 end
 
-require_relative 'models/generic'
-require_relative 'models/label'
-require_relative 'models/menu'
-require_relative 'models/image'
-require_relative 'models/rectangle'
-require_relative 'models/grid_drawer'
-require_relative 'models/song'
+require_relative 'ui/generic'
+require_relative 'ui/label'
+require_relative 'ui/menu'
+require_relative 'ui/image'
+require_relative 'ui/rectangle'
+require_relative 'ui/grid_drawer'
+require_relative 'audio/song'

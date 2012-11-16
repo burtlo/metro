@@ -1,5 +1,5 @@
 module Metro
-  module Models
+  module UI
 
     #
     # Draws an Image
