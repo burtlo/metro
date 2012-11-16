@@ -1,5 +1,11 @@
 # Metro
 
+## 0.2.4 / 2012-11-15
+
+* All retrieved models from properties are now cached for better performance
+* Animations were re-vamped to accept more parameters
+* Metro models names in code are now refered to as "metro::models::*" to "metro::ui::*"
+
 ## 0.2.3 / 2012-11-11
 
 * FIX metro generators and templates generating out-of-date formats
