@@ -103,10 +103,17 @@ module Metro
 
       define_method name do
         raw_value = properties[name]
-        property_class.new(self,options,&block).get raw_value
+
+        unless parsed_value = instance_variable_get("@_property_parsed_#{name}")
+          parsed_value = property_class.new(self,options,&block).get(raw_value)
+          instance_variable_set("@_property_parsed_#{name}",parsed_value)
+        end
+
+        parsed_value
       end
 
       define_method "#{name}=" do |value|
+        instance_variable_set("@_property_parsed_#{name}",nil)
         prepared_value = property_class.new(self,options).set(value)
         properties[name] = prepared_value
       end

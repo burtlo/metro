@@ -37,7 +37,7 @@ module Metro
     # @example Using an animation property with a different property name
     #
     #     class Hero < Metro::Model
-    #       property :walking, type: :animation, path: "star.png", 
+    #       property :walking, type: :animation, path: "star.png",
     #         dimensions: Metro::Dimensions.of(25,25)
     #
     #       def draw
@@ -50,18 +50,18 @@ module Metro
       # By default return the default animation when getting a nil or
       # other unsupported value.
       get do
-        default_animation
+        create_animation default_properties
       end
 
       # When getting a hash, create the animation with the properties.
-      get Hash do |value|
-        self.class.animation_for value.merge(window: model.window)
+      get Hash do |loaded|
+        create_animation default_properties.merge(loaded)
       end
 
       # Setting the animation with a nil or other unsupported value
       # will default to the default animation.
       set do
-        default_animation.to_hash
+        defaults.except(:window)
       end
 
       # Setting with an animation will convert it to it's hash representation.
@@ -71,60 +71,38 @@ module Metro
 
       # Setting with a hash will assume the hash defines an animation.
       set Hash do |value|
-        value
-      end
-
-      def default_animation
-        self.class.animation_for window: model.window,
-          path: default_image_path,
-          width: default_dimensions.width,
-          height: default_dimensions.height,
-          tileable: false
-      end
-
-      def default_image_path
-        options[:path] ? options[:path] : metro_asset_path("missing_animation.png")
-      end
-
-      def default_dimensions
-        options[:dimensions] ? options[:dimensions] : Dimensions.of(16.0,16.0)
-      end
-
-      #
-      # Return an animation for the specified path. On first request it will be loaded from
-      # the file-system. On subsequent requests it will be pulled from the cache.
-      #
-      # @param [Hash] options the relative `path` to the image and the window for which it
-      #   will be displayed.
-      #
-      def self.animation_for(options)
-        options.symbolize_keys!
-        window = options[:window]
-
-        absolute_path = path = options[:path]
-        absolute_path = asset_path(absolute_path) unless absolute_path.start_with? "/"
-
-        width = options[:width].to_i
-        height = options[:height].to_i
-        tileable = options[:tileable]
-
-        animation_images = images[path]
-        unless animation_images
-          animation_images = create_images(window,absolute_path,width,height,tileable)
-          images[path] = animation_images
-        end
-
-        Animation.new options.merge(images: animation_images)
-      end
-
-      def self.images
-        @images ||= {}
+        value.except(:window)
       end
 
       private
+      
+      def create_animation(properties)
+        self.class.animation_for properties
+      end
 
-      def self.create_images(window,path,width,height,tileable)
-        Gosu::Image.load_tiles(window,path,width,height,tileable)
+      def default_properties
+        { window: model.window,
+          path: default_image_filename,
+          width: default_dimensions.width,
+          height: default_dimensions.height,
+          time_per_image: default_time_per_image,
+          tileable: false }
+      end
+
+      def default_image_filename
+        options[:path] or "missing_animation.png"
+      end
+
+      def default_dimensions
+        options[:dimensions] or Dimensions.of(16.0,16.0)
+      end
+
+      def default_time_per_image
+        options[:time_per_image] or 50
+      end
+
+      def self.animation_for(options)
+        Metro::Animation.find_or_create(options)
       end
 
     end
