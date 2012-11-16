@@ -68,7 +68,6 @@ module Metro
     def draw ; end
 
 
-
     #
     # Define a property for the model. A property has a name and then can optionally specify
     # a property type which will receive additional options.
@@ -224,6 +223,18 @@ module Metro
     # Allows for the definition of events within the scene.
     #
     include HasEvents
+
+    #
+    # @param [String] model_name the name of the model to be created.
+    # @return [Metro::Model] the metro model instance
+    #
+    def create(model_name)
+      model_class = Metro::Model.model(model_name).constantize
+      mc = model_class.new
+      mc.scene = scene
+      mc.window = window
+      mc
+    end
 
     def saveable?
       true
