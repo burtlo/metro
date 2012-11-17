@@ -1,7 +1,7 @@
 # http://www.yaml.org/YAML_for_ruby.html
 ---
 title:
-  model: "metro::models::label"
+  model: "metro::ui::label"
   text: "Your Scene"
   position: "190,200,4"
   font:

@@ -22,7 +22,7 @@ module Metro
       #         'x' => 20, 'y' => 20, 'z-order' => 0,
       #         'x-factor' => 3, 'y-factor' => 3,
       #         'color' => 0xffffffff,
-      #         'model' => 'metro::models::label'
+      #         'model' => 'metro::ui::label'
       #
       #       def show
       #         puts "Where is my title? #{title.x},#{title.y}"
@@ -54,7 +54,7 @@ module Metro
       # @see #draw
       # 
       def play(song_name,options={})
-        draw song_name, options.merge(model: "metro::models::song")
+        draw song_name, options.merge(model: "metro::audio::song")
       end
 
       #

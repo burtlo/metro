@@ -1,5 +1,5 @@
 instruction: &instruction
-  model: metro::models::label
+  model: metro::ui::label
   font:
     name: Arial
     size: 40

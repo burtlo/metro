@@ -5,7 +5,7 @@ module Metro
     # Draws an Image
     #
     # @example Using the Image in a view file
-    #    model: "metro::models::image"
+    #    model: "metro::ui::image"
     #
     class Image < Model
 

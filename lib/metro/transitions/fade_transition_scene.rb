@@ -1,7 +1,7 @@
 module Metro
   class FadeTransitionScene < TransitionScene
 
-    draw :rectangle, model: "metro::models::rectangle"
+    draw :rectangle, model: "metro::ui::rectangle"
 
     #
     # When the scene is shown set up the starting color for the rectangle

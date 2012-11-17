@@ -5,7 +5,7 @@ module Metro
     # Draws a string of text
     #
     # @example Using the Label in a view file
-    #    model: "metro::models::label"
+    #    model: "metro::ui::label"
     #
     class Label < Model
 

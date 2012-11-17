@@ -1,4 +1,4 @@
 brand:
-  model: metro::models::image
+  model: metro::ui::image
   image: brand.jpg
   position: "320,240,1"

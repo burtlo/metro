@@ -14,7 +14,7 @@ describe Metro::Model::DimensionsProperty do
 
     subject do
       described_class.new model do
-        model.window.dimensions
+        window.dimensions
       end
     end
 

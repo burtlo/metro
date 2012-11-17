@@ -15,7 +15,7 @@ module Metro
       # easier to dup scenes.
       #
       self.class.drawings.clear
-      self.class.draw :overlay, model: "Metro::Models::GridDrawer"
+      self.class.draw :overlay, model: "Metro::UI::GridDrawer"
       add_actors_to_scene
       after_initialize
     end

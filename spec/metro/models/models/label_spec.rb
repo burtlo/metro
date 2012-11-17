@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Metro::Models::Label do
+describe Metro::UI::Label do
 
   subject do
     label = described_class.new

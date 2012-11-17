@@ -1,5 +1,5 @@
 title:
-  model: metro::models::label
+  model: metro::ui::label
   text: "#{Game.name}"
   font:
     size: 40

@@ -14,7 +14,7 @@ class <%= scene_class_name %> < GameScene
   #   position: '20,20,0',
   #   font: { size: 60 },
   #   color: 'rgb(255,255,255)',
-  #   model: 'metro::models::label'
+  #   model: 'metro::ui::label'
   #
   # The draw method can be simplier for models that have content defined
   # for them in the view or the models themselves define the appropriate

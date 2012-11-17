@@ -331,7 +331,7 @@ module Metro
     end
 
     def self.models_hash
-      @models_hash ||= HashWithIndifferentAccess.new("Metro::Models::Generic")
+      @models_hash ||= HashWithIndifferentAccess.new("Metro::UI::Generic")
     end
 
   end
