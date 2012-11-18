@@ -128,26 +128,67 @@ describe Metro::UI::Label do
     let(:scale_x) { 1.0 }
     let(:scale_y) { 1.0 }
 
+    let(:font) { mock('font') }
 
-    let(:font_height) { 20 }
+    let(:line_height) { 20 }
 
     before do
       subject.text = given_text
       subject.position = Point.at(x_position,y_position,z_order)
       subject.scale = Scale.to(scale_x,scale_y)
       subject.stub(:font).and_return(font)
-    end
-
-    let(:font) do
-      font = mock('font')
-      font.stub(:text_width) { 12 }
-      font.stub(:height) { font_height }
-      font
+      subject.stub(:line_height) { line_height }
     end
 
     it "should have the font draw each of the lines" do
       font.should_receive(:draw).twice
       subject.draw
+    end
+
+    context "when the horizontal alignment is center" do
+
+      before do
+        subject.align = "center"
+        subject.vertical_align = "top"
+        subject.stub(:line_width).with(first_line) { 60 }
+        subject.stub(:line_width).with(last_line) { 42 }
+      end
+
+      let(:first_line_x_position) { x_position - 30 }
+      let(:second_line_x_position) { x_position - 21 }
+
+      let(:first_line_y_position) { y_position }
+      let(:second_line_y_position) { y_position + line_height }
+
+      it "should draw the lines correctly based on their on their respective widths" do
+        font.should_receive(:draw).with(first_line,first_line_x_position,first_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
+        font.should_receive(:draw).with(last_line,second_line_x_position,second_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
+        subject.draw
+      end
+
+    end
+
+    context "when the horizontal alignment is right" do
+
+      before do
+        subject.align = "right"
+        subject.vertical_align = "top"
+        subject.stub(:line_width).with(first_line) { 60 }
+        subject.stub(:line_width).with(last_line) { 42 }
+      end
+
+      let(:first_line_x_position) { x_position - 60 }
+      let(:second_line_x_position) { x_position - 42 }
+
+      let(:first_line_y_position) { y_position }
+      let(:second_line_y_position) { y_position + line_height }
+
+      it "should draw the lines correctly based on their on their respective widths" do
+        font.should_receive(:draw).with(first_line,first_line_x_position,first_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
+        font.should_receive(:draw).with(last_line,second_line_x_position,second_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
+        subject.draw
+      end
+
     end
 
     context "when the vertical alignment is top" do
@@ -157,7 +198,7 @@ describe Metro::UI::Label do
       end
 
       let(:first_line_y_position) { y_position }
-      let(:second_line_y_position) { y_position + font_height }
+      let(:second_line_y_position) { y_position + line_height }
 
       it "should draw the first line at the y position" do
         font.should_receive(:draw).with(first_line,x_position,first_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
@@ -182,9 +223,9 @@ describe Metro::UI::Label do
       let(:third_line) { text.split("\n")[2] }
 
 
-      let(:first_line_y_position) { y_position - font_height - font_height / 2 }
-      let(:second_line_y_position) { y_position - font_height / 2 }
-      let(:third_line_y_position) { y_position + font_height / 2 }
+      let(:first_line_y_position) { y_position - line_height - line_height / 2 }
+      let(:second_line_y_position) { y_position - line_height / 2 }
+      let(:third_line_y_position) { y_position + line_height / 2 }
 
       it "should draw the first line at the y position" do
         font.should_receive(:draw).with(first_line,x_position,first_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))
@@ -201,8 +242,8 @@ describe Metro::UI::Label do
         subject.vertical_align = "bottom"
       end
 
-      let(:first_line_y_position) { y_position - font_height * 2 }
-      let(:second_line_y_position) { y_position - font_height }
+      let(:first_line_y_position) { y_position - line_height * 2 }
+      let(:second_line_y_position) { y_position - line_height }
 
       it "should draw the first line at the y position" do
         font.should_receive(:draw).with(first_line,x_position,first_line_y_position,z_order,scale_x,scale_y,an_instance_of(Gosu::Color))

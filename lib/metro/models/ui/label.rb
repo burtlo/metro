@@ -28,7 +28,7 @@ module Metro
 
       def draw
         parsed_text.each_with_index do |line,index|
-          font.draw line, x_position, y_position(index), z_order, x_factor, y_factor, color
+          font.draw line, x_position(index), y_position(index), z_order, x_factor, y_factor, color
         end
       end
 
@@ -46,8 +46,16 @@ module Metro
         font.height
       end
 
+      def line_width(line)
+        font.text_width(line)
+      end
+
       def half_line_height
         line_height / 2
+      end
+
+      def longest_line
+        parsed_text.map { |line| line_width(line) }.max
       end
 
       def line_count
@@ -58,20 +66,16 @@ module Metro
         text.split("\n")
       end
 
-      def longest_line
-        parsed_text.map { |line| font.text_width(line) }.max
-      end
-
-      def x_left_alignment
+      def x_left_alignment(index)
         x
       end
 
-      def x_center_alignment
-        x - width / 2
+      def x_center_alignment(index)
+        x - line_width(parsed_text[index]) / 2
       end
 
-      def x_right_alignment
-        x - width
+      def x_right_alignment(index)
+        x - line_width(parsed_text[index])
       end
 
       def horizontal_alignments
@@ -80,9 +84,9 @@ module Metro
           right: :x_right_alignment }
       end
 
-      def x_position
+      def x_position(index)
         alignment = horizontal_alignments[align.to_sym]
-        send(alignment)
+        send(alignment,index)
       end
 
       def y_top_alignment(index)
