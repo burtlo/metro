@@ -2,10 +2,16 @@ module Metro
   module UI
 
     #
-    # Draws a string of text.
+    # The label will draw the specified text with the font, position, color,
+    # and alignment provided.
     #
-    # @example Using the Label in a view file
-    #    model: "metro::ui::label"
+    # @example Drawing a label
+    #
+    #     class TitleScene < GameScene
+    #       draw :game_title, model: "metro::ui::label", position: "320,240",
+    #         vertical_align: "center", align: "center", color: "rgba(255,255,255,1.0)",
+    #         text: "Super Awesome Game\n2"
+    #     end
     #
     class Label < Model
 

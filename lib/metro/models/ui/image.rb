@@ -2,10 +2,14 @@ module Metro
   module UI
 
     #
-    # Draws an Image
+    # The image will draw an image with the specifie path, color, rotation, and scale.
     #
-    # @example Using the Image in a view file
-    #    model: "metro::ui::image"
+    # @example Drawing the 'player.png' image at (320,240)
+    #
+    #     class MainScene < GameScene
+    #       draw :player, model: "metro::ui::image", position: "320,240",
+    #         image: "player.png"
+    #     end
     #
     class Image < Model
 
