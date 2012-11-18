@@ -1,5 +1,12 @@
 # Metro
 
+## 0.2.5 / 2012-11-18
+
+* FIX metro::ui::rectangle calculation
+* FIX remaining references to metro::models::* to metro::ui::*
+* FIX Models will use their setters over setting raw properties
+* Metro::UI::Label now supports horizontal alignment, vertical alignment, and multiple lines
+
 ## 0.2.4 / 2012-11-15
 
 * All retrieved models from properties are now cached for better performance

@@ -1,5 +1,5 @@
 module Metro
-  VERSION = "0.2.4"
+  VERSION = "0.2.5"
   WEBSITE = "https://github.com/burtlo/metro"
   CONTACT_EMAILS = ["franklin.webber@gmail.com"]
   
