@@ -13,6 +13,7 @@ module Metro
   # @see Models::Generic
   #
   class Model
+    include PropertyOwner
     include Units
 
     #
@@ -28,7 +29,6 @@ module Metro
     #
     def after_initialize ; end
 
-
     #
     # This is an entry point for customization. After the model's properties
     # have been set and the model has been assigned to the window and scene
@@ -39,14 +39,12 @@ module Metro
     #
     def show ; end
 
-
     #
     # This is called every update interval while the actor is in the scene
     #
     # @note This method should be implemented in the Model subclass
     #
     def update ; end
-
 
     #
     # This is called after an update. A model normally is not removed after
@@ -58,7 +56,6 @@ module Metro
     #
     def completed? ; false ; end
 
-
     #
     # This is called after every {#update} and when the OS wants the window to
     # repaint itself.
@@ -67,124 +64,16 @@ module Metro
     #
     def draw ; end
 
-
     #
-    # Define a property for the model. A property has a name and then can optionally specify
-    # a property type which will receive additional options.
+    # @return [String] the name of the model class.
     #
-    # @example Defining various propertys for a model
-    #
-    #     class Player
-    #       property :position
-    #       property :angle, default: 0.0
-    #       property :turn_amount, default: 4.5
-    #       property :image, path: "player.png"
-    #       property :motto, type: :text, default: 'Hometown Heroes!'
-    #     end
-    #
-    # When the property name matches a property definition with that name they will be used. This is what
-    # happens for the 'position' and 'image' properties defined above. Both of those map to respective
-    # properties with matching names.
-    #
-    # Properties by default are assumed to be numeric properties so the types does not have to be stated.
-    # This is the case for 'angle' and 'turn_amount' properties.
-    #
-    # You may use any particular name for your properties as long as you specify the type. This is the case
-    # for the 'motto' property.
-    #
-    def self.property(name,options={},&block)
-
-      # Use the name as the property type if one has not been provided.
-
-      property_type = options[:type] || name
-
-      property_class = Property.property(property_type)
-
-      define_method name do
-        raw_value = properties[name]
-
-        unless parsed_value = instance_variable_get("@_property_parsed_#{name}")
-          parsed_value = property_class.new(self,options,&block).get(raw_value)
-          instance_variable_set("@_property_parsed_#{name}",parsed_value)
-        end
-
-        parsed_value
-      end
-
-      define_method "#{name}=" do |value|
-        instance_variable_set("@_property_parsed_#{name}",nil)
-        prepared_value = property_class.new(self,options).set(value)
-        properties[name] = prepared_value
-      end
-
-      # Define any sub-properties defined on this property
-
-      # When the name does not match the property type then we want to force
-      # the prefixing to be on for our sub-properties. This is to make sure
-      # that when people define multiple fonts and colors that they do not
-      # overlap.
-
-      override_prefix = !(name == property_type)
-
-      property_class.defined_properties.each do |subproperty|
-        sub_options = { prefix: override_prefix }.merge(subproperty.options)
-        sub_options = sub_options.merge(parents: (Array(sub_options[:parents]) + [name]))
-        _sub_property subproperty.name, sub_options
-      end
-
-    end
-
-    #
-    # Defines the sub-properties defined within the property. This is to be used internally
-    # by the #property method.
-    #
-    def self._sub_property(name,options={},&block)
-
-      # Use the name as the property type if one has not been provided.
-
-      property_type = options[:type] || name
-
-      property_class = Property.property(property_type)
-
-      parents = Array(options[:parents])
-
-      method_name = name
-
-      if options[:prefix]
-        method_name = (parents + [name]).join("_")
-      end
-
-      # Define a getter for the sub-property that will traverse the
-      # parent properties, finally returning the filtered value
-
-      define_method method_name do
-        raw_value = (parents + [name]).inject(self) {|current,method| current.send(method) }
-        property_class.new(self,options).get raw_value
-      end
-
-      # Define a setter for the sub-property that will find the parent
-      # value and set itself on that with the filtered value. The parent
-      # is then set.
-      #
-      # @TODO: If getters return dups and not instances of the original object then a very
-      #   deep setter will not be valid.
-      #
-      define_method "#{method_name}=" do |value|
-        parent_value = parents.inject(self) {|current,method| current.send(method) }
-
-        prepared_value = property_class.new(self,options,&block).set(value)
-        parent_value.send("#{name}=",prepared_value)
-
-        send("#{parents.last}=",parent_value)
-      end
-    end
-
-
-    def properties
-      @properties ||= {}
-    end
-
     property :model, type: :text
+
+    #
+    # @return [String] the name of model as it is used within the view or the scene.
+    #   This is the common name, the key within the view file, or the name symbol
+    #   name specified in the scene.
+    #
     property :name, type: :text
 
     #
@@ -279,7 +168,7 @@ module Metro
         else
           options[property_name] = options.delete(key)
         end
-        
+
       end
 
       properties.merge! options

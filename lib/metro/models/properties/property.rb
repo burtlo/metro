@@ -196,9 +196,10 @@ module Metro
 
 end
 
+require_relative 'property_owner'
+
 require_relative 'numeric_property'
 require_relative 'text_property'
-
 require_relative 'animation_property'
 require_relative 'color_property'
 require_relative 'dimensions_property'
