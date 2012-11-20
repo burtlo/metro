@@ -1,8 +1,8 @@
 module Metro
 
   #
-  # Image is a wrapper class for a Gosu Image. This allows for additional data to be stored
-  # without relying on monkey-patching on functionality.
+  # Image is a wrapper class for a Gosu Image. This allows for additional data
+  # to be stored without relying on monkey-patching on functionality.
   #
   class Image < SimpleDelegator
 
@@ -23,7 +23,8 @@ module Metro
     end
 
     #
-    # Finds an existing image or creates a new image given the window, path, and tileablilty.
+    # Finds an existing image or creates a new image given the window, path,
+    # and tileablilty.
     #
     # @example Finding or creating an Image
     #
