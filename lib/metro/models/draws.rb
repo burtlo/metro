@@ -32,6 +32,7 @@ module Metro
       def draw(actor_name,options = {})
 
         view_content_for_actor = view.content[actor_name.to_s]
+
         actor_data = view_content_for_actor.merge(options)
         actor_data[:name] = actor_name
 
@@ -50,9 +51,9 @@ module Metro
 
       #
       # Define a sound actor with the given anem and options.
-      # 
+      #
       # @see #draw
-      # 
+      #
       def play(song_name,options={})
         draw song_name, options.merge(model: "metro::audio::song")
       end
