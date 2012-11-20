@@ -94,20 +94,23 @@ module Metro
       # @TODO: setup sample sounds for movement and selection
       #################################################################
 
-      # property :selected_sample, type: :sample, default: "boop.wav"
-      # property :movement_sample, type: :sample, default: "beep.wav"
+      property :selection_sample, type: :sample, path: "menu-selection.wav"
+      property :movement_sample, type: :sample, path: "menu-movement.wav"
 
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
+        movement_sample.play
         options.previous!
         update_options
       end
 
       event :on_up, KbRight, GpRight, KbDown, GpDown do
+        movement_sample.play
         options.next!
         update_options
       end
 
       event :on_up, KbEnter, KbReturn, GpButton0 do
+        selection_sample.play
         scene.send options.selected_action
       end
 
