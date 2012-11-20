@@ -66,6 +66,7 @@ module Metro
         define_method "#{name}=" do |value|
           instance_variable_set("@_property_parsed_#{name}",nil)
           prepared_value = property_class.new(self,options).set(value)
+          send("#{name}_changed",prepared_value) if respond_to? "#{name}_changed"
           properties[name] = prepared_value
         end
 

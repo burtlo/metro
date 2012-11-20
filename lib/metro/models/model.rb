@@ -114,12 +114,17 @@ module Metro
     include HasEvents
 
     #
+    # A helper method that allows the current model to generate another model. This
+    # is useful as it allows for the current model to pass window and scene state
+    # to the created model.
+    #
     # @param [String] model_name the name of the model to be created.
     # @return [Metro::Model] the metro model instance
     #
-    def create(model_name)
+    def create(model_name,options={})
+      # @TODO: this is another path that parallels the ModelFactory
       model_class = Metro::Model.model(model_name).constantize
-      mc = model_class.new
+      mc = model_class.new options
       mc.scene = scene
       mc.window = window
       mc
@@ -159,7 +164,6 @@ module Metro
     # with the contents of the view.
     #
     def _load(options = {})
-
       # Clean up and symbolize all the keys then merge  that with the existing properties
       options.keys.each do |key|
         property_name = key.to_s.underscore.to_sym
@@ -168,7 +172,6 @@ module Metro
         else
           options[property_name] = options.delete(key)
         end
-
       end
 
       properties.merge! options

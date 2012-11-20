@@ -8,79 +8,72 @@ module Metro
     #
     # @note Only one 'menu' can be defined for a given scene
     #
+    # @example Creating a menu with basic options
+    #
+    #     menu:
+    #       model: metro::ui::menu
+    #       position: "472.0,353.0,5.0"
+    #       alpha: 0
+    #       unselected_color: "rgba(119,119,119,1.0)"
+    #       selected_color: "rgba(255,255,255,1.0)"
+    #       options: [ 'Start Game', 'Exit' ]
+    #
+    # @example Creating a menu with a selected item
+    #
+    #     menu:
+    #       model: metro::ui::menu
+    #       position: "472.0,353.0,5.0"
+    #       alpha: 0
+    #       unselected_color: "rgba(119,119,119,1.0)"
+    #       selected_color: "rgba(255,255,255,1.0)"
+    #       options:
+    #         selected: 0
+    #         items: [ 'Start Game', 'Exit' ]
+    #
+    #
+    # @example Creating a menu with complex options
+    #
+    #     menu:
+    #       model: metro::ui::menu
+    #       position: "472.0,353.0,5.0"
+    #       alpha: 0
+    #       unselected_color: "rgba(119,119,119,1.0)"
+    #       selected_color: "rgba(255,255,255,1.0)"
+    #       options:
+    #         selected: 1
+    #         items:
+    #         -
+    #           model: "metro::ui::label"
+    #           text: "Start Game"
+    #           action: start_game
+    #         -
+    #           model: metro::ui::label
+    #           text: Exit
+    #           action: exit_game
+    #
+    #
     class Menu < Model
 
       property :position, default: Game.center
+      property :alpha, default: 255
 
       property :scale, default: Scale.one
 
-      property :padding, type: :numeric, default: 40
+      property :padding, default: 10
+
+      property :dimensions do
+        Dimensions.none
+      end
+
+      property :options
 
       property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
       property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
 
-      property :dimensions do
-        width = font.text_width(longest_option_text)
-        height = options.length * font.height + (options.length - 1) * padding
-        Dimensions.of width, height
-      end
-
-      # This is a temporary method as there is no options propery yet defined
-      def options
-        properties[:options]
-      end
-
-      def alpha
-        self.unselected_color_alpha
-      end
-
-      def alpha=(value)
-        self.unselected_color_alpha = value.floor
-        self.selected_color_alpha = value.floor
-      end
-
-      property :font
-
-      event :on_up, KbLeft, GpLeft, KbUp, GpUp do
-        previous_option
-      end
-
-      event :on_up, KbRight, GpRight, KbDown, GpDown do
-        next_option
-      end
-
-      event :on_up, KbEnter, KbReturn, GpButton0 do
-        selection
-      end
-
-      attr_reader :selected_index, :menu_options
-
-      def after_initialize
-        @selected_index = 0
-      end
-
-      def window=(value)
-        @window = value
-        @menu_options = options.map {|option| Option.new option }
-      end
-
-      def selection
-        scene_method = option_at_index(selected_index).method
-        scene.send scene_method
-      end
-
-      def previous_option
-        @selected_index = @selected_index - 1
-        @selected_index = options.length - 1 if @selected_index <= -1
-      end
-
-      def next_option
-        @selected_index = @selected_index + 1
-        @selected_index = 0 if @selected_index >= options.length
-      end
-
-      def font
-        @font ||= Gosu::Font.new(window, Gosu::default_font_name, 20)
+      def alpha_changed(alpha)
+        self.selected_color_alpha = alpha
+        self.unselected_color_alpha = alpha
+        options.each { |option| option.alpha = alpha.floor }
       end
 
       def contains?(x,y)
@@ -91,58 +84,49 @@ module Metro
         Bounds.new x: x, y: y, width: width, height: height
       end
 
-      def longest_option_text
-        longest = options.map {|opt| opt }.inject("") {|longest,opt| opt.length > longest.length ? opt : longest }
+      # @TODO: enable the user to define the events for this interaction
+      # @TODO: enable the user to define the layout of the menu items
+      # @TODO: enable the user to enable/disable the menu
+      # @TODO: setup sample sounds for movement and selection
+      #################################################################
+
+      # property :selected_sample, type: :sample, default: "boop.wav"
+      # property :movement_sample, type: :sample, default: "beep.wav"
+
+      event :on_up, KbLeft, GpLeft, KbUp, GpUp do
+        options.previous!
+        update_options
       end
 
-      def option_at_index(index)
-        menu_options[index]
+      event :on_up, KbRight, GpRight, KbDown, GpDown do
+        options.next!
+        update_options
+      end
+
+      event :on_up, KbEnter, KbReturn, GpButton0 do
+        scene.send options.selected_action
+      end
+
+      #################################################################
+
+      def show
+        options.each_with_index do |option,index|
+          option.color = unselected_color
+          option.scale = scale
+          label_y_position = y + (option.height + padding) * index
+          option.position = "#{x},#{label_y_position},#{z}"
+        end
+
+        options.selected.color = selected_color
+      end
+
+      def update_options
+        options.unselected.each { |option| option.color = unselected_color }
+        options.selected.color = selected_color
       end
 
       def draw
-        options.each_with_index do |option,index|
-
-          option_name = option_at_index(index).name
-
-          draw_color = unselected_color
-          draw_color = selected_color if index == selected_index
-
-          y_position = y + padding * index
-          font.draw option_name, x, y_position, z_order, x_factor, y_factor, draw_color
-        end
-      end
-
-      #
-      # The Option represents a choice within the menu.
-      #
-      class Option
-
-        #
-        # The raw data that was used to create the option.
-        #
-        attr_reader :data
-
-        #
-        # The human readable name of the option.
-        #
-        attr_accessor :name
-
-        #
-        # The method to execute within the scene when the option is selected.
-        #
-        attr_accessor :method
-
-        def initialize(data)
-          @data = data
-
-          if data.is_a?(Hash)
-            @name = data.keys.first
-            @method = data.values.first
-          else
-            @name = data
-            @method = data.to_s.downcase.gsub(/\s/,'_').gsub(/^[^a-zA-Z]*/,'').gsub(/[^a-zA-Z0-9\s_]/,'')
-          end
-        end
+        options.each_with_index { |label| label.draw }
       end
 
     end
