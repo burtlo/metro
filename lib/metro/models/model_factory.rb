@@ -4,9 +4,8 @@ module Metro
     attr_reader :name
 
     def initialize(name,options)
-      options.symbolize_keys!
       @name = name.to_s.downcase
-      @options = options
+      @options = options.symbolize_keys
     end
 
     def create
