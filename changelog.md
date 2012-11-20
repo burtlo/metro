@@ -22,12 +22,12 @@
 
 * All retrieved models from properties are now cached for better performance
 * Animations were re-vamped to accept more parameters
-* Metro models names in code are now refered to as "metro::models::*" to "metro::ui::*"
+* Metro models names in code are now referred to as "metro::models::*" to "metro::ui::*"
 
 ## 0.2.3 / 2012-11-11
 
 * FIX metro generators and templates generating out-of-date formats
-* FIX YAML views wil now return an empty hash instead of false on empty files
+* FIX YAML views will now return an empty hash instead of false on empty files
 * Added first scene and model to template.
 * FIX better error message when a directory is specified
 * Added the `g` generator shortcut: `metro g scene NAME`
@@ -54,7 +54,7 @@
 
 * Views now use position instead of `x`, `y`, and `z-order`
 * Point, Scale, and Dimensions is available in model and scenes.
-* Events are shared from superclasses to subclases.
+* Events are shared from superclasses to subclasses.
 * Templates updated to use GameScene and GameModel for each game.
 * Models are automatically added to the update loop
 * Model properties now make it easier to store/retrieve various
@@ -63,7 +63,7 @@
 
 ## 0.1.6 / 2012-11-07
 
-* Events are shared from superclasses to subclases.
+* Events are shared from superclasses to subclasses.
 * Templates updated to use GameScene and GameModel for each game.
 * Models are automatically added to the update loop
 * Model properties now make it easier to store/retrieve various
