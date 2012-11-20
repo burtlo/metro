@@ -37,6 +37,8 @@ module Metro
     #       model: metro::ui::menu
     #       position: "472.0,353.0,5.0"
     #       alpha: 0
+    #       layout: vertical
+    #       # layout: horizontal
     #       unselected_color: "rgba(119,119,119,1.0)"
     #       selected_color: "rgba(255,255,255,1.0)"
     #       options:
@@ -83,6 +85,11 @@ module Metro
       property :selection_sample, type: :sample, path: "menu-selection.wav"
       property :movement_sample, type: :sample, path: "menu-movement.wav"
 
+      property :enabled, type: :boolean, default: true
+
+      # Allows the menu to be layouted out horizontal or vertical
+      property :layout, type: :text, default: "vertical"
+
       def contains?(x,y)
         bounds.contains?(x,y)
       end
@@ -91,10 +98,7 @@ module Metro
         Bounds.new x: x, y: y, width: width, height: height
       end
 
-      property :enabled, type: :boolean, default: true
-
       # @TODO: enable the user to define the events for this interaction
-      # @TODO: enable the user to define the layout of the menu items
       #################################################################
 
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
@@ -125,11 +129,19 @@ module Metro
       def show
         adjust_alpha_on_colors(alpha)
 
+        previous_width = 0
+
         options.each_with_index do |option,index|
           option.color = unselected_color
           option.scale = scale
-          label_y_position = y + (option.height + padding) * index
-          option.position = "#{x},#{label_y_position},#{z}"
+
+          option_x = x + (layout == "horizontal" ? (previous_width + padding) * index : 0)
+          previous_width = option.width
+          option_y = y + (layout == "vertical" ? (option.height + padding) * index : 0)
+          option_z = z
+
+          option.position = option.position + Point.at(option_x,option_y,option_z)
+
         end
 
         options.selected.color = selected_color
