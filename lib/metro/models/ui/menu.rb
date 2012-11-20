@@ -71,9 +71,13 @@ module Metro
       property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
 
       def alpha_changed(alpha)
+        adjust_alpha_on_colors(alpha)
+        options.each { |option| option.alpha = alpha.floor }
+      end
+
+      def adjust_alpha_on_colors(alpha)
         self.selected_color_alpha = alpha
         self.unselected_color_alpha = alpha
-        options.each { |option| option.alpha = alpha.floor }
       end
 
       def contains?(x,y)
@@ -110,6 +114,8 @@ module Metro
       #################################################################
 
       def show
+        adjust_alpha_on_colors(alpha)
+
         options.each_with_index do |option,index|
           option.color = unselected_color
           option.scale = scale
