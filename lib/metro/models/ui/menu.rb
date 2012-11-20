@@ -80,6 +80,9 @@ module Metro
         self.unselected_color_alpha = alpha
       end
 
+      property :selection_sample, type: :sample, path: "menu-selection.wav"
+      property :movement_sample, type: :sample, path: "menu-movement.wav"
+
       def contains?(x,y)
         bounds.contains?(x,y)
       end
@@ -88,30 +91,33 @@ module Metro
         Bounds.new x: x, y: y, width: width, height: height
       end
 
+      property :enabled, type: :boolean, default: true
+
       # @TODO: enable the user to define the events for this interaction
       # @TODO: enable the user to define the layout of the menu items
-      # @TODO: enable the user to enable/disable the menu
-      # @TODO: setup sample sounds for movement and selection
       #################################################################
 
-      property :selection_sample, type: :sample, path: "menu-selection.wav"
-      property :movement_sample, type: :sample, path: "menu-movement.wav"
-
       event :on_up, KbLeft, GpLeft, KbUp, GpUp do
-        movement_sample.play
-        options.previous!
-        update_options
+        if enabled
+          movement_sample.play
+          options.previous!
+          update_options
+        end
       end
 
       event :on_up, KbRight, GpRight, KbDown, GpDown do
-        movement_sample.play
-        options.next!
-        update_options
+        if enabled
+          movement_sample.play
+          options.next!
+          update_options
+        end
       end
 
       event :on_up, KbEnter, KbReturn, GpButton0 do
-        selection_sample.play
-        scene.send options.selected_action
+        if enabled
+          selection_sample.play
+          scene.send options.selected_action
+        end
       end
 
       #################################################################

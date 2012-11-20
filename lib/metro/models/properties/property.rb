@@ -206,6 +206,7 @@ require_relative 'property_owner'
 
 require_relative 'numeric_property'
 require_relative 'text_property'
+require_relative 'boolean_property'
 require_relative 'array_property'
 require_relative 'animation_property'
 require_relative 'color_property'
