@@ -2,6 +2,11 @@ module Metro
   class Model
 
     #
+    # An options property is a property that takes scene or view defined values
+    # and converts them into an Options object.
+    # 
+    # @see Metro::Model::OptionsProperty::Options
+    # 
     # @example A simple array of option names
     # 
     #     options: [ 'Start Game', 'Exit' ]
@@ -26,7 +31,6 @@ module Metro
     #           model: metro::ui::label
     #           text: Exit
     #           action: exit_game
-
     #
     class OptionsProperty < Property
 
