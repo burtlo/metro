@@ -120,31 +120,7 @@ module Metro
       # @param [Hash] value the hash that contains the `name`, `size` and `window` that describe the font.
       #
       def self.font_for(value)
-        value.symbolize_keys!
-        name = value[:name]
-        size = value[:size]
-        window = value[:window]
-
-        font = fonts["#{name}:#{size}:#{window}"]
-        unless font
-          font = create_font(window,name,size)
-          fonts["#{name}:#{size}:#{window}"] = font
-        end
-
-        font
-      end
-
-      #
-      # @return the fonts currently cached by the FontProperty.
-      #
-      def self.fonts
-        @fonts ||= {}
-      end
-
-      private
-
-      def self.create_font(window,name,size)
-        Gosu::Font.new window, name, size
+        Font.find_or_create(value)
       end
 
     end
