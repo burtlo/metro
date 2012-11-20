@@ -70,7 +70,7 @@ module Metro
       end
 
       # Setting with a hash will assume the hash defines an animation.
-      set Hash do |value|
+      set Hash, HashWithIndifferentAccess do |value|
         value.except(:window)
       end
 

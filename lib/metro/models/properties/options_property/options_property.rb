@@ -4,22 +4,22 @@ module Metro
     #
     # An options property is a property that takes scene or view defined values
     # and converts them into an Options object.
-    # 
+    #
     # @see Metro::Model::OptionsProperty::Options
-    # 
+    #
     # @example A simple array of option names
-    # 
+    #
     #     options: [ 'Start Game', 'Exit' ]
-    # 
-    # 
+    #
+    #
     # @example A set of option names with a selection
-    # 
+    #
     #       options:
     #         selected: 0
     #         items: [ 'Start Game', 'Exit' ]
-    # 
+    #
     # @example A complex set of options
-    # 
+    #
     #       options:
     #         selected: 1
     #         items:
@@ -49,13 +49,13 @@ module Metro
       end
 
       # This is setting the options with the basic set of options
-      set Array do |value|
-        value
+      set Array do |array|
+        array
       end
 
       # This is setting the options with the complex options
-      set Hash do |value|
-        value
+      set Hash, HashWithIndifferentAccess do |hash|
+        hash.to_hash
       end
 
       private
@@ -70,7 +70,7 @@ module Metro
       # representation of each item within the menu as well as the current selected item.
       #
       def parse(hash)
-        hash.symbolize_keys!
+        hash = hash.with_indifferent_access
         options = create_options(hash[:items])
         options.current_selected_index = hash[:selected]
         options
@@ -104,7 +104,7 @@ module Metro
       # object.
       #
       def create_model_from_item(options)
-        options.symbolize_keys!
+        options = options.symbolize_keys
         options[:action] = actionize(options[:action] || options[:text])
         model.create options[:model], options
       end

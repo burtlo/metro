@@ -27,8 +27,11 @@ module Metro
       end
 
       # Define a filter block for getting a value of that type.
-      def self.get(type=NilClass,&block)
-        gets[type.to_s] = block
+      def self.get(*types,&block)
+        types = [ NilClass ] if types.empty?
+        types.each do |type|
+          gets[type.to_s] = block
+        end
       end
 
       # All get filter blocks defined
@@ -44,8 +47,11 @@ module Metro
       end
 
       # Define a filter block for setting a value of the type.
-      def self.set(type=NilClass,&block)
-        sets[type.to_s] = block
+      def self.set(*types,&block)
+        types = [ NilClass ] if types.empty?
+        types.each do |type|
+          sets[type.to_s] = block
+        end
       end
 
       # All set filter blocks defined

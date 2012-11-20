@@ -81,13 +81,13 @@ module Metro
       end
 
       # Save a hash representation of the font when given a font
-      set Gosu::Font do |font|
+      set Metro::Font do |font|
         { name: font.name, size: font.height }
       end
 
       # Save the hash provided. It is assumed to contain the correct font data.
-      set Hash do |hash|
-        hash.symbolize_keys!
+      set Hash, HashWithIndifferentAccess do |hash|
+        hash.to_hash
       end
 
       #

@@ -98,7 +98,7 @@ describe Metro::Model::FontProperty do
 
       let(:gosu_font) do
         font = stub('font', name: expected_font_name, height: expected_font_size)
-        font.stub(:class) { Gosu::Font }
+        font.stub(:class) { Metro::Font }
         font
       end
 
