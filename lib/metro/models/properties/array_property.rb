@@ -7,11 +7,11 @@ module Metro
     class ArrayProperty < Property
 
       get do |value|
-        Array(value)
+        value.is_a?(NilClass) ? default_value : Array(value)
       end
 
       set do |value|
-        Array(value).map {|item| item.to_s }
+        Array(value).map {|item| item }
       end
 
       def default_value
