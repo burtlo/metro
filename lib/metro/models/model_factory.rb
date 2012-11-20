@@ -4,27 +4,26 @@ module Metro
     attr_reader :name
 
     def initialize(name,options)
+      options.symbolize_keys!
       @name = name.to_s.downcase
       @options = options
     end
 
     def create
       actor_class = class_for_actor(model_name)
-      instance = actor_class.new
-      instance._load options
-      instance
+      actor_class.new options
     end
 
     def load_from_previous_scene?
       @options[:from] == :previous_scene
     end
-    
+
     def options
       @options.except(:from)
     end
 
     def model_name
-      options['model'] || options[:model] || name
+      options[:model] || name
     end
 
     def class_for_actor(model_name)
