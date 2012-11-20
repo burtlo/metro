@@ -28,7 +28,6 @@ module Metro
     #
     def events_for_targets(*list)
       found_events = Array(list).flatten.compact.map {|s| events_for_target(s) }.flatten.compact
-      log.debug "Retrieved (#{found_events.count}) events for [#{list.join(",")}]"
       found_events
     end
 
