@@ -1,12 +1,28 @@
+
 #
-# The asset_path is a helper which will generate a filepath based on the current working
-# directory of the game. This allows for game author's to specify a path relative within
-# the assets directory of their game.
+# The asset_path is a helper which will generate a filepath based on the current
+# working directory of the game. This allows for game author's to specify a path
+# relative within the assets directory of their game.
 #
-# @note Paths that are defined within views use this helper and are assumed to be paths
-#   relative within the assets directory of the game.
+# @note Paths that are defined within views use this helper and are assumed to
+#   be paths relative within the assets directory of the game. For images,
+#   samples, and songs in a model consider using a property.
 #
-# @example Loading the branding image for the player model.
+# @see Metro::Model::ImageProperty
+# @see Metro::Model::AnimationProperty
+# @see Metro::Model::SongProperty
+# @see Metro::Model::SampleProperty
+#
+# @note Also consider the model classes Image, Animation, Song, and Sample for
+#   creating the assets found within the assets folder. Each of those will
+#   assist with using the asset_path internally to find the asset.
+#
+# @see Metro::Image
+# @see Metro::Animation
+# @see Metro::Song
+# @see Metro::Sample
+#
+# @example Loading a raw Gosu::Image with an `asset_path`
 #
 #     class Player < Metro::Model
 #       def image
@@ -21,10 +37,12 @@ def asset_path(name)
   File.join Dir.pwd, "assets", name
 end
 
-
 #
-# The metro_asset_path is a helper which will generate a filepath based on the directory
-# of the metro library. This is used to retrieve assets internally for missing images.
+# The metro_asset_path is a helper which will generate a filepath based on the
+# directory of the metro library. This is used to retrieve internal assets which
+# can be used to serve up missing images, animations, samples, or songs or
+# defaults that may come with the metro game library.
+#
 #
 def metro_asset_path(name)
   File.join Metro.asset_dir, name
