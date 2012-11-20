@@ -1,5 +1,16 @@
 # Metro
 
+## 0.2.6 / 2012/11-20
+
+* Menus now support vertical and horizontal layout
+* Menus now support movement and selection noises
+* Menus can now have a default selection
+* Menus can be enabled/disabled
+* Added Array Property, Boolean Property, and Menu Options Property
+* FIX label horizontal center and right alignments
+* Generic Models will now show a warning instead of raising an exception
+* Removed event chain debug messaging
+
 ## 0.2.5 / 2012-11-18
 
 * FIX metro::ui::rectangle calculation
