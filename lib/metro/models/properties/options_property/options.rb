@@ -5,10 +5,10 @@ module Metro
       #
       # Options maintains the list of menu options that would be displayed in a menu.
       # Each option is a component that can be rendered during the draw phase.
-      # 
+      #
       # Also, options maintains the currently selected item and has the ability to manage
       # the changes from the previous.
-      # 
+      #
       class Options < SimpleDelegator
 
         #
