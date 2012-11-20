@@ -76,7 +76,7 @@ describe Metro::UI::Label do
 
   describe "font" do
     before do
-      Metro::Model::FontProperty.stub(:create_font).and_return(font)
+      Metro::Font.stub(:find_or_create).and_return(font)
     end
 
     let(:font) { mock('font', name: expected_font_name, size: expected_font_size) }
