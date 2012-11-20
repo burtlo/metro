@@ -12,7 +12,11 @@ module Metro
       # 
       class NoOption
         def method_missing(name,*args,&block)
-          log.warn "No valid options were found in the menu"
+          log.warn warning_message
+        end
+        
+        def warning_message
+          "No valid options were found in the menu"
         end
 
         def properties

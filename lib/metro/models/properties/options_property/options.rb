@@ -41,7 +41,7 @@ module Metro
         # Values that proceed the start of of the list of options will fallback to the last option.
         #
         def current_selected_index=(value)
-          @current_selected_index = value
+          @current_selected_index = value || 0
           @current_selected_index = 0 if @current_selected_index >= count
           @current_selected_index = count - 1 if @current_selected_index <= -1
           @current_selected_index
@@ -62,12 +62,16 @@ module Metro
         end
 
         #
-        # @return [String,Symbol] the action name of the currently selected option. If no
+        # @return [Symbol] the action name of the currently selected option. If no
         #   option is currently selected then the NoOption 'missing_menu_action' will be
         #   returned.
         #
         def selected_action
-          selected.properties[:action]
+          if selected.respond_to?(:properties) && selected.properties[:action]
+            selected.properties[:action]
+          else
+            selected.to_sym
+          end
         end
 
         #

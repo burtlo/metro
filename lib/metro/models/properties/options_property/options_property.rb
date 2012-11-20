@@ -2,7 +2,31 @@ module Metro
   class Model
 
     #
-    # The array property will simply store or retrieve an array.
+    # @example A simple array of option names
+    # 
+    #     options: [ 'Start Game', 'Exit' ]
+    # 
+    # 
+    # @example A set of option names with a selection
+    # 
+    #       options:
+    #         selected: 0
+    #         items: [ 'Start Game', 'Exit' ]
+    # 
+    # @example A complex set of options
+    # 
+    #       options:
+    #         selected: 1
+    #         items:
+    #         -
+    #           model: "metro::ui::label"
+    #           text: "Start Game"
+    #           action: start_game
+    #         -
+    #           model: metro::ui::label
+    #           text: Exit
+    #           action: exit_game
+
     #
     class OptionsProperty < Property
 
@@ -12,7 +36,7 @@ module Metro
 
       # This is the basic set of options
       get Array do |options|
-        create_labels_with_array(options)
+        parse_array(options)
       end
 
       # This is the complex set of options
@@ -31,6 +55,11 @@ module Metro
       end
 
       private
+
+      def parse_array(array)
+        hash = { items: array }
+        parse(hash)
+      end
 
       #
       # Convert the hash of parameters into an Options object which contains the visual
@@ -72,15 +101,15 @@ module Metro
       #
       def create_model_from_item(options)
         options.symbolize_keys!
-        options[:action] = options[:action] || actionize(options[:text])
+        options[:action] = actionize(options[:action] || options[:text])
         model.create options[:model], options
       end
 
       #
-      # @return [String] convert a text string into a name which would be a sane method name.
+      # @return [Symbol] convert a text string into a name which would be a sane method name.
       #
       def actionize(text)
-        text.to_s.downcase.gsub(/\s/,'_').gsub(/^[^a-zA-Z]*/,'').gsub(/[^a-zA-Z0-9\s_]/,'')
+        text.to_s.downcase.gsub(/\s/,'_').gsub(/^[^a-zA-Z]*/,'').gsub(/[^a-zA-Z0-9\s_]/,'').to_sym
       end
 
     end
