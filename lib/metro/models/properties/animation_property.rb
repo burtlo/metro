@@ -27,7 +27,7 @@ module Metro
     #
     #     class Hero < Metro::Model
     #       property :animation, path: "star.png", dimensions: Dimensions.of(25,25)
-    #         dimensions: Metro::Dimensions.of(25,25) }
+    #         dimensions: Dimensions.of(25,25) }
     #
     #       def draw
     #         animation.image.draw text, x, y, z_order, x_factor, y_factor, color
@@ -38,7 +38,7 @@ module Metro
     #
     #     class Hero < Metro::Model
     #       property :walking, type: :animation, path: "star.png",
-    #         dimensions: Metro::Dimensions.of(25,25)
+    #         dimensions: Dimensions.of(25,25)
     #
     #       def draw
     #         walking.image.draw text, x, y, z_order, x_factor, y_factor, color
