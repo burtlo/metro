@@ -1,16 +1,26 @@
+# Using the power of YAML to define anchors and references it makes it easy
+# to generate a common view item and then add to it or manipulate it as needed.
+---
 instruction: &instruction
   model: metro::ui::label
   font:
     name: Arial
     size: 40
-  color: "rgba(255,255,0)"
+  color: "rgba(255,255,0,0.0)"
+  align: center
+  position: "320,300,1"
 first_instruction:
   <<: *instruction
-  text: "<- to move left |"
-  align: right
-  position: "320,300,1"
+  text: "Hold <- to move left"
 second_instruction:
   <<: *instruction
-  text: "| to move right ->"
-  align: left
-  position: "320,300,1"
+  text: "Hold -> to move right"
+third_instruction:
+  <<: *instruction
+  text: "Hold ^ (up arrow) to move up"
+fourth_instruction:
+  <<: *instruction
+  text: "Hold V (down arrow) to move down"
+fifth_instruction:
+  <<: *instruction
+  text: "Press <SPACE> to rotate yourself"
