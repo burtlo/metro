@@ -1,6 +1,6 @@
 class <%= scene_class_name %> < GameScene
   # By default the Scene Name is based on the class name
-  # but that can be overriden with the scene_name class method
+  # but that can be overridden with the scene_name class method
   # scene_name "credits"
 
   draw :title
@@ -10,13 +10,16 @@ class <%= scene_class_name %> < GameScene
   #
   # @example Explicitly drawing a text label in the scene
   #
-  # draw :title, text: 'Title Screen',
+  # draw :title, model: 'metro::ui::label',
+  #   text: 'Title Screen',
   #   position: '20,20,0',
   #   font: { size: 60 },
-  #   color: 'rgb(255,255,255)',
-  #   model: 'metro::ui::label'
+  #   color: 'rgba(255,255,255,1.0)',
+  #   align: 'center',
+  #   vertical_align: 'center'
   #
-  # The draw method can be simplier for models that have content defined
+  #
+  # The draw method can be simpler for models that have content defined
   # for them in the view or the models themselves define the appropriate
   # fields.
   #
@@ -31,9 +34,25 @@ class <%= scene_class_name %> < GameScene
   #
   # @example of the title being moved to a new y position and the alpha level
   #
-  # animate :title, to: { y: 80, alpha: 50 }, interval: 120 do
+  # animate :title, to: { y: 80, alpha: 50 }, interval: 120.ticks do
   #   puts "Done Animating!"
   # end
+  #
+  # @example of using nested animations and after blocks to generate a fade in
+  #   and fade out effect.
+  #
+  # after 2.seconds do
+  #   animate :title, to: { alpha: 255 }, interval: 1.second do
+  #     after 1.second do
+  #       animate :title, to: { alpha: 0 }, interval: 1.second
+  #     end
+  #   end
+  # end
+  #
+  # @note the interval can be specified in game ticks ( 1.tick, 23.ticks ) or
+  #   in seconds ( 1.second, 23.seconds ). 60 game times are roughly equivalent
+  #   to 1 second, however you should not use Metro for monitoring a nuclear
+  #   reactor.
   #
 
   #
@@ -72,8 +91,8 @@ class <%= scene_class_name %> < GameScene
   # to generate the notification
   #
   # def update
-  #   if game_save.complete?
-  #     notification :save_complete
+  #   if player.x > 600 and player.y > 440
+  #     notification :player_wins
   #   end
   # end
   #
@@ -86,34 +105,36 @@ class <%= scene_class_name %> < GameScene
   def after_initialize ; end
 
   #
-  # This method is called right after the scene has been adopted by the window
+  # This method is called right after the scene has been adopted by the window.
+  # This is a great place to make changes to the scene before the update methods
+  # or draw methods have ever been called.
   #
   def show ; end
 
   #
-  # This is called every update interval while the window is being shown.
+  # This is called every update interval while the scene is being shown in the
+  # window.
   #
   def update ; end
 
   #
-  # This is called after every {#update} and when the OS wants the window to
+  # This is called after every #update and when the OS wants the window to
   # repaint itself.
   #
   def draw ; end
 
   #
-  # Before a scene is transisitioned away from to a new scene, this method is called
-  # to allow for the scene to complete any taskss, stop any actions, or pass any
+  # Before a scene is transitioned away from to a new scene, this method is called
+  # to allow for the scene to complete any tasks, stop any actions, or pass any
   # information from the existing scene to the scene that is about to replace it.
   #
   def prepare_transition_to(new_scene) ; end
 
   #
-  # Before a scene is transisitioned to it is called with the previous scene. This
-  # allows for the new scene to rerieve any data from the previous scene to assist
+  # Before a scene is transitioned to it is called with the previous scene. This
+  # allows for the new scene to retrieve any data from the previous scene to assist
   # with the layout of the current scene.
   #
   def prepare_transition_from(old_scene) ; end
-
 
 end
