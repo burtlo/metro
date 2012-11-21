@@ -103,7 +103,7 @@ class <%= model_name %> < GameModel
   def update ; end
   
   #
-  # This is called after every {#update} and when the OS wants the window to
+  # This is called after every #update and when the OS wants the window to
   # repaint itself.
   #
   def draw ; end
