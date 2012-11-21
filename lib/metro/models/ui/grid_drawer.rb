@@ -15,7 +15,7 @@ module Metro
     #
     class GridDrawer < Model
 
-      property :position, default: Point.at(20,20,100)
+      property :position, default: Point.at(0,0,100)
       property :color, default: "rgba(255,255,255,0.1)"
       property :spacing, type: :numeric, default: 10
 
