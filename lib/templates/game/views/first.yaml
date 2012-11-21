@@ -7,8 +7,10 @@ instruction: &instruction
 first_instruction:
   <<: *instruction
   text: "<- to move left |"
-  position: "60,300,1"
+  align: right
+  position: "320,300,1"
 second_instruction:
   <<: *instruction
   text: "| to move right ->"
+  align: left
   position: "320,300,1"

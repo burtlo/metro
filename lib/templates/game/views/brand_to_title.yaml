@@ -4,4 +4,5 @@ title:
   font:
     size: 40
   position: "320,100,1"
+  align: center
   color: rgba(255,255,255,0.0)
