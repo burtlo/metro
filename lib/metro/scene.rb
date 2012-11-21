@@ -263,14 +263,14 @@ module Metro
     #
     # @example Retrieving the default scene name
     #
-    #     class ExampleScene
+    #     class ExampleScene < GameScene
     #     end
     #
     #     ExampleScene.scene_name # => "example"
     #
     # @example Setting a custom name for the Scene
     #
-    #     class RollingCreditsScene
+    #     class RollingCreditsScene < GameScene
     #       scene_name "credits"
     #     end
     #
