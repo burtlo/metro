@@ -1,5 +1,11 @@
 # Metro
 
+## 0.2.7 / 2012/11-20
+
+* FIX to the new game template
+* Updated the game template to give more movement to the hero in the first scene
+* Added the fade-in, fade-out helper to show all the instructions
+
 ## 0.2.6 / 2012/11-20
 
 * Menus now support vertical and horizontal layout
