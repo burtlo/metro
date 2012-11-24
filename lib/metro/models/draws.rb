@@ -18,11 +18,11 @@ module Metro
       # @example Defining a title label within a scene
       #
       #     class ExampleScene
-      #       draw :title, text: Title Screen',
-      #         'model' => 'metro::ui::label'
-      #         position: "20,20,0",
-      #         scale: "3,3",
-      #         color: "rgba(255,255,255,1.0)"
+      #       draw :title, text: 'Title Screen',
+      #         model: 'metro::ui::label'
+      #         position: '20,20,0',
+      #         scale: '3,3',
+      #         color: 'rgba(255,255,255,1.0)'
       #
       #       def show
       #         puts "Where is my title? #{title.x},#{title.y}"
