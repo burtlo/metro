@@ -61,8 +61,8 @@ module Metro
     def draw ; end
 
     #
-    # Before a scene is transisitioned away from to a new scene, this method is called
-    # to allow for the scene to complete any taskss, stop any actions, or pass any
+    # Before a scene is transitioned away from to a new scene, this method is called
+    # to allow for the scene to complete any tasks, stop any actions, or pass any
     # information from the existing scene to the scene that is about to replace it.
     #
     # @note This method should be implemented in the Scene subclass.
@@ -73,8 +73,8 @@ module Metro
     def prepare_transition_to(new_scene) ; end
 
     #
-    # Before a scene is transisitioned to it is called with the previous scene. This
-    # allows for the new scene to rerieve any data from the previous scene to assist
+    # Before a scene is transitioned to it is called with the previous scene. This
+    # allows for the new scene to retrieve any data from the previous scene to assist
     # with the layout of the current scene.
     #
     # @note This method should be implemented in the Scene subclass.
