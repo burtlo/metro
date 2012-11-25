@@ -7,7 +7,7 @@ module Metro
       # A NoView is a last resort view which means this is will always will exist.
       #
       # @param [String] view_path the name of the view to find
-      # @return a true if the json view exists and false if it does not exist.
+      # @return a true all the time as this is the last resort format.
       #
       def self.exists?(view_path)
         true

@@ -80,7 +80,7 @@ module Metro
     # Supported view formats
     #
     def supported_parsers
-      Views::Parsers.parsers
+      Views::Parsers.parsers_with_no_view_fallback
     end
 
     #
