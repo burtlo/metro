@@ -8,8 +8,24 @@ module Metro
     end
 
     #
-    # A simplier syntax to enqueue an animation. At the moment this animation is going
-    # to be an implicit animation.
+    # Define an animation from within another animation block, an event block
+    # or a method.
+    #
+    # @example Defining an animation that fades out the hero when they have
+    #   died.
+    #
+    #     class HellScene
+    #       draws :hero
+    #
+    #       def update
+    #         if hero.dead?
+    #           animate :hero, to: { alpha: 0 }, interval: 60.ticks do
+    #             transition_to :game_over
+    #           end
+    #         end
+    #       end
+    #
+    #     end
     #
     def animate(actor_or_actor_name,options,&block)
       options[:actor] = actor(actor_or_actor_name)
