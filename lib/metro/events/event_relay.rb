@@ -276,7 +276,7 @@ module Metro
         execute_block_for_target(&action) if window and window.button_down?(key)
       end
     end
-    
+
     def execute_block_for_target(&block)
       event_data = EventData.new(window)
       target.instance_exec(event_data,&block)
@@ -311,14 +311,11 @@ module Metro
     # of the target. If there are two parameters we will simply execute the action and
     # pass it both the target and the sender.
     #
-    # @TODO: Allow for the blocks to be specified with one parameter: source (and executed
-    #   within the context of the target)
-    #
-    # @TODO: Allow for the blocks to be specified with three parameters: source, target, event
-    #
     def _fire_event_for_notification(event,sender,action)
       if action.arity == 2
-        action.call(target,sender)
+        target.instance_exec(sender,event,&action)
+      elsif action.arity == 1
+        target.instance_exec(sender,&action)
       else
         target.instance_eval(&action)
       end
