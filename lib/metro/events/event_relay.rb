@@ -18,29 +18,6 @@ module Metro
   # @see #on_down
   # @see #on_hold
   #
-  # A target can also receive events when 'button_up' and 'button_down' events
-  # have been fired but did not map to any specified actions. This is similar to
-  # Ruby's {#method_missing}.
-  #
-  # To receive unampped 'button_up' events define a method
-  # named `up_action_missing(id)` within your target.
-  #
-  # To receive unampped 'button_down' events define a method
-  # named `down_action_missing(id)` within your target.
-  #
-  # @example Scene that receives all the 'button_up' and 'button_down' events that
-  #   are not mapped to actions.
-  #
-  #     class ExampleScene
-  #       def up_action_missing(id)
-  #         puts "No up action found for #{id}"
-  #       end
-  #
-  #       def down_action_missing(id)
-  #         puts "No down action found for #{id}"
-  #       end
-  #     end
-  #
   class EventRelay
 
     #
@@ -282,16 +259,14 @@ module Metro
       target.instance_exec(event_data,&block)
     end
 
-    # @return a block of code that is mapped for the 'button_up' id or a block that will attempt to call out
-    #   to the action missing method.
+    # @return a block of code that is mapped for the 'button_up' id
     def up_action(id)
-      up_actions[id] || lambda {|instance| send(:up_action_missing,id) if respond_to?(:up_action_missing) }
+      up_actions[id] || lambda {|no_op| }
     end
 
-    # @return a block of code that is mapped for the 'button_down' id or a block that will attempt to call out
-    #   to the action missing method.
+    # @return a block of code that is mapped for the 'button_down' id
     def down_action(id)
-      down_actions[id] || lambda {|instance| send(:down_action_missing,id) if respond_to?(:down_action_missing) }
+      down_actions[id] || lambda {|no_op| }
     end
 
     #
