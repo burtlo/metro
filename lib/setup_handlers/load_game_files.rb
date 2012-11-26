@@ -13,23 +13,37 @@ module Metro
         execute_watcher!
       end
 
-      def valid_game_code
-        log.debug "Checking validity of code"
-        metro_executable_path = File.join File.dirname(__FILE__), "..", "..", "bin", "metro"
-        output, status = Open3.capture2e("#{metro_executable_path} --dry-run")
-
-        invalid_code = (status != 0)
-
-        log.warn "Code is #{invalid_code ? 'not ' : ''}valid"
-
-        if invalid_code
-          puts "*" * 80
-          puts "There was an error in your code:"
-          puts output
-          puts "*" * 80
+      class GameExecution
+        def initialize(command)
+          @status = 1
         end
 
-        !invalid_code
+        def execute!
+          @output, @status = Open3.capture2e("#{Metro.executable_path} --dry-run")
+        end
+
+        def valid?
+          status == 0
+        end
+
+        def invalid?
+          status != 0
+        end
+
+        attr_reader :status, :output
+      end
+
+      def valid_game_code
+        ge = GameExecution.new "the original parameters of execution"
+        ge.execute!
+
+        if ge.invalid?
+          message = TemplateMessage.new message: 'error.unloadable_source',
+            details: { output: ge.output }
+          warn message
+        end
+
+        ge.valid?
       end
 
       def reload!

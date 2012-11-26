@@ -46,6 +46,13 @@ module Metro
   extend GosuConstants
 
   #
+  # @return [String] the filepath to the Metro executable
+  #
+  def executable_path
+    File.absolute_path File.join(File.dirname(__FILE__), "..", "bin", "metro")
+  end
+
+  #
   # @return [String] the filepath to the Metro assets
   #
   def asset_dir
@@ -106,6 +113,7 @@ module Metro
   end
 
   def valid_game_code
+    log.debug "Validating Game Code"
     SetupHandlers::LoadGameFiles.new.valid_game_code
   end
 end
