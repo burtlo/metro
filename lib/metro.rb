@@ -109,7 +109,7 @@ module Metro
   # to restart the game.
   #
   def reload!
-    SetupHandlers::LoadGameFiles.new.reload!
+    SetupHandlers::LoadGameFiles.new.load_game_files!
   end
 
   #

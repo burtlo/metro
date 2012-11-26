@@ -3,11 +3,29 @@ require_relative 'game_execution'
 module Metro
   module SetupHandlers
 
+    #
+    # LoadGameFiles will load all the game files within the current working
+    # directory that are in the pre-defined Metro game folders.
+    #
+    # LoadGameFiles uses ActiveSupport::Dependencies::WatchStack to spy on all
+    # the constants that are added when the game runs. This grants the class
+    # the ability to provide dynamic reloading of the classes as they change.
+    #
     class LoadGameFiles
+
+      #
+      # @param [Metro::Parameters::Options] options the options that the game
+      #   was provided when it was launched.
+      #
       def setup(options)
         load_game_files!
       end
 
+      #
+      # Drop any already defined events. Drop all the existing classes, reload
+      # the game files, and prepare the new game files for unloading the next
+      # time around that reload has been called.
+      #
       def load_game_files!
         EventDictionary.reset!
         prepare_watcher!
@@ -15,15 +33,13 @@ module Metro
         execute_watcher!
       end
 
+      #
+      # Launch the game in a sub-process in dry-run mode. Starting the
+      # game in dry-run mode here makes it so it will not launch a window
+      # and simply check to see if the code is valid and working correctly.
+      #
       def launch_game_in_dry_run_mode
         GameExecution.execute Game.execution_parameters + [ "--dry-run" ]
-      end
-
-      def reload!
-        EventDictionary.reset!
-        prepare_watcher!
-        load_game_files
-        execute_watcher!
       end
 
       #
