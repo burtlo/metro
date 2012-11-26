@@ -15,7 +15,7 @@ name "<%= name %>"
 # The author of the game. This method can be executed
 # twice if more people are working on this game.
 #
-author "John Carmack"
+author "Your Name"
 
 #
 # The website where the person playing this game
