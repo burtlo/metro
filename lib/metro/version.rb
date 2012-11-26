@@ -1,7 +1,7 @@
 module Metro
   VERSION = "0.3.1"
   WEBSITE = "https://github.com/burtlo/metro"
-  CONTACT_EMAILS = ["franklin.webber@gmail.com"]
+  CONTACT_EMAILS = ["dev@rubymetro.com"]
   
   def self.changes_for_version(version)
 
