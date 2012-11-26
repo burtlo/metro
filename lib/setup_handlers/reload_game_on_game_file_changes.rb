@@ -12,8 +12,20 @@ module Metro
       # @NOTE this is duplication of the paths is also defined in LoadGameFiles.
       # @see Metro::SetupHandlers::LoadGameFiles
       #
-      def filepaths
+      def source_filepaths
         [ 'lib', 'scenes', 'models' ]
+      end
+
+      def view_filepaths
+        [ 'views' ]
+      end
+
+      def asset_filepaths
+        [ 'assets' ]
+      end
+
+      def all_filepaths
+        source_filepaths + view_filepaths + asset_filepaths
       end
 
       #
@@ -26,14 +38,14 @@ module Metro
 
       def start_watcher
         Thread.abort_on_exception = true
-        Thread.new { watch_filepaths(filepaths) }
+        Thread.new { watch_filepaths(all_filepaths) }
       end
 
       #
       # Defines the listener that will watch the filepaths
       #
       def watch_filepaths(filepaths)
-        listener = Listen.to(*filepaths, filter: /\.rb$/)
+        listener = Listen.to(*filepaths)
         listener.change(&on_change)
         listener.start
       end

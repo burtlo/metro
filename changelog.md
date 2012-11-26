@@ -1,10 +1,18 @@
 # Metro
 
-## 0.3.1 / 2012-11-26
+## 0.3.2 / 2012-11-26
+
+* Debug Mode will now automatically reload the game and scene on source
+  file changes.
+* Reloading the game will no longer take down the app for syntax errors
+  and other errors that are easily detected by simply loading the code.
+* Template game is now automatically has debug mode enabled by default
+
+## 0.3.1 / 2012-11-25
 
 * FIX issue with some Gosu example code left in the oven
 
-## 0.3.0 / 2012-11-26
+## 0.3.0 / 2012-11-25
 
 * FIX lots of typos in the documentation
 * Removed `up_action_missing` and `down_ation_missing` event handling
@@ -63,11 +71,11 @@
 
 ## 0.2.1 / 2012-11-08
 
-* FIX Scene fade transition color changing and implicit animations 
+* FIX Scene fade transition color changing and implicit animations
   for colors
 * Games creating custom properties will appear in the property list
 * Properties now correctly default to numeric properties
-* Point objects can be added to other point objects. 
+* Point objects can be added to other point objects.
 
 ## 0.2.0 / 2012-11-07
 
