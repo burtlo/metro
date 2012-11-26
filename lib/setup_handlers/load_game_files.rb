@@ -28,6 +28,11 @@ module Metro
       #
       def load_game_files!
         EventDictionary.reset!
+        Image.images.clear
+        Animation.images.clear
+        Song.songs.clear
+        Font.fonts.clear
+
         prepare_watcher!
         load_game_files
         execute_watcher!
