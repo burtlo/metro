@@ -11,8 +11,9 @@ class GameScene < Metro::Scene
   #
   event :on_up, KbR do |event|
     if event.control?
-      Metro.reload!
-      transition_to scene_name
+      if Metro.game_has_valid_code?
+        after(1.tick) { Metro.reload! ; transition_to(scene_name) }
+      end
     end
   end
 
@@ -28,7 +29,7 @@ class GameScene < Metro::Scene
 
   #
   # This animation helper will fade in and fade out information.
-  # 
+  #
   def fade_in_and_out(name)
     animate name, to: { alpha: 255 }, interval: 2.seconds do
       after 1.second do
