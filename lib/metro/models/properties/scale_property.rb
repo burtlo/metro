@@ -2,54 +2,44 @@ module Metro
   class Model
 
     #
-    # A scale property maintains an x and y scaling factor. This scale is not applied to any
+    # A scale property maintains an x and y scaling factor.
     #
-    # A font property also defines a `font_size` property and a `font_name` property which allows a
-    # more direct interface. Changing these values will update the font the next time that it is drawn.
+    # A scale property also defines a `x_factor` property and a `y_factor`
+    # property which allows a more direct interface. Changing these values will
+    # update the scale the next time that it is used.
     #
-    # A font is stored in the properties as a hash representation and is converted into
-    # a Gosu::Font when it is retrieved within the system. When retrieving a font the Font
-    # Property will attempt to use a font that already exists that meets that criteria.
+    # A scale is stored in the properties as a string representation and is
+    # converted into a Scale when it is retrieved within the system.
     #
-    # The fonts are cached within the font property to help performance by reducing the unncessary
-    # creation of similar fonts.
-    #
-    # @example Defining a font property
+    # @example Defining a scale property
     #
     #     class Scoreboard < Metro::Model
     #       property :font
+    #       property :color
+    #       property :scale
     #
     #       def draw
-    #         font.draw text, x, y, z_order, x_factor, y_factor, color
+    #         image.draw text, x, y, z_order, x_factor, y_factor, color
     #       end
     #
     #     end
     #
-    # @example Defining a font property providing a default
+    # @example Defining a scale property providing a default
     #
     #     class Hero < Metro::Model
-    #       property :font, default: { name: 'Comic Sans', size: 80 }
+    #       property :image, path: 'hero.jpg'
+    #       property :scale, default: "1.0,1.0"
     #     end
     #
-    # @example Using the `font_size` and `font_name` properties
+    # @example Using a scale property with a different property name
     #
     #     class Hero < Metro::Model
-    #       property :color, default: "rgba(255,0,0,1.0)"
-    #
-    #       def dignified
-    #         self.font_size = 45
-    #         self.font_name = 'Helvetica'
-    #       end
-    #     end
-    #
-    # @example Using a font property with a different property name
-    #
-    #     class Hero < Metro::Model
-    #       property :alt_font, type: :font, default: "rgba(255,0,255,1.0)"
+    #       property :image, path: 'hero.jpg'
+    #       property :enraged_scale, type: :scale, default: "4.0,4.0"
+    #       property :angle
     #
     #       def draw
-    #         puts "Font: #{alt_font_name}:#{alt_font_size}"
-    #         alt_font.draw text, x, y, z_order, x_factor, y_factor, color
+    #         image.draw_rot x, y, z_order, angle.to_f
     #       end
     #     end
     #
