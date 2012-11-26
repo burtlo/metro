@@ -121,7 +121,7 @@ module Metro
   # @return [TrueClass,FalseClass] true if the game code that was loaded was
   #   loaded successfully. false if the game code was not able to be loaded.
   #
-  def valid_game_code
+  def game_has_valid_code?
     execution = SetupHandlers::LoadGameFiles.new.launch_game_in_dry_run_mode
 
     if execution.invalid?
