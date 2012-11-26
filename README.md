@@ -50,9 +50,8 @@ implementation that leads to joyful development. An emphasis has been applied to
 
 * Active Reloading while building your scenes.
 
-> Make adjustments to your game code while working on a scene. Press **Ctrl+R**
-and the scene will automatically be reloaded with all the adjustments you made
-to your code.
+> Adjustments to your game code while working on a scene will automatically
+reload your game code. The template game sets up a shortcut key (**Ctrl+R**) that allows you to explicitly reload the game and the current scene.
 
 * Scene Edit Support
 

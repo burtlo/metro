@@ -42,7 +42,6 @@ resolution 640, 480
 #
 first_scene :brand
 
-
 #
 # Defines controls which are meta events. They can be used group button
 # events together under a single name so that you can use it throughout
@@ -61,4 +60,4 @@ end
 # Game.debug? method will return a true
 # value.
 #
-# debug true
+debug true
