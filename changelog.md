@@ -1,5 +1,14 @@
 # Metro
 
+## 0.3.0 / 2012-11-25
+
+* FIX lots of typos in the documentation
+* Removed `up_action_missing` and `down_ation_missing` event handling
+* Notification events now have block support for 0, 1 and 2 parameters
+* FIX Registration of custom defined custom view parsers
+* FIX Grid Layer layout for Edit Mode
+
+
 ## 0.2.7 / 2012/11-20
 
 * FIX to the new game template
