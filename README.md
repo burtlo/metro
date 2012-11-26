@@ -6,17 +6,45 @@
   /_/  /_/   \___/ \__/  /_/     \____/
 
 ```
-# metro
 
 Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D game development library in Ruby). The goal of Metro is to enforce common conceptual structures and conventions making it easier to quickly generate a game.
 
-> NOTE: This project is very early in development and at this point mostly a prototype to explore more of theses concepts to gain an understanding of core tools necessary to make games.
-
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/burtlo/metro)
+
+## Why Use Metro?
+
+You want to develop games in Ruby.
+
+### Why not just use Gosu?
+
+Gosu does not a lot for you. When you finish the [initial tutorial](https://github.com/jlnr/gosu/wiki/Ruby-Tutorial) you are left with a brittle game that is very resistant to changes or new features.
+
+* Metro provides the concept of a [Scene](https://github.com/burtlo/metro/wiki/Scenes) which is the first abstraction you would likely build after completing the tutorial.
+
+* Sane management of images, animations, fonts, songs, and samples.
+
+* [Implicit animations](https://github.com/burtlo/metro/wiki/Animations)
+
+* [Event Handling](https://github.com/burtlo/metro/wiki/Events)
+
+Metro is built on top of Gosu providing a moderate structure which should
+development joyful.
+
+### Why not use Chingu or Gamebox?
+
+Both [Gamebox](https://github.com/shawn42/gamebox) and
+[Chingu](https://github.com/ippa/chingu) are much more mature libraries with a
+larger set of features.
+
+With Metro the focus is on a smaller set of features with an emphasis on an
+implementation that leads to joyful development. The features have been
+developed with documentation and examples.
 
 ## Installation
 
-    $ gem install metro
+```bash
+$ gem install metro
+```
 
 ## Usage
 
@@ -24,8 +52,8 @@ Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D g
 
 By default `metro` will look for a file named 'metro' within the current working directory if no *gamefilename* has been provided.
 
-```
-metro [gamefilename]
+```bash
+$ metro GAMEFILENAME
 ```
 
 Please take a look at the [example game project](https://github.com/burtlo/starry-knight) that is being built alongside of 'metro'. It currently showcases all the current features available to the game.
@@ -56,15 +84,14 @@ $ metro generate scene first
 
 This should generate a scene in the scenes directory. The scene file contains a lot of examples of how to draw, animate and have your scene listen to events.
 
+## Resources
 
-### Resources
-
-#### Programming
+### Programming
 
 * [YAML for Ruby](http://www.yaml.org/YAML_for_ruby.html) reference which can help you define views in the game.
 * [JSONLint](http://jsonlint.com/) is a JSON Validator
 
-#### Art
+### Art
 
 * [Lost Garden](http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html)
 * [TimelieFX](http://www.rigzsoft.co.uk/) particle editor allows you to export animations.
@@ -72,13 +99,12 @@ This should generate a scene in the scenes directory. The scene file contains a 
 * [Icons](http://css-tricks.com/flat-icons-icon-fonts/)
 * [Subtle Patterns](http://subtlepatterns.com/) various backgrounds and textures.
 
-#### Sound
+### Sound
 
 * [as3sfxr](http://www.superflashbros.net/as3sfxr/) generates unique sounds.
 * [Ableton](https://www.ableton.com/en/) music generation tool.
 
-
-#### Books
+### Books
 
 * [Rules of Play](http://www.amazon.com/dp/0262240459)
 * [Game Programming Gems 8](http://www.amazon.com/dp/1584507020)
