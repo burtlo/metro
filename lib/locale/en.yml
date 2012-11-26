@@ -22,3 +22,10 @@ en:
       actions:
       - "Ensure that the control name is not already defined."
       - "Replace the use of this control name with name"
+  dry_run:
+    success:
+      title: "Metro Game Dependencies Have Been Met!"
+      message: "Your game should be able to be run."
+      actions:
+      - "Metro dependencies have successfully been loaded"
+      - "Game dependencies have successfully been loaded"

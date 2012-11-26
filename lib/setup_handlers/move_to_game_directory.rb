@@ -8,8 +8,12 @@ module Metro
     # being the location during execution.
     #
     class MoveToGameDirectory
+      #
+      # @param [Metro::Parameters::Options] options the options that the game
+      #   was provided when it was launched.
+      # 
       def setup(options)
-        filename = options.fetch(:filename,'.')
+        filename = options.filename
         game_directory = File.dirname(filename)
         Dir.chdir game_directory
       end

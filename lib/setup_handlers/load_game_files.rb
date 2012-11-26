@@ -16,7 +16,7 @@ module Metro
       def valid_game_code
         log.debug "Checking validity of code"
         metro_executable_path = File.join File.dirname(__FILE__), "..", "..", "bin", "metro"
-        output, status = Open3.capture2e("#{metro_executable_path} --check-dependencies")
+        output, status = Open3.capture2e("#{metro_executable_path} --dry-run")
 
         invalid_code = (status != 0)
 

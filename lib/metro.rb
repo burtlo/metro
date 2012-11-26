@@ -17,6 +17,7 @@ require 'core_ext/numeric'
 
 require 'locale/locale'
 
+require 'metro/parameters/parameters'
 require 'metro/asset_path'
 require 'metro/units/units'
 require 'metro/logging'
@@ -43,13 +44,6 @@ Game = Metro::Game
 module Metro
   extend self
   extend GosuConstants
-
-  #
-  # @return [String] the default filename that contains the game contents
-  #
-  def default_game_filename
-    'metro'
-  end
 
   #
   # @return [String] the filepath to the Metro assets
@@ -79,30 +73,16 @@ module Metro
 
   #
   # Run will load the contents of the game contents and game files
-  # within the current working directory and start the game. By default
-  # calling run with no parameter will look for a game file
+  # within the current working directory and start the game.
   #
-  # @param [String] filename the name of the game file to run. When not specified
-  #   the value uses the default filename.
+  # @param [Array<String>] parameters an array of parameters that contains
+  #   the commands in the format that would normally be parsed into the
+  #   ARGV array.
   #
   def run(*parameters)
-    cmd_flags = parameters.find_all { |arg| arg.start_with? "--" }
-    
-    flags = cmd_flags.map { |flag| flag[/--(.+)$/,1].underscore.to_sym }
-    flag_values = [ true ] * flags.count
-
-    filename = (parameters - cmd_flags).first || default_game_filename
-    options = { filename: filename }.merge(Hash[flags.zip(flag_values)])
-
-    log.debug "Running with parameters: #{options}"
-
+    options = Parameters::CommandLineArgsParser.parse(parameters)
     setup_handlers.each { |handler| handler.setup(options) }
-
-    if options[:check_dependencies]
-      log.debug "Not starting Game in Check mode"
-    else
-      start_game
-    end
+    start_game
   end
 
   #
@@ -124,7 +104,7 @@ module Metro
   def reload!
     SetupHandlers::LoadGameFiles.new.reload!
   end
-  
+
   def valid_game_code
     SetupHandlers::LoadGameFiles.new.valid_game_code
   end
@@ -133,3 +113,4 @@ end
 require 'setup_handlers/move_to_game_directory'
 require 'setup_handlers/load_game_files'
 require 'setup_handlers/load_game_configuration'
+require 'setup_handlers/exit_if_dry_run'
