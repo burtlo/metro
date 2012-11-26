@@ -29,6 +29,9 @@ module Metro
       # generate a hash. Their presence within the array means that they should
       # have a true value.
       #
+      # @return [Hash] a hash that contains all the flags as keys and true as
+      #   their values. As the presence of the flag means the value is true.
+      #
       def extract_command_flags!(parameters)
         raw_command_flags = parameters.flatten.find_all { |arg| arg.start_with? "--" }
         parameters.delete_if { |param| raw_command_flags.include? param }
@@ -42,6 +45,8 @@ module Metro
       # From the current parameters array remove the first element which should
       # be the default game file. When there is no value then use the default
       # game filename
+      #
+      # @return [String] the game file name to use
       #
       def extract_game_file!(parameters)
         parameters.delete_at(0) || default_game_filename
