@@ -39,14 +39,17 @@ module Metro
         @status ||= 0
       end
 
+      # Perform the game execution.
       def execute!
         @output, @status = Open3.capture2e(game_execution_string)
       end
 
+      # @return [TrueClass,FalseClass] true if the execution was successful.
       def valid?
         status == 0
       end
 
+      # @return [TrueClass,FalseClass] true if the execution was a failure.
       def invalid?
         status != 0
       end
