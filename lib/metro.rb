@@ -124,6 +124,10 @@ module Metro
   def reload!
     SetupHandlers::LoadGameFiles.new.reload!
   end
+  
+  def valid_game_code
+    SetupHandlers::LoadGameFiles.new.valid_game_code
+  end
 end
 
 require 'setup_handlers/move_to_game_directory'

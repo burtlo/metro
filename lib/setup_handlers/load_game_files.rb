@@ -11,27 +11,11 @@ module Metro
         prepare_watcher!
         load_game_files
         execute_watcher!
-        true
       end
 
-      def reload!
-        if check_if_game_files_are_not_valid
-          log.warn "Code could not be reloaded!"
-          false
-        else
-          EventDictionary.reset!
-          prepare_watcher!
-          load_game_files
-          execute_watcher!
-          true
-        end
-      end
-
-      def check_if_game_files_are_not_valid
-        log.debug "Checking if code is valid before reload"
-        log.debug "Working Dir #{Dir.pwd}"
+      def valid_game_code
+        log.debug "Checking validity of code"
         metro_executable_path = File.join File.dirname(__FILE__), "..", "..", "bin", "metro"
-        log.debug "Running #{metro_executable_path} --check-dependencies"
         output, status = Open3.capture2e("#{metro_executable_path} --check-dependencies")
 
         invalid_code = (status != 0)
@@ -45,7 +29,14 @@ module Metro
           puts "*" * 80
         end
 
-        invalid_code
+        !invalid_code
+      end
+
+      def reload!
+        EventDictionary.reset!
+        prepare_watcher!
+        load_game_files
+        execute_watcher!
       end
 
       #
