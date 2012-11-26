@@ -2,6 +2,10 @@
 en:
   website: "%{website}"
   error:
+    unloadable_source:
+      title: "Metro CANNOT load your game code!"
+      message: "There is an error within your game code that needs to be fixed before Metro\nis able to replace the current running game code:\n\n%{output}"
+      actions: []
     missing_metro_file:
       title: "Unable to find Metro game file"
       message: "The specified file `%{file}` which is required to run the game could not be found."
@@ -22,3 +26,10 @@ en:
       actions:
       - "Ensure that the control name is not already defined."
       - "Replace the use of this control name with name"
+  dry_run:
+    success:
+      title: "Metro Game Dependencies Have Been Met!"
+      message: "Your game should be able to be run."
+      actions:
+      - "Metro dependencies have successfully been loaded"
+      - "Game dependencies have successfully been loaded"

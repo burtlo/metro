@@ -23,11 +23,11 @@ end
 #  for the localized error messages.
 # 
 def error!(messages, details = {})
-  details = { show: true }.merge details
+  details = { show: true, exit: true }.merge details
 
   message = TemplateMessage.new messages: messages, details: details,
     website: Game.website, contact: Game.contact
 
   warn message if details[:show]
-  exit 1
+  exit 1 if details[:exit]
 end

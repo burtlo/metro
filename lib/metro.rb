@@ -1,6 +1,7 @@
 require 'delegate'
 require 'logger'
 require 'erb'
+require 'open3'
 
 require 'gosu'
 require 'i18n'
@@ -16,6 +17,7 @@ require 'core_ext/numeric'
 
 require 'locale/locale'
 
+require 'metro/parameters/parameters'
 require 'metro/asset_path'
 require 'metro/units/units'
 require 'metro/logging'
@@ -44,10 +46,10 @@ module Metro
   extend GosuConstants
 
   #
-  # @return [String] the default filename that contains the game contents
+  # @return [String] the filepath to the Metro executable
   #
-  def default_game_filename
-    'metro'
+  def executable_path
+    File.absolute_path File.join(File.dirname(__FILE__), "..", "bin", "metro")
   end
 
   #
@@ -78,14 +80,15 @@ module Metro
 
   #
   # Run will load the contents of the game contents and game files
-  # within the current working directory and start the game. By default
-  # calling run with no parameter will look for a game file
+  # within the current working directory and start the game.
   #
-  # @param [String] filename the name of the game file to run. When not specified
-  #   the value uses the default filename.
+  # @param [Array<String>] parameters an array of parameters that contains
+  #   the commands in the format that would normally be parsed into the
+  #   ARGV array.
   #
-  def run(filename=default_game_filename)
-    setup_handlers.each { |handler| handler.setup(filename: filename) }
+  def run(*parameters)
+    options = Parameters::CommandLineArgsParser.parse(parameters)
+    setup_handlers.each { |handler| handler.setup(options) }
     start_game
   end
 
@@ -106,10 +109,30 @@ module Metro
   # to restart the game.
   #
   def reload!
-    LoadGameFiles.new.load_game_files!
+    SetupHandlers::LoadGameFiles.new.load_game_files!
+  end
+
+  #
+  # When called the game-related code will be loaded in a sub-process to see
+  # if the code is valid. This is used in tandem with {#reload} and should be
+  # called prior to ensure that the code that is replacing the current code
+  # is valid.
+  #
+  # @return [TrueClass,FalseClass] true if the game code that was loaded was
+  #   loaded successfully. false if the game code was not able to be loaded.
+  #
+  def game_has_valid_code?
+    execution = SetupHandlers::LoadGameFiles.new.launch_game_in_dry_run_mode
+
+    if execution.invalid?
+      error! 'error.unloadable_source', output: execution.output, exit: false
+    end
+
+    execution.valid?
   end
 end
 
 require 'setup_handlers/move_to_game_directory'
 require 'setup_handlers/load_game_files'
 require 'setup_handlers/load_game_configuration'
+require 'setup_handlers/exit_if_dry_run'

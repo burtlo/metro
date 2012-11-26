@@ -6,6 +6,10 @@ module Metro
     # setup handlers to be executed related to game configuration.
     #
     class GameConfiguration
+      #
+      # @param [Metro::Parameters::Options] options the options that the game
+      #   was provided when it was launched.
+      #
       def setup(options)
         ParseAndLoadGameConfiguration.new.setup(options)
         ConfigureControls.new.setup(options)
@@ -17,8 +21,15 @@ module Metro
     # content loaded from the game configuration.
     #
     class ParseAndLoadGameConfiguration
+
+      #
+      # @param [Metro::Parameters::Options] options the options that the game
+      #   was provided when it was launched.
+      #
       def setup(options)
-        filename = options.fetch(:filename)
+        filename = options.filename
+
+        Game.execution_parameters = options.execution_parameters
 
         gamefile = File.basename(filename)
         game_files_exist!(gamefile)

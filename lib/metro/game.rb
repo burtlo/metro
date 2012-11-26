@@ -8,6 +8,14 @@ module Metro
       @config = game_configuration
     end
 
+    # The original parameters specified during execution. These are the args
+    # found on the command-line that are passed in when the game started.
+    def execution_parameters
+      @execution_parameters ||= []
+    end
+
+    attr_writer :execution_parameters
+
     attr_reader :config
 
     def first_scene
