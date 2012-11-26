@@ -25,11 +25,19 @@ Gosu does a lot of great work bringing OpenGL to Ruby. However, when you finish 
 
 * Metro provides the concept of a [Scene](https://github.com/burtlo/metro/wiki/Scenes) which is the first abstraction you would likely build after completing the tutorial.
 
+> Developing your game in individual scenes will make it easier to logically layout your game.
+
 * Sane management of images, animations, fonts, songs, and samples through [model properties](https://github.com/burtlo/metro/wiki/Model-properties).
 
-* [Implicit animations](https://github.com/burtlo/metro/wiki/Animations)
+> Having to load and cache fonts and images in every one of your models is tedious. It is also is wasteful as several of the same fonts are being used all over the place.
+
+* [Key-frame animations](https://github.com/burtlo/metro/wiki/Animations)
+
+> Metro makes it simple to move an actor from one position to another position. So simple movements, fades, color changes, and really any property change over time is defined very simply.
 
 * [Event Handling](https://github.com/burtlo/metro/wiki/Events)
+
+> Delete those huge `if ... elsif ... else` input checking structures for keyboard, gamepad, and mouse button presses (down,up, and held). Metro makes it easy to define them and an attach a course of action to take when the event happens.
 
 ### Why not use Chingu or Gamebox?
 
@@ -50,6 +58,18 @@ to your code.
 
 > All scenes can have their visual component layout re-adjusted through an edit
 mode. The edit mode layout works for all labels, images, and menus.
+
+### Why you shouldn't use Metro?
+
+Metro has some the following limitations:
+
+* Limited to the gems defined within Metro
+
+> At this point in time you are not able to define and package additional dependencies with your game. This means if you are using a gem that is not already defined by Metro you will run into trouble when running it on alternate systems. This will likely be addressed in the future when more demand arises.
+
+* Difficult Deployment
+
+> For individuals to play your game, they will also have to install Metro. However, work is being made to bring some simple packaging to Metro games to make them stand-along executables.
 
 ## Installation
 
