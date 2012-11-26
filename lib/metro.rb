@@ -112,9 +112,23 @@ module Metro
     SetupHandlers::LoadGameFiles.new.reload!
   end
 
+  #
+  # When called the game-related code will be loaded in a sub-process to see
+  # if the code is valid. This is used in tandem with {#reload} and should be
+  # called prior to ensure that the code that is replacing the current code
+  # is valid.
+  #
+  # @return [TrueClass,FalseClass] true if the game code that was loaded was
+  #   loaded successfully. false if the game code was not able to be loaded.
+  #
   def valid_game_code
-    log.debug "Validating Game Code"
-    SetupHandlers::LoadGameFiles.new.valid_game_code
+    execution = SetupHandlers::LoadGameFiles.new.launch_game_in_dry_run_mode
+
+    if execution.invalid?
+      error! 'error.unloadable_source', output: execution.output, exit: false
+    end
+
+    execution.valid?
   end
 end
 

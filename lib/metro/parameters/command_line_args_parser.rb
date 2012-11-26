@@ -14,7 +14,7 @@ module Metro
       #
       def parse(*parameters)
         parameters = parameters.flatten.compact
-        options = { execution: parameters.dup }
+        options = { execution_parameters: parameters.dup }
 
         command_flags = extract_command_flags!(parameters)
         filename = extract_game_file!(parameters)

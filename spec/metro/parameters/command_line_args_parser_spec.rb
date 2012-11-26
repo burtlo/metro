@@ -18,7 +18,7 @@ describe Metro::Parameters::CommandLineArgsParser do
         let(:expected_filename) { 'metro' }
 
         it "should maintain an original parameter list" do
-          subject.execution.should eq parameters
+          subject.execution_parameters.should eq parameters
         end
 
         it "should consider the first non-flag the game file" do

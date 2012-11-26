@@ -1,3 +1,5 @@
+require_relative 'game_execution'
+
 module Metro
   module SetupHandlers
 
@@ -13,37 +15,8 @@ module Metro
         execute_watcher!
       end
 
-      class GameExecution
-        def initialize(command)
-          @status = 1
-        end
-
-        def execute!
-          @output, @status = Open3.capture2e("#{Metro.executable_path} --dry-run")
-        end
-
-        def valid?
-          status == 0
-        end
-
-        def invalid?
-          status != 0
-        end
-
-        attr_reader :status, :output
-      end
-
-      def valid_game_code
-        ge = GameExecution.new "the original parameters of execution"
-        ge.execute!
-
-        if ge.invalid?
-          message = TemplateMessage.new message: 'error.unloadable_source',
-            details: { output: ge.output }
-          warn message
-        end
-
-        ge.valid?
+      def launch_game_in_dry_run_mode
+        GameExecution.execute Game.execution_parameters + [ "--dry-run" ]
       end
 
       def reload!
