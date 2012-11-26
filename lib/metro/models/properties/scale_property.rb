@@ -46,13 +46,6 @@ module Metro
     #     end
     #
     class ScaleProperty < Property
-      void drawRot(double x, double y, ZPos z,
-          double angle, double centerX = 0.5, double centerY = 0.5,
-          double factorX = 1, double factorY = 1,
-          Color c = Color::WHITE,
-          AlphaMode mode = amDefault) const;
-
-
       define_property :x_factor
 
       define_property :y_factor
