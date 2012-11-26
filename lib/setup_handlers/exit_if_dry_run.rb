@@ -15,9 +15,7 @@ module Metro
       #
       def setup(options)
         return unless options.dry_run?
-
-        message = TemplateMessage.new message: 'dry_run.success'
-        puts message
+        puts TemplateMessage.new message: 'dry_run.success'
         exit
       end
     end
