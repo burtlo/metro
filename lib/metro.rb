@@ -5,6 +5,7 @@ require 'open3'
 
 require 'gosu'
 require 'i18n'
+require 'listen'
 require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/inflector'
@@ -97,10 +98,7 @@ module Metro
   # that has been loaded.
   #
   def start_game
-    window = Window.new Game.width, Game.height, Game.fullscreen?
-    window.caption = Game.name
-    window.scene = Scenes.generate(Game.first_scene)
-    window.show
+    Game.start!
   end
 
   #
@@ -136,3 +134,4 @@ require 'setup_handlers/move_to_game_directory'
 require 'setup_handlers/load_game_files'
 require 'setup_handlers/load_game_configuration'
 require 'setup_handlers/exit_if_dry_run'
+require 'setup_handlers/reload_game_on_game_file_changes'

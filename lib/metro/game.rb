@@ -8,6 +8,16 @@ module Metro
       @config = game_configuration
     end
 
+    #
+    # Creates a window and starts the game with the game parameters.
+    #
+    def start!
+      @window = Window.new width, height, fullscreen?
+      window.caption = name
+      window.scene = Scenes.generate(first_scene)
+      window.show
+    end
+
     # The original parameters specified during execution. These are the args
     # found on the command-line that are passed in when the game started.
     def execution_parameters
@@ -16,7 +26,19 @@ module Metro
 
     attr_writer :execution_parameters
 
-    attr_reader :config
+    #
+    # @return the current game window.
+    #
+    attr_reader :window
+
+    #
+    # @return [Scene,NilClass] the current scene that is being displayed. If 
+    #   this is called before the window is being displayed when this will return
+    #   a nil value.
+    # 
+    def current_scene
+      window ? window.scene : nil
+    end
 
     def first_scene
       fetch(:first_scene)
@@ -70,6 +92,7 @@ module Metro
       config.send(name) rescue fallback
     end
 
+    attr_reader :config
 
   end
 end

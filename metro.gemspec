@@ -28,6 +28,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'thor', '~> 0.16.0'
   gem.add_dependency 'i18n', '~> 0.6.1'
   gem.add_dependency 'active_support', '~> 3.0.0'
+  gem.add_dependency 'listen', '~> 0.6.0'
   gem.add_development_dependency 'rspec', '~> 2.11'
 
   gem.files         = `git ls-files`.split($/)
