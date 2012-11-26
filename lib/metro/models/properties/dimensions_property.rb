@@ -20,13 +20,13 @@ module Metro
     # @example Defining a dimensions providing a default
     #
     #     class Hero < Metro::Model
-    #       property :dimensions, default: Dimensions.of 100.0, 100.0
+    #       property :dimensions, default: Dimensions.of(100.0, 100.0)
     #     end
     #
     # @example Using a dimensions property with a different property name
     #
     #     class Hero < Metro::Model
-    #       property :box, type: dimensions, default: Dimensions.of 100.0, 100.0
+    #       property :box, type: dimensions, default: Dimensions.of(100.0, 100.0)
     #       # box_width, box_height
     #     end
     #

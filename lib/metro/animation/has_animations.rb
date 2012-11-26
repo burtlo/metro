@@ -45,7 +45,7 @@ module Metro
       # @example Defining an animation that fades in and moves a logo when it is
       #   done, transition to the title scene.
       #
-      #     animate :logo, to: { y: 80, alpha: 50 }, interval: 120 do
+      #     animate :logo, to: { y: 80, alpha: 50 }, interval: 120.ticks do
       #       transition_to :title
       #     end
       #

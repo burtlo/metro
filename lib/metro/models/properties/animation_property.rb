@@ -2,8 +2,8 @@ module Metro
   class Model
 
     #
-    # A animation property manages an Animation, which is an array of Gosu::Images,
-    # and some metadata.
+    # An animation property manages an Animation, which is an array of
+    # Gosu::Images and some metadata.
     #
     # @see Animation
     #
@@ -75,7 +75,7 @@ module Metro
       end
 
       private
-      
+
       def create_animation(properties)
         self.class.animation_for properties
       end
