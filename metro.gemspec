@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.version       = Metro::VERSION
   gem.authors       = ["Franklin Webber"]
   gem.email         = Metro::CONTACT_EMAILS
-
+  gem.license       = "MIT"
   gem.summary       = <<-EOS
     Metro is a 2D Gaming framework built around gosu (game development library).
     Metro makes it easy to create games by enforcing common conceptual structures
