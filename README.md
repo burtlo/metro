@@ -21,18 +21,15 @@ You want to develop games in Ruby.
 
 ### Why not just use Gosu?
 
-Gosu does not a lot for you. When you finish the [initial tutorial](https://github.com/jlnr/gosu/wiki/Ruby-Tutorial) you are left with a brittle game that is very resistant to changes or new features.
+Gosu does a lot of great work bringing OpenGL to Ruby. However, when you finish the [initial tutorial](https://github.com/jlnr/gosu/wiki/Ruby-Tutorial) you are left with a brittle game that is very resistant to changes or new features.
 
 * Metro provides the concept of a [Scene](https://github.com/burtlo/metro/wiki/Scenes) which is the first abstraction you would likely build after completing the tutorial.
 
-* Sane management of images, animations, fonts, songs, and samples.
+* Sane management of images, animations, fonts, songs, and samples through [model properties](https://github.com/burtlo/metro/wiki/Model-properties).
 
 * [Implicit animations](https://github.com/burtlo/metro/wiki/Animations)
 
 * [Event Handling](https://github.com/burtlo/metro/wiki/Events)
-
-Metro is built on top of Gosu providing a moderate structure which should
-development joyful.
 
 ### Why not use Chingu or Gamebox?
 
@@ -41,8 +38,18 @@ Both [Gamebox](https://github.com/shawn42/gamebox) and
 larger set of features.
 
 With Metro the focus is on a smaller set of features with an emphasis on an
-implementation that leads to joyful development. The features have been
-developed with documentation and examples.
+implementation that leads to joyful development. An emphasis has been applied to creating elegant solutions which have documentation and examples.
+
+* Active Reloading while building your scenes.
+
+> Make adjustments to your game code while working on a scene. Press **Ctrl+R**
+and the scene will automatically be reloaded with all the adjustments you made
+to your code.
+
+* Scene Edit Support
+
+> All scenes can have their visual component layout re-adjusted through an edit
+mode. The edit mode layout works for all labels, images, and menus.
 
 ## Installation
 
