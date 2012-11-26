@@ -1,6 +1,7 @@
 require 'delegate'
 require 'logger'
 require 'erb'
+require 'open3'
 
 require 'gosu'
 require 'i18n'
@@ -84,9 +85,24 @@ module Metro
   # @param [String] filename the name of the game file to run. When not specified
   #   the value uses the default filename.
   #
-  def run(filename=default_game_filename)
-    setup_handlers.each { |handler| handler.setup(filename: filename) }
-    start_game
+  def run(*parameters)
+    cmd_flags = parameters.find_all { |arg| arg.start_with? "--" }
+    
+    flags = cmd_flags.map { |flag| flag[/--(.+)$/,1].underscore.to_sym }
+    flag_values = [ true ] * flags.count
+
+    filename = (parameters - cmd_flags).first || default_game_filename
+    options = { filename: filename }.merge(Hash[flags.zip(flag_values)])
+
+    log.debug "Running with parameters: #{options}"
+
+    setup_handlers.each { |handler| handler.setup(options) }
+
+    if options[:check_dependencies]
+      log.debug "Not starting Game in Check mode"
+    else
+      start_game
+    end
   end
 
   #
@@ -106,7 +122,7 @@ module Metro
   # to restart the game.
   #
   def reload!
-    LoadGameFiles.new.load_game_files!
+    SetupHandlers::LoadGameFiles.new.reload!
   end
 end
 
