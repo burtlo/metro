@@ -11,6 +11,10 @@ module Metro
     # @example Defining a text property
     #
     #     class Scoreboard < Metro::Model
+    #       property :font
+    #       property :position
+    #       property :color
+    #       property :scale
     #       property :text
     #
     #       def draw
@@ -22,16 +26,21 @@ module Metro
     # @example Defining with a default and text that will be instance evaluated.
     #
     #     class ScoreBoard < Metro::Model
-    #       property :text, default: 'Score is #{player.score}'
+    #       property :score
+    #       property :text, default: 'Score is #{score}'
     #     end
     #
     # @example Using a text property with a different property name
     #
     #     class Hero < Metro::Model
+    #       proeprty :font
+    #       property :position
+    #       property :color
+    #       property :scale
     #       property :description, type: :text
     #
     #       def draw
-    #         description_font.draw description, x, y, z_order, x_factor, y_factor, color
+    #         font.draw description, x, y, z_order, x_factor, y_factor, color
     #       end
     #     end
     #

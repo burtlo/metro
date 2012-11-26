@@ -37,13 +37,21 @@ module Metro
     #       property :image, path: 'hero.jpg'
     #       property :enraged_scale, type: :scale, default: "4.0,4.0"
     #       property :angle
+    #       property :color
     #
     #       def draw
-    #         image.draw_rot x, y, z_order, angle.to_f
+    #         image.draw_rot x, y, z_order, angle.to_f, 0.5, 0.5, 
+    #           enraged_scale_factor_x, enraged_scale_factor_y, color
     #       end
     #     end
     #
     class ScaleProperty < Property
+      void drawRot(double x, double y, ZPos z,
+          double angle, double centerX = 0.5, double centerY = 0.5,
+          double factorX = 1, double factorY = 1,
+          Color c = Color::WHITE,
+          AlphaMode mode = amDefault) const;
+
 
       define_property :x_factor
 
