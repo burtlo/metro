@@ -31,8 +31,7 @@ require 'metro/game'
 require 'metro/scene'
 require 'metro/scenes'
 require 'metro/models/model'
-
-require_relative 'metro/missing_scene'
+require 'metro/missing_scene'
 
 #
 # To allow an author an easier time accessing the Game object from within their game.
@@ -51,8 +50,30 @@ module Metro
     'metro'
   end
 
+  #
+  # @return [String] the filepath to the Metro assets
+  #
   def asset_dir
     File.join File.dirname(__FILE__), "assets"
+  end
+
+  #
+  # @return [Array] an array of all the handlers that will be executed prior
+  #   to the game being launched.
+  #
+  def setup_handlers
+    @setup_handlers ||= []
+  end
+
+  #
+  # Register a setup handler. While this method is present, it is far
+  # too late for game code to be executed as these pregame handlers will already
+  # have started executing. This allows for modularity within the Metro library
+  # with the possibility that this functionality could become available to
+  # individual games if the load process were to be updated.
+  #
+  def register_setup_handler(handler)
+    setup_handlers.push handler
   end
 
   #
@@ -64,89 +85,14 @@ module Metro
   #   the value uses the default filename.
   #
   def run(filename=default_game_filename)
-    move_to_game_directory!(filename)
-    load_game_files!
-    load_game_configuration(filename)
-    configure_controls!
+    setup_handlers.each { |handler| handler.setup(filename: filename) }
     start_game
   end
 
-  def load_game_files!
-    EventDictionary.reset!
-    prepare_watcher!
-    load_game_files
-    execute_watcher!
-  end
-
-  alias_method :reload!, :load_game_files!
-
-  private
-
-  def move_to_game_directory!(filename)
-    game_directory = File.dirname(filename)
-    Dir.chdir game_directory
-  end
-
   #
-  # The watcher will keep track of all the constants that were added to the Object
-  # Namespace after the start of the execution of the game. This will allow for only
-  # those objects to be reloaded.
+  # Start the game by lanunching a window with the game configuration and data
+  # that has been loaded.
   #
-  def watcher
-    @watcher ||= ActiveSupport::Dependencies::WatchStack.new
-  end
-
-  #
-  # The watcher should watch the Object Namespace for any changes. Any constants
-  # that are added will be tracked from this point forward.
-  #
-  def prepare_watcher!
-    ActiveSupport::Dependencies.clear
-    watcher.watch_namespaces([ Object ])
-  end
-
-  #
-  # The watcher will now mark all the constants that it has watched being loaded
-  # as unloadable. Doing so exhausts the list of constants found so the watcher
-  # will be empty.
-  #
-  # @note an exception is raised if the watcher is not prepared every time this
-  #   is called.
-  #
-  def execute_watcher!
-    watcher.new_constants.each { |constant| unloadable constant }
-  end
-
-  def load_game_files
-    $LOAD_PATH.unshift(Dir.pwd) unless $LOAD_PATH.include?(Dir.pwd)
-    load_paths 'lib'
-    load_path 'scenes', prioritize: 'game_scene.rb'
-    load_path 'models', prioritize: 'game_model.rb'
-  end
-
-  def load_paths(*paths)
-    paths.flatten.compact.each {|path| load_path path }
-  end
-
-  def load_path(path,options = {})
-    files = Dir["#{path}/**/*.rb"]
-    files.sort! {|file| File.basename(file) == options[:prioritize] ? -1 : 1 }
-    files.each {|file| require_or_load file }
-  end
-
-  def load_game_configuration(filename)
-    gamefile = File.basename(filename)
-    game_files_exist!(gamefile)
-    game_contents = File.read(gamefile)
-    game_block = lambda {|instance| eval(game_contents) }
-    game = Game::DSL.parse(&game_block)
-    Game.setup game
-  end
-
-  def configure_controls!
-    EventRelay.define_controls Game.controls
-  end
-
   def start_game
     window = Window.new Game.width, Game.height, Game.fullscreen?
     window.caption = Game.name
@@ -154,14 +100,16 @@ module Metro
     window.show
   end
 
-  def game_files_exist!(*files)
-    files.compact.flatten.each { |file| game_file_exists?(file) }
+  #
+  # When called all the game-related code will be unloaded and reloaded.
+  # Providding an opportunity for a game author to tweak the code without having
+  # to restart the game.
+  #
+  def reload!
+    LoadGameFiles.new.load_game_files!
   end
-
-
-  def game_file_exists?(file)
-    error!("error.missing_metro_file",file: file) unless File.exists?(file)
-    error!("error.specified_directory",directory: file) if File.directory?(file)
-  end
-
 end
+
+require 'setup_handlers/move_to_game_directory'
+require 'setup_handlers/load_game_files'
+require 'setup_handlers/load_game_configuration'
