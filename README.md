@@ -11,8 +11,6 @@ Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D g
 
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/burtlo/metro)
 
-[![Build Status](https://travis-ci.org/burtlo/metro.png)](https://travis-ci.org/burtlo/metro)
-
 [![Dependency Status](https://gemnasium.com/burtlo/metro.png)](https://gemnasium.com/burtlo/metro)
 
 ## Why Use Metro?
