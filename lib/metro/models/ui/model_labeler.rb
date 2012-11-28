@@ -55,7 +55,7 @@ module Metro
 
       def draw_label(drawer)
         bounds = drawer.bounds
-        z_order = drawer.respond_to?(:z_order) ? drawer.z_order + 1 : 0
+        z_order = drawer.respond_to?(:z_order) ? drawer.z_order + 2 : 0
 
         label = create "metro::ui::label", font: font, text: drawer.name,
           position: bounds.top_left + Point.at(4,2,z_order)
@@ -66,7 +66,7 @@ module Metro
 
       def draw_quad_behind(drawer)
         quad = create "metro::ui::rectangle",
-          position: drawer.position - Point.at(4,0) + Point.at(2,0,-2),
+          position: drawer.position - Point.at(2,0,1),
           color: color, dimensions: drawer.dimensions + Dimensions.of(6,4)
 
         quad.draw

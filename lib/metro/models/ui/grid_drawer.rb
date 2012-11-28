@@ -33,11 +33,17 @@ module Metro
         Dimensions.of Game.width, Game.height
       end
 
+      # @attribute
+      # This controls whether the grid should be drawn. By default
+      # the grid will be drawn.
+      property :enabled, type: :boolean, default: true
+
       def show
         self.saveable_to_view = false
       end
 
       def draw
+        return unless enabled
         draw_horizontal_lines
         draw_vertical_lines
       end

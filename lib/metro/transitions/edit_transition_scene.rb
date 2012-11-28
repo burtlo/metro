@@ -45,6 +45,10 @@ module Metro
       transition_to next_scene.scene_name
     end
 
+    event :on_up, KbG do
+      overlay.enabled = !overlay.enabled
+    end
+
     #
     # Generate a hitlist which manages the click start, hold, and release
     # of the mouse button.
