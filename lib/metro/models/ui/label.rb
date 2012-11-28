@@ -29,7 +29,11 @@ module Metro
       property :vertical_align, type: :text, default: "top"
 
       property :dimensions do
-        Dimensions.of (longest_line * x_factor), (line_height * line_count * 2 * y_factor)
+        Dimensions.of (longest_line * x_factor), (line_height * line_count * y_factor)
+      end
+
+      def bounds
+        Bounds.new left: left_x, right: right_x, top: top_y, bottom: bottom_y
       end
 
       def draw
@@ -38,15 +42,23 @@ module Metro
         end
       end
 
-      def bounds
-        Bounds.new x: x, y: y, width: width, height: height
-      end
-
-      def contains?(x,y)
-        bounds.contains?(x,y)
-      end
-
       private
+
+      def left_x
+        line_count.times.map { |index| x_position(index) }.min
+      end
+
+      def right_x
+        left_x + width
+      end
+
+      def top_y
+        y_position(0)
+      end
+
+      def bottom_y
+        top_y + height
+      end
 
       def line_height
         font.height

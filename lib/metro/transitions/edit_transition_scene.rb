@@ -16,6 +16,7 @@ module Metro
       #
       self.class.drawings.clear
       self.class.draw :overlay, model: "Metro::UI::GridDrawer"
+      self.class.draw :labeler, model: "Metro::UI::ModelLabeler"
       add_actors_to_scene
       after_initialize
     end
@@ -65,6 +66,7 @@ module Metro
     end
 
     event :on_up, KbS do
+      log.info "Saving changes to Scene #{previous_scene} View - #{view_name}"
       save_view
     end
 

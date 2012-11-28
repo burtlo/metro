@@ -10,6 +10,9 @@ module Metro
       super(gosu_font)
     end
 
+    # An alias to Gosu::Font's height method
+    def size ; height ; end
+
     #
     # Return a font that matches the specified criteria. Using the name, size,
     # and window a font will be generated or retrieved from the cache.

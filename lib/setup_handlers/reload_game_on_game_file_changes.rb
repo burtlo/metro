@@ -64,9 +64,14 @@ module Metro
       def reload_game_because_files_changed(changed)
         log.debug "Metro has detected #{changed.count} game source #{changed.count != 1 ? 'files have' : 'file has'} changed. RELOADING GAME CODE!"
         if Metro.game_has_valid_code?
-          Game.current_scene.after(1.tick) { Metro.reload! ; transition_to(scene_name) }
+          Game.current_scene.after(1.tick) do
+            Metro.reload!
+            scene_is_being_edited = scene_name == "metro/edit_transition"
+            transition_to(scene_name) unless scene_is_being_edited
+          end
         end
       end
+
     end
   end
 
