@@ -58,6 +58,11 @@ module Metro
         self.class.of (width - value.width.to_f), (height - value.height.to_f)
       end
 
+      def <=>(value)
+        raise "Unable to subtract from these dimensions with #{value} #{value.class}" if [ :width, :height ].find { |method| ! value.respond_to?(method) }
+        (width * height) <=> (value.width * value.height)
+      end
+
     end
   end
 end

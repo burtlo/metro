@@ -37,7 +37,7 @@ module Metro
 
       # @attribute
       # The alignment for the label. This influences where the text draws in
-      # relation to the specified position. Your choices are 'left', 'center', 
+      # relation to the specified position. Your choices are 'left', 'center',
       # and 'right'. The default is 'left'.
       property :align, type: :text, default: "left"
 
@@ -48,9 +48,17 @@ module Metro
       property :vertical_align, type: :text, default: "top"
 
       # @attribute
-      # The dimensions of label
+      # When calculating the dimensions of the label, this is the minimum
+      # dimensions. This is necessary in cases when the text is blank. This 
+      # allows for the label to have size when in the edit mode.
+      property :minimum_dimensions, type: :dimensions, default: "16,16"
+
+      # @attribute
+      # The dimensions of label. If the label text is blank, then the dimensions
+      # of the label will return a minimum dimension.
       property :dimensions do
-        Dimensions.of (longest_line * x_factor), (line_height * line_count * y_factor)
+        calculated = Dimensions.of (longest_line * x_factor), (line_height * line_count * y_factor)
+        [ calculated, minimum_dimensions ].max
       end
 
       def bounds
@@ -94,7 +102,7 @@ module Metro
       end
 
       def longest_line
-        parsed_text.map { |line| line_width(line) }.max
+        parsed_text.map { |line| line_width(line) }.max || 0
       end
 
       def line_count
