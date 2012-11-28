@@ -30,15 +30,8 @@ module Metro
         image.dimensions
       end
 
-      def contains?(x,y)
-        bounds.contains?(x,y)
-      end
-
       def bounds
-        Bounds.new x: x - (width * center_x),
-                   y: y - (height * center_y),
-                   width: width,
-                   height: height
+        Bounds.new left: left_x, right: right_x, top: top_y, bottom: bottom_y
       end
 
       def draw
@@ -49,6 +42,23 @@ module Metro
           color
       end
 
+      private
+
+      def left_x
+        x - (width * center_x)
+      end
+
+      def right_x
+        left_x + width
+      end
+
+      def top_y
+        y - (height * center_y)
+      end
+
+      def bottom_y
+        top_y + height
+      end
     end
 
   end

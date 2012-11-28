@@ -61,10 +61,10 @@ module Metro
 
       property :scale, default: Scale.one
 
-      property :padding, default: 10
+      property :padding, default: 20
 
       property :dimensions do
-        Dimensions.none
+        Dimensions.of (right_x - left_x), (bottom_y - top_y)
       end
 
       property :options
@@ -90,12 +90,34 @@ module Metro
       # Allows the menu to be layouted out horizontal or vertical
       property :layout, type: :text, default: "vertical"
 
-      def contains?(x,y)
-        bounds.contains?(x,y)
+      def bounds
+        Bounds.new left: left_x, right: right_x, top: top_y, bottom: bottom_y
       end
 
-      def bounds
-        Bounds.new x: x, y: y, width: width, height: height
+      #
+      # When the position has changed on every other time beside the first time
+      # we want to update the position of all the options defined in the menu.
+      #
+      def position_changed(new_position)
+        return unless properties[:position]
+        difference = Point.parse(new_position) - Point.parse(properties[:position])
+        options.each { |option| option.position += difference }
+      end
+
+      def left_x
+        options.map {|option| option.bounds.left }.min
+      end
+
+      def right_x
+        options.map {|option| option.bounds.right }.max
+      end
+
+      def top_y
+        options.map {|option| option.bounds.top }.min
+      end
+
+      def bottom_y
+        options.map {|option| option.bounds.bottom }.max
       end
 
       # @TODO: enable the user to define the events for this interaction
@@ -153,7 +175,7 @@ module Metro
       end
 
       def draw
-        options.each_with_index { |label| label.draw }
+        options.each { |label| label.draw }
       end
 
     end

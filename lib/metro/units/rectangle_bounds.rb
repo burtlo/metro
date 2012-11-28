@@ -4,46 +4,64 @@ module Metro
     #
     # An object that represents a rectanglar bounds.
     #
-    class RectangleBounds < Struct.new(:min_x,:min_y,:max_x,:max_y)
+    class RectangleBounds
 
       # Allow the ability to refer to the min, max values with their
       # other alternate names.
 
-      alias_method :left, :min_x
-      alias_method :left=, :min_x=
-      alias_method :right, :max_x
-      alias_method :right=, :max_x=
-      alias_method :top, :min_y
-      alias_method :top=, :min_y=
-      alias_method :bottom, :max_y
-      alias_method :bottom=, :max_y=
+      attr_accessor :left, :right, :top, :bottom
+
+      def self.none
+        new left: 0, right: 0, top: 0, bottom: 0
+      end
 
       #
       # Create a bounds with bounds.
       #
       def initialize(params = {})
-        self.min_x = params[:x] || params[:min_x]
-        self.min_y = params[:y] || params[:min_y]
-        self.max_x = (params[:max_x] || (min_x + params[:width]))
-        self.max_y = (params[:max_y] || (min_y + params[:height]))
+        @left = params[:left].to_f
+        @top = params[:top].to_f
+        @right = params[:right].to_f
+        @bottom = params[:bottom].to_f
+      end
+
+      def top_left
+        Point.at(left,top)
+      end
+
+      def top_right
+        Point.at(right,top)
+      end
+
+      def bottom_right
+        Point.at(right,bottom)
+      end
+
+      def bottom_left
+        Point.at(left,bottom)
+      end
+
+      def ==(value)
+        return if [ :left, :right, :top, :bottom ].find { |method| ! value.respond_to?(method) }
+        left == value.left and right == value.right and top == value.top and bottom == value.bottom
       end
 
       #
       # Does this bounds contain the following point?
       #
       def contains?(x,y)
-        x > min_x and x < max_x and y > min_y and y < max_y
+        x > left and x < right and y > top and y < bottom
       end
 
       #
       # Does this rectanglular bounds intersect with another rectanglular bounds?
       #
       def intersect?(b)
-        not(b.min_x > max_x or b.max_x < min_x or b.min_y > max_y or b.max_y < min_y)
+        not(b.left > right or b.right < left or b.top > bottom or b.bottom < top)
       end
 
       def to_s
-        "(#{min_x},#{min_y}) to (#{max_x},#{max_y})"
+        "(#{left},#{top}) to (#{right},#{bottom})"
       end
 
     end

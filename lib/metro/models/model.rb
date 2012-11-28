@@ -134,15 +134,12 @@ module Metro
       true
     end
 
-    # Belongs to positionable items only
-    def contains?(x,y)
-      false
-    end
-
-    # Belongs to positionable items only
-    def offset(x,y)
-      self.x += x
-      self.y += y
+    #
+    # By default a model has no bounds. Each subclass of model will have to
+    # define how their bounds are defined.
+    #
+    def bounds
+      Bounds.none
     end
 
     #
@@ -241,4 +238,5 @@ require_relative 'ui/menu'
 require_relative 'ui/image'
 require_relative 'ui/rectangle'
 require_relative 'ui/grid_drawer'
+require_relative 'ui/model_labeler'
 require_relative 'audio/song'

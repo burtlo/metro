@@ -34,6 +34,7 @@ module Metro
     # @example Using the `font_size` and `font_name` properties
     #
     #     class Hero < Metro::Model
+    #       property :font, default: { name: 'Comic Sans', size: 80 }
     #       property :color, default: "rgba(255,0,0,1.0)"
     #
     #       def dignified
@@ -45,7 +46,7 @@ module Metro
     # @example Using a font property with a different property name
     #
     #     class Hero < Metro::Model
-    #       property :alt_font, type: :font, default: "rgba(255,0,255,1.0)"
+    #       property :alt_font, type: :font, default: { name: 'Helvetica', size: 80 }
     #
     #       def draw
     #         puts "Font: #{alt_font_name}:#{alt_font_size}"

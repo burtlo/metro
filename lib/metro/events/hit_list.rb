@@ -27,24 +27,22 @@ module Metro
     end
 
     def update(event)
-      offset_x, offset_y = offset_from_last_event(event)
-
-      list.each { |d| d.offset(offset_x,offset_y) }
+      offset = offset_from_last_event(event)
+      list.each { |d| d.position = d.position + offset }
 
       save_event event
     end
 
     def release(event)
-      offset_x, offset_y = offset_from_last_event(event)
-
-      list.each { |d| d.offset(offset_x,offset_y) }
+      offset = offset_from_last_event(event)
+      list.each { |d| d.position = d.position + offset }
 
       save_event event
       clear
     end
 
     def drawers_at(x,y)
-      hit_drawers = drawers.find_all { |drawer| drawer.contains?(x,y) }
+      hit_drawers = drawers.find_all { |drawer| drawer.bounds.contains?(x,y) }
 
       # assumed that we only want one item
       top_drawer = hit_drawers.inject(hit_drawers.first) {|top,drawer| drawer.z_order > top.z_order ? drawer : top }
@@ -52,7 +50,7 @@ module Metro
     end
 
     def offset_from_last_event(event)
-      [ (event.mouse_x - @last_event.mouse_x).to_i, (event.mouse_y - @last_event.mouse_y).to_i ]
+      Metro::Units::Point.at (event.mouse_x - @last_event.mouse_x).to_i, (event.mouse_y - @last_event.mouse_y).to_i
     end
 
     def save_event(event)

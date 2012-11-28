@@ -23,11 +23,11 @@ module Metro
         Dimensions.of Game.width, Game.height
       end
 
-      def saveable?
-        false
+      def bounds
+        Bounds.none
       end
 
-      def contains?(x,y)
+      def saveable?
         false
       end
 
