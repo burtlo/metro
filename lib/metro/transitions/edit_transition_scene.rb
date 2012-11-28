@@ -28,8 +28,8 @@ module Metro
       # easier to dup scenes.
       #
       self.class.drawings.clear
-      self.class.draw :overlay, model: "Metro::UI::GridDrawer"
-      self.class.draw :labeler, model: "Metro::UI::ModelLabeler"
+      self.class.draw :overlay, model: "metro::ui::griddrawer"
+      self.class.draw :labeler, model: "metro::ui::modellabeler"
       add_actors_to_scene
       after_initialize
     end
@@ -63,11 +63,11 @@ module Metro
     end
 
     event :on_up, KbL do
-      labeler.draw_labels = !labeler.draw_labels
+      labeler.should_draw_labels = !labeler.should_draw_labels
     end
 
     event :on_up, KbB do
-      labeler.draw_bounding_boxes = !labeler.draw_bounding_boxes
+      labeler.should_draw_bounding_boxes = !labeler.should_draw_bounding_boxes
     end
 
     #

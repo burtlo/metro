@@ -18,7 +18,7 @@ module Metro
 
       # @attribute
       # Sets whether to draw the bounding boxes around the actors.
-      property :draw_bounding_boxes, type: :boolean, default: true
+      property :should_draw_bounding_boxes, type: :boolean, default: true
 
       # @attribute
       # The color of the model name text.
@@ -30,7 +30,7 @@ module Metro
 
       # @attribute
       # Sets whether to draw the model name labels
-      property :draw_labels, type: :boolean, default: true
+      property :should_draw_labels, type: :boolean, default: true
 
       # @attribute
       # For actors that have no bounds, like sound or custom models without
@@ -39,45 +39,40 @@ module Metro
       #
       # @todo when enabled the boundless actors should be presented in a cleaner
       #   way to allow for easier viewing of them.
-      property :hide_boundless_actors, type: :boolean, default: true
+      property :should_hide_boundless_actors, type: :boolean, default: true
+
+      # Store the labels that are being drawn in the scene. This hash of labels
+      # acts as a cache around the items that are being labeled based on the
+      # name of the objects that are being labeled.
+      def labels
+        @labels ||= {}
+      end
 
       def show
         self.saveable_to_view = false
       end
 
-      def draw
+      def update
         scene.drawers.each do |drawer|
-          next if (drawer.bounds == Bounds.none and hide_boundless_actors)
-          draw_label(drawer) if draw_labels
-          draw_bounding_box(drawer.bounds) if draw_bounding_boxes
+          next if (drawer.bounds == Bounds.none and should_hide_boundless_actors)
+          label = labels[drawer.name]
+
+          unless label
+            label = create "metro::ui::modellabel", target: drawer
+            labels[drawer.name] = label
+          end
+
+          label.should_draw_label = should_draw_labels
+          label.should_draw_bounding_box = should_draw_bounding_boxes
+          label.bounds = drawer.bounds
         end
+
       end
 
-      def draw_label(drawer)
-        bounds = drawer.bounds
-        z_order = drawer.respond_to?(:z_order) ? drawer.z_order + 2 : 0
-
-        label = create "metro::ui::label", font: font, text: drawer.name,
-          position: bounds.top_left + Point.at(4,2,z_order)
-
-        label.draw
-        draw_quad_behind(label)
+      def draw
+        labels.values.each { |label| label.draw }
       end
 
-      def draw_quad_behind(drawer)
-        quad = create "metro::ui::rectangle",
-          position: drawer.position - Point.at(2,0,1),
-          color: color, dimensions: drawer.dimensions + Dimensions.of(6,4)
-
-        quad.draw
-      end
-
-      def draw_bounding_box(bounds)
-        box = create "metro::ui::border", position: bounds.top_left,
-          dimensions: bounds.dimensions, color: color
-
-        box.draw
-      end
     end
 
   end
