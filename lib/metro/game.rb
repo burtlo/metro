@@ -32,10 +32,10 @@ module Metro
     attr_reader :window
 
     #
-    # @return [Scene,NilClass] the current scene that is being displayed. If 
+    # @return [Scene,NilClass] the current scene that is being displayed. If
     #   this is called before the window is being displayed when this will return
     #   a nil value.
-    # 
+    #
     def current_scene
       window ? window.scene : nil
     end
@@ -53,7 +53,7 @@ module Metro
     end
 
     def dimensions
-      [ width, height ]
+      Units::Dimensions.of width, height
     end
 
     def center
