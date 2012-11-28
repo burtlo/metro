@@ -77,6 +77,12 @@ module Metro
     property :name, type: :text
 
     #
+    # @return [TrueClass,FalseClass] true if the model should be saved to the
+    #   view file, false when the model should not be savedable to the view file.
+    #
+    property :saveable_to_view, type: :boolean, default: true
+
+    #
     # The window that this model that this window is currently being
     # displayed.
     #
@@ -128,10 +134,6 @@ module Metro
       mc.scene = scene
       mc.window = window
       mc
-    end
-
-    def saveable?
-      true
     end
 
     #
@@ -238,5 +240,6 @@ require_relative 'ui/menu'
 require_relative 'ui/image'
 require_relative 'ui/rectangle'
 require_relative 'ui/grid_drawer'
+require_relative 'ui/border'
 require_relative 'ui/model_labeler'
 require_relative 'audio/song'

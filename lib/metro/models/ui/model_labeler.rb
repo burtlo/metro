@@ -10,14 +10,18 @@ module Metro
 
       property :draw_labels, type: :boolean, default: true
       property :draw_bounding_boxes, type: :boolean, default: true
+
       property :hide_boundless_actors, type: :boolean, default: true
 
+      def show
+        self.saveable_to_view = false
+      end
 
       def draw
         scene.drawers.each do |drawer|
           next if (drawer.bounds == Bounds.none and hide_boundless_actors)
           draw_label(drawer) if draw_labels
-          draw_bounding_box(drawer) if draw_bounding_boxes
+          draw_bounding_box(drawer.bounds) if draw_bounding_boxes
         end
       end
 
@@ -26,27 +30,25 @@ module Metro
         z_order = drawer.respond_to?(:z_order) ? drawer.z_order + 1 : 0
 
         label = create "metro::ui::label", font: font, text: drawer.name,
-          position: bounds.top_left + Point.at(4,0,z_order + 1)
+          position: bounds.top_left + Point.at(4,2,z_order)
 
-        draw_quad(label)
+        draw_quad_behind(label)
         label.draw
       end
 
-      def draw_quad(label)
-        bounds = label.bounds
-        window.draw_quad(bounds.left - 4,bounds.top,color,
-          bounds.right + 4,bounds.top,color,
-          bounds.right + 4,bounds.bottom + 2,color,
-          bounds.left - 4,bounds.bottom + 2,color,
-          z_order)
+      def draw_quad_behind(drawer)
+        quad = create "metro::ui::rectangle",
+          position: drawer.position - Point.at(4,0) + Point.at(2,0,-2),
+          color: color, dimensions: drawer.dimensions + Dimensions.of(6,4)
+
+        quad.draw
       end
 
-      def draw_bounding_box(drawer)
-        bounds = drawer.bounds
-        window.draw_line bounds.left, bounds.top, color, bounds.right, bounds.top, color, 0
-        window.draw_line bounds.right, bounds.top, color, bounds.right, bounds.bottom, color, 0
-        window.draw_line bounds.right, bounds.bottom, color, bounds.left, bounds.bottom, color, 0
-        window.draw_line bounds.left, bounds.bottom, color, bounds.left, bounds.top, color, 0
+      def draw_bounding_box(bounds)
+        box = create "metro::ui::border", position: bounds.top_left,
+          dimensions: bounds.dimensions, color: color
+
+        box.draw
       end
 
     end

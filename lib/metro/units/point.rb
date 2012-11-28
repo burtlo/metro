@@ -40,28 +40,27 @@ module Metro
       end
 
       #
-      # Add the point to another point-like structure. Anything that also has
-      # the methods x, y, and z.
+      # Add this point to another another point-like structure. A point like structure
+      # is anything has the methods x, y, and z.
       #
       # @return a new point which is the sum of the point and the provided value.
       #
       def +(value)
         raise "Unable to add point to #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
-        self.class.at((x + value.x),(y + value.y),(z + value.z))
+        self.class.at (x + value.x.to_f), (y + value.y.to_f), (z + value.z.to_f)
       end
 
       #
-      # Subtract the point to another point-like structure. Anything that also 
-      # has the methods x, y, and z.
+      # Subtract the point-like structure from this point. A point like structure
+      # is anything has the methods x, y, and z.
       #
-      # @return a new point which is the difference of the point and the 
+      # @return a new point which is the difference of the point and the
       #   provided value.
       #
       def -(value)
-        raise "Unable to subtract point to #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
-        self.class.at((x - value.x),(y - value.y),(z - value.z))
+        raise "Unable to subtract from this point with #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
+        self.class.at (x - value.x.to_f), (y - value.y.to_f), (z - value.z.to_f)
       end
-
 
     end
   end

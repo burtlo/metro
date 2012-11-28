@@ -41,6 +41,10 @@ module Metro
         Point.at(left,bottom)
       end
 
+      def dimensions
+        Dimensions.of (right - left), (bottom - top)
+      end
+
       def ==(value)
         return if [ :left, :right, :top, :bottom ].find { |method| ! value.respond_to?(method) }
         left == value.left and right == value.right and top == value.top and bottom == value.bottom

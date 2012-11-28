@@ -23,12 +23,8 @@ module Metro
         Dimensions.of Game.width, Game.height
       end
 
-      def bounds
-        Bounds.none
-      end
-
-      def saveable?
-        false
+      def show
+        self.saveable_to_view = false
       end
 
       def draw

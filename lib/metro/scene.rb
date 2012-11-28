@@ -513,7 +513,7 @@ module Metro
     # @return a hash of all the drawers
     #
     def to_hash
-      drawn = drawers.find_all{|draw| draw.saveable? }.inject({}) do |hash,drawer|
+      drawn = drawers.find_all{|draw| draw.saveable_to_view }.inject({}) do |hash,drawer|
         drawer_hash = drawer.to_hash
         hash.merge drawer_hash
       end
