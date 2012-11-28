@@ -68,12 +68,15 @@ module Metro
       end
 
       def default_dimensions
-        if block
-          model.instance_eval(&block)
-        else
-          Dimensions.parse options[:default].to_s
-        end
+        Dimensions.parse default_dimensions_params.to_s
       end
+      
+      private
+      
+      def default_dimensions_params
+        block ? model.instance_eval(&block) : options[:default]
+      end
+      
 
     end
 
