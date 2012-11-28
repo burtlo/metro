@@ -70,10 +70,8 @@ module Metro
       def default_dimensions
         if block
           model.instance_eval(&block)
-        elsif options[:default] and options[:default].is_a? Dimensions
-          options[:default]
         else
-          Dimensions.none
+          Dimensions.parse options[:default].to_s
         end
       end
 

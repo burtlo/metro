@@ -19,7 +19,7 @@ module Metro
       # two attributes width and height.
       #
       def self.parse(string)
-        of *string.split(",",2).map(&:to_f)
+        of *string.to_s.split(",",2).map(&:to_f)
       end
 
 
@@ -28,7 +28,7 @@ module Metro
       # will enforce that the values added are converted to floating
       # point numbers.
       #
-      def self.of(width,height)
+      def self.of(width=0.0,height=0.0)
         new width.to_f, height.to_f
       end
 

@@ -94,7 +94,11 @@ module Metro
       end
 
       def default_dimensions
-        options[:dimensions] or Dimensions.of(16.0,16.0)
+        if options[:dimensions]
+          Dimensions.parse options[:dimensions]
+        else
+          Dimensions.of 16.0, 16.0
+        end
       end
 
       def default_time_per_image
