@@ -2,6 +2,19 @@ require_relative '../events/hit_list'
 
 module Metro
 
+  #
+  # The Edit Transition Scene is place where scenes go to be edited. Any scene
+  # can transition into edit mode. This scene will copy all the actors and
+  # gain access to the view.
+  #
+  # This scene grants new keyboard commands that will enable, disable, and
+  # toggle feature of edit mode:
+  #
+  # * `e` will end edit mode
+  # * `g` will toggle the display of the grid
+  # * `l` will toggle the display of the model labels
+  # * `b` will toggle the bounding boxes around the models.
+  #
   class EditTransitionScene < Metro::TransitionScene
 
     def initialize
@@ -47,6 +60,14 @@ module Metro
 
     event :on_up, KbG do
       overlay.enabled = !overlay.enabled
+    end
+
+    event :on_up, KbL do
+      labeler.draw_labels = !labeler.draw_labels
+    end
+
+    event :on_up, KbB do
+      labeler.draw_bounding_boxes = !labeler.draw_bounding_boxes
     end
 
     #

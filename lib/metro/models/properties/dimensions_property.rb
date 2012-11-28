@@ -70,13 +70,13 @@ module Metro
       def default_dimensions
         Dimensions.parse default_dimensions_params.to_s
       end
-      
+
       private
-      
+
       def default_dimensions_params
         block ? model.instance_eval(&block) : options[:default]
       end
-      
+
 
     end
 
