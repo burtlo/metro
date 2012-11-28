@@ -18,7 +18,14 @@ module Metro
     #
     class Generic < Model
 
-      attr_accessor :warned
+      # @attribute
+      # Sets whether the generic model has warned the user in the logs about it
+      # being a generic model.
+      property :warned, type: :boolean, default: false
+
+      def show
+        self.saveable_to_view = false
+      end
 
       def draw
         log.warn cannot_draw_message unless warned

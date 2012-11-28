@@ -15,19 +15,40 @@ module Metro
     #
     class Label < Model
 
+      # @attribute
+      # The position of the label
       property :position
 
+      # @attribute
+      # The scale of the text
       property :scale, default: Scale.one
 
+      # @attribute
+      # The text color
       property :color, default: "rgba(255,255,255,1.0)"
 
+      # @attribute
+      # The font to use for the label text
       property :font, default: { size: 20 }
 
+      # @attribute
+      # The text to appear on the label
       property :text
 
+      # @attribute
+      # The alignment for the label. This influences where the text draws in
+      # relation to the specified position. Your choices are 'left', 'center', 
+      # and 'right'. The default is 'left'.
       property :align, type: :text, default: "left"
+
+      # @attribute
+      # The vertical alignment for the label. This influences where the text
+      # draws in relation to the specified position. Your choices are 'top',
+      # 'center', and 'bottom'. This default is 'top'
       property :vertical_align, type: :text, default: "top"
 
+      # @attribute
+      # The dimensions of label
       property :dimensions do
         Dimensions.of (longest_line * x_factor), (line_height * line_count * y_factor)
       end

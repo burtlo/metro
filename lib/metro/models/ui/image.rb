@@ -13,19 +13,41 @@ module Metro
     #
     class Image < Model
 
+      # @attribute
+      # The position of the image
       property :position
 
+      # @attribute
+      # The scale of the image
       property :scale, default: Scale.one
 
+      # @attribute
+      # The color of the image, by default this is white to display the image
+      # as normal, but this can be used to augment the look of the image. Mostly
+      # color is use for the sub-property :alpha which allows an image to be
+      # faded-in and faded-out
       property :color
 
+      # @attribute
+      # The angle at which to draw the image
       property :angle, type: :numeric, default: 0
 
+      # @attribute
+      # The center x position of the image as expressed in a scale of from left
+      # to right (0.0 to 1.0).
       property :center_x, type: :numeric, default: 0.5
+
+      # @attribute
+      # The center y position of the image as expressed in a scale of from top
+      # to bottom (0.0 to 1.0).
       property :center_y, type: :numeric, default: 0.5
 
+      # @attribute
+      # The image asset to draw.
       property :image
 
+      # @attribute
+      # The dimensions of the image.
       property :dimensions do
         image.dimensions
       end

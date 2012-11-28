@@ -7,9 +7,20 @@ module Metro
     #
     class Border < Metro::Model
 
+      # @attribute
+      # The starting position of the border.
       property :position
+
+      # @attribute
+      # The dimension of the border.
       property :dimensions
-      property :color, default: "rgba(255,255,255,0.5)"
+
+      # @attribute
+      # The color which to use to draw the border.
+      property :color, default: "rgba(255,255,255,1.0)"
+
+      # @attribute
+      # The width of the border lines
       property :border, default: 2
 
       def draw

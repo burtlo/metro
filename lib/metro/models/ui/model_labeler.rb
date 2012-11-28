@@ -1,16 +1,44 @@
 module Metro
   module UI
 
+    #
+    # The model labeler will draw a bounding box and label around all the
+    # scene's drawers.
+    #
+    # The model labeler is used in the edit transition scene to generate
+    # the bounding boxes and labeles around all the actors within the scene
+    # being edited.
+    #
     class ModelLabeler < Metro::Model
 
+      # @attribute
+      # The color use for the border surrounding each actor and the background
+      # behind the model's name.
       property :color, default: "rgba(255,0,0,0.5)"
-      property :label_color, default: "rgba(255,255,255,1.0)"
-      property :font, default: { name: 'Arial', size: 16 }
-      property :position, default: Point.zero
 
-      property :draw_labels, type: :boolean, default: true
+      # @attribute
+      # Sets whether to draw the bounding boxes around the actors.
       property :draw_bounding_boxes, type: :boolean, default: true
 
+      # @attribute
+      # The color of the model name text.
+      property :label_color, default: "rgba(255,255,255,1.0)"
+
+      # @attribute
+      # The font of the model name label.
+      property :font, default: { name: 'Arial', size: 16 }
+
+      # @attribute
+      # Sets whether to draw the model name labels
+      property :draw_labels, type: :boolean, default: true
+
+      # @attribute
+      # For actors that have no bounds, like sound or custom models without
+      # a position, they are normally hidden but can be shown. Currently they
+      # appear all overlapped in the upper-left corner of the screen.
+      #
+      # @todo when enabled the boundless actors should be presented in a cleaner
+      #   way to allow for easier viewing of them.
       property :hide_boundless_actors, type: :boolean, default: true
 
       def show
@@ -32,8 +60,8 @@ module Metro
         label = create "metro::ui::label", font: font, text: drawer.name,
           position: bounds.top_left + Point.at(4,2,z_order)
 
-        draw_quad_behind(label)
         label.draw
+        draw_quad_behind(label)
       end
 
       def draw_quad_behind(drawer)
@@ -50,9 +78,7 @@ module Metro
 
         box.draw
       end
-
     end
-
 
   end
 end

@@ -14,10 +14,16 @@ module Metro
     #
     class Rectangle < ::Metro::Model
 
+      # @attribute
+      # The position of the upper-left corner of the rectangle
       property :position
 
+      # @attribute
+      # The color to rectangle
       property :color
 
+      # @attribute
+      # The dimensions of the rectangle
       property :dimensions do
         window.dimensions
       end

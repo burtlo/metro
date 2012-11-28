@@ -15,10 +15,20 @@ module Metro
     #
     class GridDrawer < Model
 
+      # @attribute
+      # The position to start drawing the grid
       property :position, default: Point.at(0,0,100)
+
+      # @attribute
+      # The color of the grid lines
       property :color, default: "rgba(255,255,255,0.1)"
+
+      # @attribute
+      # The interval which to draw the lines
       property :spacing, type: :numeric, default: 10
 
+      # @attribute
+      # The dimension of the grid
       property :dimensions do
         Dimensions.of Game.width, Game.height
       end

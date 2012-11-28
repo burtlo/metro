@@ -56,20 +56,42 @@ module Metro
     #
     class Menu < Model
 
+      # @attribute
+      # The position of the menu
       property :position, default: Game.center
+
+      # @attribute
+      # The alpha level of the menu from 0 to 255.
       property :alpha, default: 255
 
+      # @attribute
+      # The scale at which the menu should be drawn.
       property :scale, default: Scale.one
 
+      # @attribute
+      # The distance between each of the menu items
       property :padding, default: 20
 
+      # @attribute
+      # The dimensions of the menu. This is based on the items within the
+      # menu.
       property :dimensions do
         Dimensions.of (right_x - left_x), (bottom_y - top_y)
       end
 
+      # @attribute
+      # The options that are displayed in the menu. These are by default
+      # 'metro::ui::labels' But can be defined more dynamically as neeeded.
+      #
+      # @see Metro::Model::Property::OptionsProperty
       property :options
 
+      # @attribute
+      # The color for all the currently unselected items.
       property :unselected_color, type: :color, default: "rgba(119,119,119,1.0)"
+
+      # @attribute
+      # The color of the item that currently has focus.
       property :selected_color, type: :color, default: "rgba(255,255,255,1.0)"
 
       def alpha_changed(alpha)
@@ -82,12 +104,21 @@ module Metro
         self.unselected_color_alpha = alpha
       end
 
+      # @attribute
+      # The sample sound that plays when a selection has been made.
       property :selection_sample, type: :sample, path: "menu-selection.wav"
+
+      # @attribute
+      # The sample sound when moving between the different options in the menu.
       property :movement_sample, type: :sample, path: "menu-movement.wav"
 
+      # @attribute
+      # Determines whether the menu is currently enabled or disabled.
       property :enabled, type: :boolean, default: true
 
-      # Allows the menu to be layouted out horizontal or vertical
+      # @attribute
+      # Allows the menu to be layouted out in a 'horizontal' or 'vertical'
+      # fashion. By default this is 'vertical'
       property :layout, type: :text, default: "vertical"
 
       def bounds
