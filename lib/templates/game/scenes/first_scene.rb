@@ -1,4 +1,8 @@
 class FirstScene < GameScene
+  
+  if Game.debug?
+    draw :fps, model: "metro::ui::fps", placement: 'bottom_right'
+  end
 
   draw :hero, position: Game.center
 
