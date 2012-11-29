@@ -50,6 +50,7 @@ module Metro
     end
 
     def offset_from_last_event(event)
+      return Point.zero unless @last_event
       Metro::Units::Point.at (event.mouse_x - @last_event.mouse_x).to_i, (event.mouse_y - @last_event.mouse_y).to_i
     end
 
