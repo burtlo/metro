@@ -18,7 +18,7 @@ module Metro
            top_right:    { position: Game.bounds.top_right, align: 'right', vertical_align: 'top' },
            right:        { position: Point.at(Game.bounds.right, Game.center.y), align: 'right', vertical_align: 'center' },
            bottom_right: { position: Game.bounds.bottom_right, align: 'right', vertical_align: 'bottom' },
-           bottom:       { position: Point.at(Game.center.y, Game.bounds.bottom), align: 'right', vertical_align: 'bottom' },
+           bottom:       { position: Point.at(Game.center.x, Game.bounds.bottom), align: 'right', vertical_align: 'bottom' },
            bottom_left:  { position: Game.bounds.bottom_right, align: 'left', vertical_align: 'bottom' },
            left:         { position: Point.at(Game.bounds.left, Game.center.y), align: 'left', vertical_align: 'center' }
           }
