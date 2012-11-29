@@ -52,6 +52,10 @@ module Metro
       fetch(:height,480)
     end
 
+    def bounds
+      Units::RectangleBounds.new left: 0, right: width, top: 0, bottom: height
+    end
+
     def dimensions
       Units::Dimensions.of width, height
     end
