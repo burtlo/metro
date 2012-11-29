@@ -1,5 +1,14 @@
 # Metro
 
+## 0.3.3 / 2012-11-28
+
+* Edit Mode - actors within a scene can have their position edited
+  and saved. Actors within the scene that have a valid bounds
+  specified will appear within the scene with name and bounding box.
+* Dimensions can now be defined as strings
+* Game bounds and Game dimensions return objects of that type
+* `metr::ui::fps` added and has some shortcut placements settings
+
 ## 0.3.2 / 2012-11-26
 
 * Debug Mode will now automatically reload the game and scene on source
