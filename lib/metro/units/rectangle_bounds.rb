@@ -5,9 +5,7 @@ module Metro
     # An object that represents a rectanglar bounds.
     #
     class RectangleBounds
-
-      # Allow the ability to refer to the min, max values with their
-      # other alternate names.
+      include CalculationValidations
 
       attr_accessor :left, :right, :top, :bottom
 
@@ -46,7 +44,7 @@ module Metro
       end
 
       def ==(value)
-        return if [ :left, :right, :top, :bottom ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         left == value.left and right == value.right and top == value.top and bottom == value.bottom
       end
 
@@ -66,6 +64,12 @@ module Metro
 
       def to_s
         "(#{left},#{top}) to (#{right},#{bottom})"
+      end
+
+      private
+
+      def calculation_requirements
+        [ :left, :right, :top, :bottom ]
       end
 
     end

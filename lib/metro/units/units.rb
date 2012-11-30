@@ -1,3 +1,4 @@
+require_relative 'calculation_validations'
 require_relative 'point'
 require_relative 'dimensions'
 require_relative 'scale'

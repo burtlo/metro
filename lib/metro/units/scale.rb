@@ -5,6 +5,7 @@ module Metro
     # Represents an object that contains the x scale factor, and y scale factor.
     #
     class Scale < Struct.new(:x_factor,:y_factor)
+      include CalculationValidations
 
       #
       # Create a scale that is 1:1.
@@ -32,6 +33,12 @@ module Metro
 
       def to_s
         "#{x_factor},#{y_factor}"
+      end
+
+      private
+
+      def calculation_requirements
+        [ :x_factor, :y_factor ]
       end
 
     end

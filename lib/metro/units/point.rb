@@ -5,6 +5,7 @@ module Metro
     # Represents and object that contains the x, y, and z position.
     #
     class Point < Struct.new(:x,:y,:z)
+      include CalculationValidations
 
       #
       # Generate a point at 0,0,0.
@@ -18,7 +19,7 @@ module Metro
       # all inputs to floating point and assumes that the z-value is
       # zero (as this is a 2D universe).
       #
-      def self.at(x,y,z=0.0)
+      def self.at(x=0.0,y=0.0,z=0.0)
         new x.to_f, y.to_f, z.to_f
       end
 
@@ -46,7 +47,7 @@ module Metro
       # @return a new point which is the sum of the point and the provided value.
       #
       def +(value)
-        raise "Unable to add point to #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         self.class.at (x + value.x.to_f), (y + value.y.to_f), (z + value.z.to_f)
       end
 
@@ -58,8 +59,14 @@ module Metro
       #   provided value.
       #
       def -(value)
-        raise "Unable to subtract from this point with #{value} #{value.class}" if [ :x, :y, :z ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         self.class.at (x - value.x.to_f), (y - value.y.to_f), (z - value.z.to_f)
+      end
+
+      private
+
+      def calculation_requirements
+        [ :x, :y, :z ]
       end
 
     end

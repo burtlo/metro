@@ -5,6 +5,7 @@ module Metro
     # Represents an object that contains both the width and height.
     #
     class Dimensions < Struct.new(:width,:height)
+      include CalculationValidations
 
       #
       # Create a dimensions objects with zero width and zero height.
@@ -43,7 +44,7 @@ module Metro
       # @return a new dimensions which is the sum of the two dimensions
       #
       def +(value)
-        raise "Unable to add dimension to #{value} #{value.class}" if [ :width, :height ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         self.class.of (width + value.width.to_f), (height + value.height.to_f)
       end
 
@@ -54,13 +55,26 @@ module Metro
       # @return a new dimensions which is the different of the two dimensions
       #
       def -(value)
-        raise "Unable to subtract from these dimensions with #{value} #{value.class}" if [ :width, :height ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         self.class.of (width - value.width.to_f), (height - value.height.to_f)
       end
 
+      #
+      # Compare the dimension to another dimensions-like structure.
+      #
+      # @return [Fixnum] -1 if the dimensions is smaller than the other dimension,
+      #   0 if the dimensions are exactly the same, 1 if the dimensions are bigger
+      #   then the other dimensions.
+      #
       def <=>(value)
-        raise "Unable to subtract from these dimensions with #{value} #{value.class}" if [ :width, :height ].find { |method| ! value.respond_to?(method) }
+        check_calculation_requirements(value)
         (width * height) <=> (value.width * value.height)
+      end
+
+      private
+
+      def calculation_requirements
+        [ :width, :height ]
       end
 
     end
