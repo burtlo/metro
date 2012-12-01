@@ -8,6 +8,10 @@ module Metro
     #
     class ReloadGameOnGameFileChanges
 
+      def watched_filepaths
+        source_filepaths + view_filepaths + asset_filepaths
+      end
+
       #
       # @NOTE this is duplication of the paths is also defined in LoadGameFiles.
       # @see Metro::SetupHandlers::LoadGameFiles
@@ -24,21 +28,17 @@ module Metro
         [ 'assets' ]
       end
 
-      def all_filepaths
-        source_filepaths + view_filepaths + asset_filepaths
-      end
-
       #
       # @param [Metro::Parameters::Options] options the options that the game
       #   was provided when it was launched.
       #
       def setup(options)
-        start_watcher if Game.debug?
+        start_watcher if Game.debug? and not options.packaged?
       end
 
       def start_watcher
         Thread.abort_on_exception = true
-        Thread.new { watch_filepaths(all_filepaths) }
+        Thread.new { watch_filepaths(watched_filepaths) }
       end
 
       #
