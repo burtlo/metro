@@ -29,7 +29,7 @@ module Metro
       # either "x,y" or "x,y,z".
       #
       def self.parse(string)
-        at *string.split(",",3).map(&:to_f)
+        at *string.to_s.split(",",3).map(&:to_f)
       end
 
       # As this is a 2D world, the Z is often refered to as a the z-ordering
