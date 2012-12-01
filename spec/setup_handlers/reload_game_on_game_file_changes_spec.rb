@@ -8,6 +8,7 @@ describe Metro::SetupHandlers::ReloadGameOnGameFileChanges do
 
   its(:watched_filepaths) { should eq expected_filepaths }
 
+
   describe "#setup" do
     context "when the game is not in debug mode" do
       before do
@@ -47,6 +48,20 @@ describe Metro::SetupHandlers::ReloadGameOnGameFileChanges do
         subject.should_receive(:start_watcher)
         subject.setup(options)
       end
+    end
+  end
+
+  describe "#reload_game_because_files_changed" do
+
+    before do
+      Metro.stub(:game_has_valid_code?).and_return(false)
+    end
+
+    let(:changed_files) { [ :new_file, :update_file, :deleted_file ] }
+
+    it "should not ask the current scene to reload if the code is invalid" do
+      Game.should_not_receive(:current_scene)
+      subject.reload_game_because_files_changed(changed_files)
     end
   end
 
