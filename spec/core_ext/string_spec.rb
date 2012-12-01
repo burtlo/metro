@@ -30,24 +30,4 @@ describe String do
       its(:underscore) { should eq expected_value }
     end
   end
-
-  describe "#classify" do
-    context "when given a regular string" do
-      subject { "string" }
-      let(:expected_value) { "String" }
-      its(:classify) { should eq expected_value }
-    end
-
-    context "when given a underscored string" do
-      subject { "camel_cased" }
-      let(:expected_value) { "CamelCased" }
-      its(:classify) { should eq expected_value }
-    end
-
-    context "when given a partial camel_CasedString" do
-      subject { "camel_CasedString" }
-      let(:expected_value) { "CamelCasedString" }
-      its(:classify) { should eq expected_value }
-    end
-  end
 end
