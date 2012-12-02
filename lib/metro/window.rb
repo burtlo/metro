@@ -13,6 +13,10 @@ module Metro
     #
     attr_accessor :scene
 
+    def state
+      scene.state
+    end
+
     #
     # @param [Fixnum] width the width of the game window
     # @param [Fixnum] height the height of the game window
@@ -32,7 +36,7 @@ module Metro
     # This is called every update interval while the window is being shown.
     #
     def update
-      scene.fire_events_for_held_buttons
+      state.fire_events_for_held_buttons
       scene.base_update
     end
 
@@ -49,7 +53,7 @@ module Metro
     # has focus.
     #
     def button_up(id)
-      scene.button_up(id)
+      state.fire_button_up(id)
     end
 
     #
@@ -57,7 +61,7 @@ module Metro
     # has focus.
     #
     def button_down(id)
-      scene.button_down(id)
+      state.fire_button_down(id)
     end
 
     #

@@ -1,9 +1,5 @@
 require_relative 'views/scene_view'
-
-require_relative 'events/has_events'
-require_relative 'events/event_relay'
-require_relative 'events/unknown_sender'
-
+require_relative 'events/events'
 require_relative 'models/draws'
 
 require_relative 'animation/has_animations'
@@ -19,7 +15,6 @@ module Metro
   # @see #show
   # @see #update
   # @see #draw
-  # @see #events
   #
   # A fair number of private methods within Scene are prefaced with an underscore.
   # These methods often call non-underscored methods within those methods. This allows
@@ -102,16 +97,12 @@ module Metro
     end
 
     #
-    # Post a custom notification event. This will trigger any objects that are listening
-    # for custom events.
+    # Post a custom notification event. This will trigger an event for all the
+    # objects that are registered for notification with the current state.
     #
     def notification(event,sender=nil)
-
       sender = sender || UnknownSender
-
-      event_relays.each do |relay|
-        relay.fire_events_for_notification(event,sender)
-      end
+      state.fire_events_for_notification(event,sender)
     end
 
     #
@@ -203,7 +194,8 @@ module Metro
     def window=(window)
       @window = window
 
-      event_relays.clear
+      state.window = window
+      state.clear
 
       register_events!
       register_actors!
@@ -455,57 +447,19 @@ module Metro
     #   be mapped to the specified target.
     #
     def register_events_for_target(target,events)
-      target_relay = EventRelay.new(target,window)
-
-      events.each do |target_event|
-        target_relay.send target_event.event, *target_event.buttons, &target_event.block
-      end
-
-      event_relays.push(target_relay)
+      state.add_events_for_target(target,events)
     end
 
     #
-    # The events object that is configured through the {#events} method, which stores
-    # all the gamepad and keyboard events defined. By default a scene has an event
-    # relay defined. Additional relays can be defined based on the components added.
+    # The event state manager is configured through the {#events} method, which
+    # stores all the gamepad and keyboard events defined. By default a scene is
+    # placed in the default state and events that are added to this basic state.
     #
     # @see Events
-    # @see #add_event_relay
     #
-    def event_relays
-      @event_relays ||= []
+    def state
+      @event_state_manager ||= EventStateManager.new
     end
-
-    #
-    # This method is called during a scene update and will fire all the events
-    # that have been defined for all held buttons for all defined event relays.
-    #
-    def fire_events_for_held_buttons
-      event_relays.each do |relay|
-        relay.fire_events_for_held_buttons
-      end
-    end
-
-    #
-    # This method is called before a scene update and passes the button up events
-    # to each of the defined event relays.
-    #
-    def button_up(id)
-      event_relays.each do |relay|
-        relay.fire_button_up(id)
-      end
-    end
-
-    #
-    # This method is called before a scene update and passes the button down events
-    # to each of the defined event relays.
-    #
-    def button_down(id)
-      event_relays.each do |relay|
-        relay.fire_button_down(id)
-      end
-    end
-
 
     #
     # A Scene represented as a hash currently only contains the drawers
