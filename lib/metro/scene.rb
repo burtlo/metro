@@ -1,6 +1,7 @@
 require_relative 'views/scene_view'
 
 require_relative 'events/has_events'
+require_relative 'events/event_state_manager'
 require_relative 'events/event_relay'
 require_relative 'events/unknown_sender'
 
@@ -102,16 +103,12 @@ module Metro
     end
 
     #
-    # Post a custom notification event. This will trigger any objects that are listening
-    # for custom events.
+    # Post a custom notification event. This will trigger an event for all the
+    # objects that are registered for notification with the current state.
     #
     def notification(event,sender=nil)
-
       sender = sender || UnknownSender
-
-      event_relays.each do |relay|
-        relay.fire_events_for_notification(event,sender)
-      end
+      state.fire_events_for_notification(event,sender)
     end
 
     #
@@ -203,7 +200,7 @@ module Metro
     def window=(window)
       @window = window
 
-      event_relays.clear
+      state.clear
 
       register_events!
       register_actors!
@@ -461,49 +458,42 @@ module Metro
         target_relay.send target_event.event, *target_event.buttons, &target_event.block
       end
 
-      event_relays.push(target_relay)
+      state.push(target_relay)
     end
 
     #
-    # The events object that is configured through the {#events} method, which stores
-    # all the gamepad and keyboard events defined. By default a scene has an event
-    # relay defined. Additional relays can be defined based on the components added.
+    # The event state manager is configured through the {#events} method, which
+    # stores all the gamepad and keyboard events defined. By default a scene is
+    # placed in the default state and events that are added to this basic state.
     #
     # @see Events
-    # @see #add_event_relay
     #
-    def event_relays
-      @event_relays ||= []
+    def state
+      @event_state_manager ||= EventStateManager.new
     end
 
     #
     # This method is called during a scene update and will fire all the events
-    # that have been defined for all held buttons for all defined event relays.
+    # that have been defined for all held buttons for the current event state.
     #
     def fire_events_for_held_buttons
-      event_relays.each do |relay|
-        relay.fire_events_for_held_buttons
-      end
+      state.fire_events_for_held_buttons
     end
 
     #
     # This method is called before a scene update and passes the button up events
-    # to each of the defined event relays.
+    # to the current event state.
     #
     def button_up(id)
-      event_relays.each do |relay|
-        relay.fire_button_up(id)
-      end
+      state.fire_button_up(id)
     end
 
     #
-    # This method is called before a scene update and passes the button down events
-    # to each of the defined event relays.
+    # This method is called before a scene update and passes the button down
+    # events to the current event state.
     #
     def button_down(id)
-      event_relays.each do |relay|
-        relay.fire_button_down(id)
-      end
+      state.fire_button_down(id)
     end
 
 
