@@ -1,9 +1,5 @@
 require_relative 'views/scene_view'
-
-require_relative 'events/has_events'
-require_relative 'events/event_state_manager'
-require_relative 'events/unknown_sender'
-
+require_relative 'events/events'
 require_relative 'models/draws'
 
 require_relative 'animation/has_animations'
