@@ -81,7 +81,7 @@ module Metro
       end
 
       def default_point
-        (options[:default] and options[:default].is_a? Point) ? options[:default] : Point.zero
+        Point.parse(options[:default])
       end
 
     end
