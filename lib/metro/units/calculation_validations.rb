@@ -21,6 +21,26 @@ module Metro
         []
       end
 
+      #
+      # This generic method will perform the calculation defined by the
+      # operation for all the calculation requirements defined.
+      #
+      # @param [value] value this is the other value that is being added,
+      #   subtracted, etc. to the current object.
+      # @param [Symbol] operation this is the mathematical operation that
+      #   is being performed between all the calc requirements of the current
+      #   object and other value.
+      #
+      # @return [Array] an array of reults from the calculations of all the
+      #   requirements.
+      #
+      def calculate(value,operation)
+        check_calculation_requirements(value)
+        calculation_requirements.map do |requirement|
+          send(requirement).send(operation,value.send(requirement))
+        end
+      end
+
     end
   end
 end

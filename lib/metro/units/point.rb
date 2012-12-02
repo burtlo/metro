@@ -47,8 +47,7 @@ module Metro
       # @return a new point which is the sum of the point and the provided value.
       #
       def +(value)
-        check_calculation_requirements(value)
-        self.class.at (x + value.x.to_f), (y + value.y.to_f), (z + value.z.to_f)
+        self.class.at *calculate(value,:+)
       end
 
       #
@@ -59,8 +58,7 @@ module Metro
       #   provided value.
       #
       def -(value)
-        check_calculation_requirements(value)
-        self.class.at (x - value.x.to_f), (y - value.y.to_f), (z - value.z.to_f)
+        self.class.at *calculate(value,:-)
       end
 
       private

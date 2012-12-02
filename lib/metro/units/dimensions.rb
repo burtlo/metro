@@ -44,8 +44,7 @@ module Metro
       # @return a new dimensions which is the sum of the two dimensions
       #
       def +(value)
-        check_calculation_requirements(value)
-        self.class.of (width + value.width.to_f), (height + value.height.to_f)
+        self.class.of *calculate(value,:+)
       end
 
       #
@@ -55,8 +54,7 @@ module Metro
       # @return a new dimensions which is the different of the two dimensions
       #
       def -(value)
-        check_calculation_requirements(value)
-        self.class.of (width - value.width.to_f), (height - value.height.to_f)
+        self.class.of *calculate(value,:-)
       end
 
       #
