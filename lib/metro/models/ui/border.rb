@@ -35,32 +35,58 @@ module Metro
       end
 
       def draw_top
-        window.draw_quad(x + border,y,color,
-          width + x,y,color,
-          x + width,y + border,color,
-          x + border,y + border,color,z_order)
+        draw_line left_with_border, top, right, top_with_border
       end
 
       def draw_left
-        window.draw_quad(x,y,color,
-          border + x,y,color,
-          x + border,y + border + height,color,
-          x,y + border + height,color,z_order)
+        draw_line left, top, left_with_border, bottom_with_border
       end
 
       def draw_right
-        window.draw_quad(x + width,y,color,
-          x + width + border,y,color,
-          x + width + border,y + border + height,color,
-          x + width,y + border + height,color,z_order)
-
+        draw_line right, top, right_with_border, bottom_with_border
       end
 
       def draw_bottom
-        window.draw_quad(x + border,y + height,color,
-          width + x,y + height,color,
-          x + width,y + border + height,color,
-          x + border,y + border + height,color,z_order)
+        draw_line left_with_border, bottom, right,bottom_with_border
+      end
+
+      def draw_line(start_x,start_y,finish_x,finish_y)
+        window.draw_quad start_x, start_y, color,
+          finish_x, start_y, color,
+          finish_x, finish_y, color,
+          start_x, finish_y, color, z_order
+      end
+
+      def left
+        x
+      end
+
+      def left_with_border
+        x + border
+      end
+
+      def right
+        x + width
+      end
+
+      def right_with_border
+        right + border
+      end
+
+      def top
+        y
+      end
+
+      def top_with_border
+        top + border
+      end
+
+      def bottom
+        y + height
+      end
+
+      def bottom_with_border
+        bottom + border
       end
 
     end
