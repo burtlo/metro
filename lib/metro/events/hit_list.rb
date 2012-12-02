@@ -10,7 +10,6 @@ module Metro
   #     hit_list.update(next_event)
   #     hit_list.release(last_event)
   #
-  #
   # @see EditTransitionScene
   #
   class HitList
