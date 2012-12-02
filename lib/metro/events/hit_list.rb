@@ -22,7 +22,7 @@ module Metro
     attr_reader :drawers
 
     def hit(event)
-      add drawers_at(event.mouse_x,event.mouse_y)
+      add drawers_at(event.mouse_point)
       save_event event
     end
 
@@ -41,8 +41,8 @@ module Metro
       clear
     end
 
-    def drawers_at(x,y)
-      hit_drawers = drawers.find_all { |drawer| drawer.bounds.contains?(x,y) }
+    def drawers_at(point)
+      hit_drawers = drawers.find_all { |drawer| drawer.bounds.contains?(point) }
 
       # assumed that we only want one item
       top_drawer = hit_drawers.inject(hit_drawers.first) {|top,drawer| drawer.z_order > top.z_order ? drawer : top }
@@ -51,7 +51,7 @@ module Metro
 
     def offset_from_last_event(event)
       return Point.zero unless @last_event
-      Metro::Units::Point.at (event.mouse_x - @last_event.mouse_x).to_i, (event.mouse_y - @last_event.mouse_y).to_i
+      event.mouse_point - @last_event.mouse_point
     end
 
     def save_event(event)

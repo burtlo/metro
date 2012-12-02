@@ -51,8 +51,8 @@ module Metro
       #
       # Does this bounds contain the following point?
       #
-      def contains?(x,y)
-        x > left and x < right and y > top and y < bottom
+      def contains?(point)
+        point.x > left and point.x < right and point.y > top and point.y < bottom
       end
 
       #

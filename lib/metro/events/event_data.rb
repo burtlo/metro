@@ -1,12 +1,11 @@
 module Metro
   class EventData
 
-    attr_reader :mouse_x, :mouse_y, :created_at
+    attr_reader :mouse_point, :created_at
 
     def initialize(window)
       @created_at = Time.now
-      @mouse_x = window.mouse_x
-      @mouse_y = window.mouse_y
+      @mouse_point = Metro::Units::Point.at window.mouse_x, window.mouse_y
 
       capture_modifier_keys(window)
     end
@@ -23,7 +22,7 @@ module Metro
 
     #
     # TODO: This attempt to reduce duplication is brittle and will likely end in heartache.
-    # 
+    #
 
     def self.modifier_key_list_names
       @modifier_key_list_names ||= %w[ KbLeftControl KbRightControl
