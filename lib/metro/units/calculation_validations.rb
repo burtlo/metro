@@ -22,6 +22,34 @@ module Metro
       end
 
       #
+      # Add this object to another object.
+      #
+      # @return a new object that is the sum of the two objects
+      #
+      def +(value)
+        self.class.new *calculate(value,:+)
+      end
+
+      #
+      # Subtract the other object from this object.
+      #
+      # @return a new object that is the difference of the original object
+      #   and the value specified.
+      #
+      def -(value)
+        self.class.new *calculate(value,:-)
+      end
+
+      #
+      # Multiply this object and another object.
+      #
+      # @return a new object that is the product of the two objects.
+      #
+      def *(value)
+        self.class.new *calculate(value,:*)
+      end
+
+      #
       # This generic method will perform the calculation defined by the
       # operation for all the calculation requirements defined.
       #

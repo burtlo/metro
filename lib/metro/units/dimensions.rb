@@ -38,26 +38,6 @@ module Metro
       end
 
       #
-      # Add the dimensions to another dimensions-like structure. A
-      # dimensions like structure is anything that responds to width and height.
-      #
-      # @return a new dimensions which is the sum of the two dimensions
-      #
-      def +(value)
-        self.class.of *calculate(value,:+)
-      end
-
-      #
-      # Subtract the dimensions-like structure from this dimension. A
-      # dimensions like structure is anything that responds to width and height.
-      #
-      # @return a new dimensions which is the different of the two dimensions
-      #
-      def -(value)
-        self.class.of *calculate(value,:-)
-      end
-
-      #
       # Compare the dimension to another dimensions-like structure.
       #
       # @return [Fixnum] -1 if the dimensions is smaller than the other dimension,

@@ -40,27 +40,6 @@ module Metro
         "#{x},#{y},#{z}"
       end
 
-      #
-      # Add this point to another another point-like structure. A point like structure
-      # is anything has the methods x, y, and z.
-      #
-      # @return a new point which is the sum of the point and the provided value.
-      #
-      def +(value)
-        self.class.at *calculate(value,:+)
-      end
-
-      #
-      # Subtract the point-like structure from this point. A point like structure
-      # is anything has the methods x, y, and z.
-      #
-      # @return a new point which is the difference of the point and the
-      #   provided value.
-      #
-      def -(value)
-        self.class.at *calculate(value,:-)
-      end
-
       private
 
       def calculation_requirements
