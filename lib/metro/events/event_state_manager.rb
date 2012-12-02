@@ -1,9 +1,13 @@
+require_relative 'event_relay'
+
 module Metro
 
   class EventStateManager
     def initialize
       @current_state = []
     end
+
+    attr_accessor :window
 
     attr_reader :current_state
 
@@ -45,7 +49,13 @@ module Metro
     #
     # An an event relay to the current game state
     #
-    def push(relay)
+    def add_events_for_target(target,events)
+      relay = EventRelay.new(target,window)
+
+      events.each do |target_event|
+        relay.send target_event.event, *target_event.buttons, &target_event.block
+      end
+
       current_state.push relay
     end
   end

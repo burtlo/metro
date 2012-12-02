@@ -2,7 +2,6 @@ require_relative 'views/scene_view'
 
 require_relative 'events/has_events'
 require_relative 'events/event_state_manager'
-require_relative 'events/event_relay'
 require_relative 'events/unknown_sender'
 
 require_relative 'models/draws'
@@ -199,6 +198,7 @@ module Metro
     def window=(window)
       @window = window
 
+      state.window = window
       state.clear
 
       register_events!
@@ -451,13 +451,7 @@ module Metro
     #   be mapped to the specified target.
     #
     def register_events_for_target(target,events)
-      target_relay = EventRelay.new(target,window)
-
-      events.each do |target_event|
-        target_relay.send target_event.event, *target_event.buttons, &target_event.block
-      end
-
-      state.push(target_relay)
+      state.add_events_for_target(target,events)
     end
 
     #
