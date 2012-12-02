@@ -35,9 +35,30 @@ module Metro
       private
 
       def cannot_draw_message
-        [ "Unable to draw #{name} in #{scene}", "",
-          "  The actor named '#{name}' does not specify a suitable model so it could not be drawn in the scene.",
-          "", "  " + properties.to_s, "" ].join("\n")
+        %{Unable to draw #{name} in #{scene}
+
+  The actor named '#{name}' does not specify a suitable model so it could not be drawn in the scene.
+
+  #{properties}
+
+  Did you mean to use one of the following models:
+
+  Models defined in #{Game.name}:
+
+  #{user_defined_models.join(', ')}
+
+  Models defined in Metro:
+
+  #{metro_models.join(', ')}
+}
+      end
+
+      def metro_models
+        Models.list.find_all {|m| m =~ /metro(::|\/).+(::|\/).+/i }
+      end
+
+      def user_defined_models
+        Models.list - metro_models
       end
 
     end

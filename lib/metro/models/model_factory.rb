@@ -26,7 +26,7 @@ module Metro
     end
 
     def class_for_actor(model_name)
-      Model.model(model_name).constantize
+      Models.find(model_name)
     end
   end
 end

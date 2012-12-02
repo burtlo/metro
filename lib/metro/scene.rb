@@ -327,11 +327,9 @@ module Metro
     #
     # Captures all classes that subclass Scene.
     #
-    # @see #self.scenes
-    #
     def self.inherited(base)
       scenes << base.to_s
-      Scenes.add_scene(base)
+      Scenes.add(base)
     end
 
     #

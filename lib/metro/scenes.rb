@@ -33,7 +33,7 @@ module Metro
     #
     # @param [Scene] scene the scene to be added to the hash of Scenes.
     #
-    def add_scene(scene)
+    def add(scene)
       all_scenes_for(scene).each { |scene| scenes_hash[scene.scene_name] = scene.to_s }
     end
 
@@ -44,7 +44,14 @@ module Metro
     # @return the Scene class that is found matching the specified scene name.
     #
     def find(scene_name)
-      scene_class( scenes_hash[scene_name] )
+      scenes_hash[scene_name].constantize
+    end
+
+    #
+    # @return [Array<String>] all the names supported by the scenes hash.
+    #
+    def list
+      scenes_hash.keys
     end
 
     #
@@ -119,7 +126,7 @@ module Metro
     #
     def hash_with_missing_scene_default
       hash = HashWithIndifferentAccess.new do |hash,key|
-        missing_scene = scene_class(hash[:missing_scene])
+        missing_scene = hash[:missing_scene].constantize
         missing_scene.missing_scene = key.to_sym
         missing_scene
       end
@@ -136,18 +143,9 @@ module Metro
     #
     def all_scenes_for(scenes)
       Array(scenes).map do |scene_class_name|
-        scene = scene_class(scene_class_name)
+        scene = scene_class_name.constantize
         [ scene ] + all_scenes_for(scene.scenes)
       end.flatten.compact
-    end
-
-    #
-    # @param [String,Symbol] class_name the name of the class that you want the class
-    #
-    # @return the class with the given class name
-    #
-    def scene_class(class_or_class_name)
-      class_or_class_name.class == Class ? class_or_class_name : class_or_class_name.constantize
     end
 
   end

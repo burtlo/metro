@@ -1,5 +1,6 @@
 require_relative 'key_value_coding'
 require_relative 'properties/property'
+require_relative 'models'
 
 module Metro
 
@@ -63,6 +64,11 @@ module Metro
     # @note This method should be implemented in the Model subclass.
     #
     def draw ; end
+
+    def self.model_name(model_name=nil)
+      @model_name ||= to_s.underscore
+      model_name ? @model_name = model_name.to_s : @model_name
+    end
 
     #
     # @return [String] the name of the model class.
@@ -129,7 +135,7 @@ module Metro
     #
     def create(model_name,options={})
       # @TODO: this is another path that parallels the ModelFactory
-      model_class = Metro::Model.model(model_name).constantize
+      model_class = Metro::Models.find(model_name)
       mc = model_class.new options
       mc.scene = scene
       mc.window = window
@@ -211,24 +217,16 @@ module Metro
     #
     # Captures all classes that subclass Model.
     #
-    # @see #self.models_hash
-    #
-    def self.inherited(model)
-      models_hash[model.to_s] = model.to_s
-      models_hash[model.to_s.downcase] = model.to_s
-      models_hash[model.to_s.underscore] = model.to_s
+    def self.inherited(base)
+      models << base.to_s
+      Models.add(base)
     end
 
     #
-    # Convert the specified model name into the class of the model.
+    # All subclasses of Model, this should be all the defined
     #
-    # @return the Model class given the specified model name.
-    def self.model(name)
-      models_hash[name]
-    end
-
-    def self.models_hash
-      @models_hash ||= HashWithIndifferentAccess.new("Metro::UI::Generic")
+    def self.models
+      @models ||= []
     end
 
   end
