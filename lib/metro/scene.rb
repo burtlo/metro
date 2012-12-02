@@ -20,7 +20,6 @@ module Metro
   # @see #show
   # @see #update
   # @see #draw
-  # @see #events
   #
   # A fair number of private methods within Scene are prefaced with an underscore.
   # These methods often call non-underscored methods within those methods. This allows
@@ -471,31 +470,6 @@ module Metro
     def state
       @event_state_manager ||= EventStateManager.new
     end
-
-    #
-    # This method is called during a scene update and will fire all the events
-    # that have been defined for all held buttons for the current event state.
-    #
-    def fire_events_for_held_buttons
-      state.fire_events_for_held_buttons
-    end
-
-    #
-    # This method is called before a scene update and passes the button up events
-    # to the current event state.
-    #
-    def button_up(id)
-      state.fire_button_up(id)
-    end
-
-    #
-    # This method is called before a scene update and passes the button down
-    # events to the current event state.
-    #
-    def button_down(id)
-      state.fire_button_down(id)
-    end
-
 
     #
     # A Scene represented as a hash currently only contains the drawers
