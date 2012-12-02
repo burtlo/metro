@@ -7,7 +7,7 @@ module Metro
     # The model label is used by the model labeler which is a facet of the
     # edit scene
     #
-    class ModelLabel < Metro::Model
+    class ModelLabel < Model
 
       # Stores the model that is currently being labeled.
       attr_accessor :target

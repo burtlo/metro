@@ -12,7 +12,7 @@ module Metro
     #         color: "rgba(255,0,0,1.0)", dimensions: "200,200"
     #     end
     #
-    class Rectangle < ::Metro::Model
+    class Rectangle < Model
 
       # @attribute
       # The position of the upper-left corner of the rectangle

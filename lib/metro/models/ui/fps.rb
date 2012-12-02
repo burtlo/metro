@@ -1,7 +1,7 @@
 module Metro
   module UI
 
-    class FPS < Metro::Model
+    class FPS < Model
 
       property :placement, type: :text, default: 'top'
       property :color, default: "rgba(255,255,255,1.0)"

@@ -5,7 +5,7 @@ module Metro
     # Draws a rectanglar border around the specififed position and dimensions
     # with the width provided. This is an unfilled rectangle.
     #
-    class Border < Metro::Model
+    class Border < Model
 
       # @attribute
       # The starting position of the border.

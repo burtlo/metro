@@ -9,7 +9,7 @@ module Metro
     # the bounding boxes and labeles around all the actors within the scene
     # being edited.
     #
-    class ModelLabeler < Metro::Model
+    class ModelLabeler < Model
 
       # @attribute
       # The color use for the border surrounding each actor and the background
@@ -58,7 +58,7 @@ module Metro
           label = labels[drawer.name]
 
           unless label
-            label = create "metro::ui::modellabel", target: drawer
+            label = create "metro::ui::model_label", target: drawer
             labels[drawer.name] = label
           end
 
