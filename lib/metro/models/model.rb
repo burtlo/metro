@@ -234,14 +234,5 @@ module Metro
   end
 end
 
-require_relative 'ui/generic'
-require_relative 'ui/label'
-require_relative 'ui/menu'
-require_relative 'ui/image'
-require_relative 'ui/rectangle'
-require_relative 'ui/grid_drawer'
-require_relative 'ui/border'
-require_relative 'ui/model_label'
-require_relative 'ui/model_labeler'
-require_relative 'ui/fps'
+require_relative 'ui/ui'
 require_relative 'audio/song'
