@@ -70,19 +70,13 @@ module Metro
 
       def image_point(image,row,column) ; end
 
-      def cached_positions
-        @cached_positions ||= Hash.new {|hash,key| hash[key] = {} }
-      end
     end
 
     class TileMapOrthogonalLayer < TileLayer
       def image_point(image,row,column)
-        unless cached_positions[row][column]
-          pos_x = x + column * map.tilewidth
-          pos_y = y + row * map.tileheight
-          cached_positions[row][column] = Units::Point.at(pos_x, pos_y)
-        end
-        cached_positions[row][column]
+        pos_x = x + column * map.tilewidth
+        pos_y = y + row * map.tileheight
+        Units::Point.at(pos_x, pos_y)
       end
     end
 
@@ -114,12 +108,9 @@ module Metro
       end
 
       def image_point(image,row,column)
-        unless cached_positions[row][column]
-          pos_x = x_position(row,column) - (map.tilewidth - image.width)/2
-          pos_y = y_position(row,column) + (map.tileheight - image.height)/2
-          cached_positions[row][column] = Units::Point.at(pos_x, pos_y)
-        end
-        cached_positions[row][column]
+        pos_x = x_position(row,column) - (map.tilewidth - image.width)/2
+        pos_y = y_position(row,column) + (map.tileheight - image.height)/2
+        Units::Point.at(pos_x, pos_y)
       end
     end
 
