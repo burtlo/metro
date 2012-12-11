@@ -16,35 +16,38 @@ module Metro
         viewport.left
       end
 
-      def z_order
-        -1
-      end
-
       def y
         viewport.top
       end
 
+      def z_order
+        -1
+      end
+
       def viewport=(port)
         @viewport = port
-        @viewport.add_change_listener(self)
       end
 
       attr_reader :viewport
 
-      def bounds_changed(bounds)
+      def row(position)
+        position / layer.height
+      end
+
+      def column(position)
+        position % layer.width
       end
 
       def tiles_at_points
-        @tiles_at_points ||= begin
-          data.each_with_index.map do |image_index,position_index|
-            next if image_index == 0
-            column = position_index % layer.width
-            row = position_index / layer.height
-            image = image_from_tileset(image_index)
-            point = image_point(image,row,column)
-            [ point, image ]
-          end.compact
-        end
+        @tiles_at_points ||= build_tiles_index
+      end
+
+      def build_tiles_index
+        data.each_with_index.map do |image_index,position|
+          next if image_index == 0
+          image = image_from_tileset(image_index)
+          [ position_of_image(image,row(position),column(position)), image ]
+        end.compact
       end
 
       def draw
@@ -67,13 +70,10 @@ module Metro
       def cached_images
         @cached_images ||= {}
       end
-
-      def image_point(image,row,column) ; end
-
     end
 
     class TileMapOrthogonalLayer < TileLayer
-      def image_point(image,row,column)
+      def position_of_image(image,row,column)
         pos_x = x + column * map.tilewidth
         pos_y = y + row * map.tileheight
         Units::Point.at(pos_x, pos_y)
@@ -107,7 +107,7 @@ module Metro
         row_start_y + half_tileheight * column
       end
 
-      def image_point(image,row,column)
+      def position_of_image(image,row,column)
         pos_x = x_position(row,column) - (map.tilewidth - image.width)/2
         pos_y = y_position(row,column) + (map.tileheight - image.height)/2
         Units::Point.at(pos_x, pos_y)
