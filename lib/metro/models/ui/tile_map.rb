@@ -15,11 +15,19 @@ module Metro
 
       def viewport
         @viewport ||= begin
-          b = Bounds.new left: 0 - map.tilewidth, right: 640 + map.tilewidth, top: 0 - map.tileheight * 2, bottom: 480 + map.tileheight
+          b = Bounds.new left: 0 - map.tilewidth, right: 640, top: 0 - map.tileheight * 2, bottom: 480
         end
       end
 
       def draw
+        if images_and_points.empty?
+          raw_draw
+        else
+          images_and_points.each {|image,point| image.draw_rot(point.x,point.y,z_order,rotation) }
+        end
+      end
+
+      def raw_draw
         data.each_with_index do |image_index,position_index|
           next if image_index == 0
           column = position_index % layer.width
@@ -32,7 +40,13 @@ module Metro
         image = image_from_tileset(image_index)
         point = image_point(image,row,column)
         return unless viewport.contains?(point)
+
+        images_and_points.push([ image, point ])
         image.draw_rot(point.x,point.y,z_order,rotation)
+      end
+
+      def images_and_points
+        @images_and_points ||= []
       end
 
       def image_from_tileset(image_index)
