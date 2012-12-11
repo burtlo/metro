@@ -32,39 +32,26 @@ module Metro
       attr_reader :viewport
 
       def bounds_changed(bounds)
-        images_and_points.clear
+      end
+
+      def tiles_at_points
+        @tiles_at_points ||= begin
+          data.each_with_index.map do |image_index,position_index|
+            next if image_index == 0
+            column = position_index % layer.width
+            row = position_index / layer.height
+            image = image_from_tileset(image_index)
+            point = image_point(image,row,column)
+            [ point, image ]
+          end.compact
+        end
       end
 
       def draw
-        if images_and_points.empty?
-          raw_draw
-        else
-          images_and_points.each {|image,point| image.draw_rot(point.x - x,point.y - y,z_order,rotation) }
+        tiles_at_points.each do |point,image|
+          next unless viewport.contains?(point)
+          image.draw_rot(point.x - x,point.y - y,z_order,rotation)
         end
-      end
-
-      def raw_draw
-        data.each_with_index do |image_index,position_index|
-          next if image_index == 0
-          column = position_index % layer.width
-          row = position_index / layer.height
-          draw_image(image_index,row,column)
-        end
-      end
-
-      def draw_image(image_index,row,column)
-        image = image_from_tileset(image_index)
-        point = image_point(image,row,column)
-        # puts "Point #{point} is contained in viewport #{viewport}"
-        return unless viewport.contains?(point)
-
-        images_and_points.push([ image, point ])
-        # puts "drawing point: #{point.x - x}, #{point.y - y}"
-        image.draw_rot(point.x - x,point.y - y,z_order,rotation)
-      end
-
-      def images_and_points
-        @images_and_points ||= []
       end
 
       def image_from_tileset(image_index)
@@ -81,14 +68,7 @@ module Metro
         @cached_images ||= {}
       end
 
-      def image_point(image,row,column)
-        unless cached_positions[row][column]
-          pos_x = x + column * map.tilewidth
-          pos_y = y + row * map.tileheight
-          cached_positions[row][column] = Units::Point.at(pos_x, pos_y)
-        end
-        cached_positions[row][column]
-      end
+      def image_point(image,row,column) ; end
 
       def cached_positions
         @cached_positions ||= Hash.new {|hash,key| hash[key] = {} }
