@@ -23,6 +23,26 @@ module Metro
         @bottom = params[:bottom].to_f
       end
 
+      def add_change_listener(listener)
+        listeners.push listener
+      end
+
+      def listeners
+        @listeners ||= []
+      end
+
+      def notify_listeners
+        listeners.each {|listener| listener.bounds_changed(self) }
+      end
+
+      def shift(point)
+        self.left = self.left + point.x
+        self.right = self.right + point.x
+        self.top = self.top + point.y
+        self.bottom = self.bottom + point.y
+        notify_listeners
+      end
+
       def top_left
         Point.at(left,top)
       end

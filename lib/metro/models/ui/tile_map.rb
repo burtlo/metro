@@ -2,7 +2,6 @@ module Metro
   module UI
 
     class TileLayer < Model
-      property :position
       property :rotation
 
       attr_accessor :map
@@ -13,17 +12,34 @@ module Metro
         layer.data
       end
 
-      def viewport
-        @viewport ||= begin
-          b = Bounds.new left: 0 - map.tilewidth, right: 640, top: 0 - map.tileheight * 2, bottom: 480
-        end
+      def x
+        viewport.left
+      end
+
+      def z_order
+        -1
+      end
+
+      def y
+        viewport.top
+      end
+
+      def viewport=(port)
+        @viewport = port
+        @viewport.add_change_listener(self)
+      end
+
+      attr_reader :viewport
+
+      def bounds_changed(bounds)
+        images_and_points.clear
       end
 
       def draw
         if images_and_points.empty?
           raw_draw
         else
-          images_and_points.each {|image,point| image.draw_rot(point.x,point.y,z_order,rotation) }
+          images_and_points.each {|image,point| image.draw_rot(point.x - x,point.y - y,z_order,rotation) }
         end
       end
 
@@ -39,10 +55,12 @@ module Metro
       def draw_image(image_index,row,column)
         image = image_from_tileset(image_index)
         point = image_point(image,row,column)
+        # puts "Point #{point} is contained in viewport #{viewport}"
         return unless viewport.contains?(point)
 
         images_and_points.push([ image, point ])
-        image.draw_rot(point.x,point.y,z_order,rotation)
+        # puts "drawing point: #{point.x - x}, #{point.y - y}"
+        image.draw_rot(point.x - x,point.y - y,z_order,rotation)
       end
 
       def images_and_points
@@ -133,6 +151,7 @@ module Metro
       property :rotation
 
       attr_accessor :layers
+      attr_accessor :viewport
 
       def map
         @map ||= begin
@@ -150,8 +169,8 @@ module Metro
       def show
         self.layers = map.layers.collect do |layer|
           tml = layer_class.new
-          tml.position = position
           tml.rotation = rotation
+          tml.viewport = viewport
           tml.map = map
           tml.layer = layer
           tml.tilesets = map.tilesets
