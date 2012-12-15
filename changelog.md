@@ -1,5 +1,16 @@
 # Metro
 
+## 0.3.4 / 2012-12-02
+
+* 'Metro::UI::Sprite' and 'Metro::UI::AnimatedSprite' are now available
+  for defining models that have visual representation, positions, locations
+  dimensions, bounds, scale, and angle.
+* 'Metro::UI::TimeMap' is now available. This is a mapping of the Tile
+	Editor output (JSON only export)
+* More informative error message when a model is not found and you
+  get stuck with a Generic.
+* Positions can now be defined as strings
+
 ## 0.3.3 / 2012-11-28
 
 * Edit Mode - actors within a scene can have their position edited

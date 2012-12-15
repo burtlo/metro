@@ -45,19 +45,20 @@ module Metro
       def build_tiles_index
         data.each_with_index.map do |image_index,position|
           next if image_index == 0
-          image = image_from_tileset(image_index)
+          image = tileset_image(image_index)
           [ position_of_image(image,row(position),column(position)), image ]
         end.compact
       end
 
-      def draw
-        tiles_at_points.each do |point,image|
-          next unless viewport.contains?(point)
-          image.draw_rot(point.x - x,point.y - y,z_order,rotation)
-        end
+      def tiles_within_viewport
+        tiles_at_points.find_all {|point,images| viewport.contains?(point) }
       end
 
-      def image_from_tileset(image_index)
+      def draw
+        tiles_within_viewport.each { |point,image| image.draw_rot(point.x - x,point.y - y,z_order,rotation) }
+      end
+
+      def tileset_image(image_index)
         unless cached_images[image_index]
           tileset = map.tilesets.find {|t| image_index >= t.firstgid && image_index < t.firstgid + t.images.count }
           tileset_image_index = image_index - tileset.firstgid
