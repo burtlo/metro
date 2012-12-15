@@ -1,5 +1,12 @@
 # Metro
 
+## 0.3.4 / 2012-12-14
+
+* `metro::ui::sprite` and `metro::ui::animated_sprite` model classes
+  to make it easier to take care of all the basic model attributes.
+* Event Management changed in the background. The API remains the
+  same.
+  
 ## 0.3.3 / 2012-11-28
 
 * Edit Mode - actors within a scene can have their position edited
@@ -7,7 +14,7 @@
   specified will appear within the scene with name and bounding box.
 * Dimensions can now be defined as strings
 * Game bounds and Game dimensions return objects of that type
-* `metr::ui::fps` added and has some shortcut placements settings
+* `metro::ui::fps` added and has some shortcut placements settings
 
 ## 0.3.2 / 2012-11-26
 
