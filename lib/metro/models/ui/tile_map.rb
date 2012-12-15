@@ -38,8 +38,8 @@ module Metro
         position % layer.width
       end
 
-      def tiles_at_points
-        @tiles_at_points ||= build_tiles_index
+      def tile_bounds
+        @tile_bounds ||= build_tiles_index
       end
 
       def build_tiles_index
@@ -51,11 +51,11 @@ module Metro
       end
 
       def tiles_within_viewport
-        tiles_at_points.find_all {|point,images| viewport.contains?(point) }
+        tile_bounds.find_all {|bounds,images| viewport.intersect?(bounds) }
       end
 
       def draw
-        tiles_within_viewport.each { |point,image| image.draw_rot(point.x - x,point.y - y,z_order,rotation) }
+        tiles_within_viewport.each { |bounds,image| image.draw_rot(bounds.left - x,bounds.top - y,z_order,rotation) }
       end
 
       def tileset_image(image_index)
@@ -75,9 +75,9 @@ module Metro
 
     class TileMapOrthogonalLayer < TileLayer
       def position_of_image(image,row,column)
-        pos_x = x + column * map.tilewidth
-        pos_y = y + row * map.tileheight
-        Units::Point.at(pos_x, pos_y)
+        pos_x = x + column * map.tilewidth + map.tilewidth / 2
+        pos_y = y + row * map.tileheight + map.tileheight / 2
+        Bounds.new left: pos_x, top: pos_y, right: pos_x + map.tilewidth, bottom: pos_y + map.tileheight
       end
     end
 
@@ -111,7 +111,7 @@ module Metro
       def position_of_image(image,row,column)
         pos_x = x_position(row,column) - (map.tilewidth - image.width)/2
         pos_y = y_position(row,column) + (map.tileheight - image.height)/2
-        Units::Point.at(pos_x, pos_y)
+        Bounds.new left: pos_x, top: pos_y, right: pos_x + map.tilewidth, bottom: pos_y + map.tileheight
       end
     end
 
