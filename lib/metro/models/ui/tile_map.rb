@@ -31,7 +31,7 @@ module Metro
       attr_reader :viewport
 
       def row(position)
-        position / layer.height
+        position / layer.width
       end
 
       def column(position)
