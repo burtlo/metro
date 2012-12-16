@@ -28,12 +28,7 @@ module Tmxed
     private
 
     def crop_images(images)
-      return images if spacing > 0
-      images.map do |image|
-        cropped_image = TexPlay.create_image(window,tilewidth,tileheight)
-        cropped_image.splice image, 0, 0, crop: crop_bounds
-        cropped_image
-      end
+      images
     end
   end
 end

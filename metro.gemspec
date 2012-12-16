@@ -6,7 +6,7 @@ require 'metro/version'
 Struct.new("Changes",:date,:changes)
 
 Gem::Specification.new do |gem|
-  gem.name          = "metro"
+  gem.name          = "metro-ld25"
   gem.version       = Metro::VERSION
   gem.authors       = ["Franklin Webber"]
   gem.email         = Metro::CONTACT_EMAILS
@@ -29,7 +29,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'i18n', '~> 0.6.1'
   gem.add_dependency 'active_support', '~> 3.0.0'
   gem.add_dependency 'listen', '~> 0.6.0'
-  gem.add_dependency 'texplay', '~> 0.4.3'
   gem.add_dependency 'tmxed', '~> 0.0.1'
   gem.add_development_dependency 'rspec', '~> 2.11'
 

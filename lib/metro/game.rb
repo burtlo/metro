@@ -45,11 +45,11 @@ module Metro
     end
 
     def width
-      fetch(:width,640)
+      fetch(:width,800)
     end
 
     def height
-      fetch(:height,480)
+      fetch(:height,600)
     end
 
     def bounds

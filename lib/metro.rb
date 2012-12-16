@@ -4,7 +4,6 @@ require 'erb'
 require 'open3'
 
 require 'gosu'
-require 'texplay'
 require 'i18n'
 require 'listen'
 require 'tmxed'

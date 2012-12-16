@@ -28,11 +28,11 @@ module Metro
 
       # @attribute
       # The center, horizontal position, as expressed in a ratio, of the image.
-      property :center_x, type: :numeric, default: 0.0
+      property :center_x, type: :numeric, default: 0.5
 
       # @attribute
       # The center, vertical position, as expressed in a ratio, of the image.
-      property :center_y, type: :numeric, default: 0.0
+      property :center_y, type: :numeric, default: 0.5
 
       # @attribute
       # The angle at which the sprite should be drawn. This is by default 0.
