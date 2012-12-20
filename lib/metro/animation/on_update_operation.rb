@@ -72,7 +72,7 @@ module Metro
     # @return true if the animation has completed all the actions, false
     #   if there are remaining actions.
     # 
-    def completed?
+    def update_completed?
       current_step >= interval
     end
 

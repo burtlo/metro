@@ -49,13 +49,13 @@ module Metro
 
     #
     # This is called after an update. A model normally is not removed after
-    # an update, however if the model responds true to #completed? then it
+    # an update, however if the model responds true to #update_completed? then it
     # will be removed.
     #
     # @note This method should be implemented in the Model sublclass if you
     #   are interested in having the model be removed from the scene.
     #
-    def completed? ; false ; end
+    def update_completed? ; false ; end
 
     #
     # This is called after every {#update} and when the OS wants the window to
@@ -64,6 +64,16 @@ module Metro
     # @note This method should be implemented in the Model subclass.
     #
     def draw ; end
+
+    #
+    # This is called after a draw. A model normally is not removed after
+    # a draw, however if the model responds true to #draw_completed? then it
+    # will be removed.
+    #
+    # @note This method should be implemented in the Model sublclass if you
+    #   are interested in having the model be removed from the scene.
+    #
+    def draw_completed? ; false ; end
 
     def self.model_name(model_name=nil)
       @model_name ||= to_s.underscore
