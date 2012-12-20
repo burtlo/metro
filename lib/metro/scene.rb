@@ -394,6 +394,7 @@ module Metro
     def base_draw
       drawers.each { |drawer| drawer.draw }
       draw
+      drawers.reject! { |updater| drawers.completed? }
     end
 
     # This provides the functionality for view handling.
