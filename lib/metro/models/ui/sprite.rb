@@ -50,7 +50,7 @@ module Metro
 
       # @return [Float] the left-most x position of the sprite
       def left
-        x - width * center_x
+        x - width * center_x * x_factor
       end
 
       # @return [Float] the right-most x position of the sprite
@@ -60,7 +60,7 @@ module Metro
 
       # @return [Float] the top-most y position of the sprite
       def top
-        y - height * center_y
+        y - height * center_y * y_factor
       end
 
       # @return [Float] the bottom-most y position of the sprite
