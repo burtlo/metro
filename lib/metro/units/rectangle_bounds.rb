@@ -24,23 +24,35 @@ module Metro
       end
 
       def top_left
-        Point.at(left,top)
+        point_at left, top
       end
 
       def top_right
-        Point.at(right,top)
+        point_at right, top
       end
 
       def bottom_right
-        Point.at(right,bottom)
+        point_at right, bottom
       end
 
       def bottom_left
-        Point.at(left,bottom)
+        point_at left, bottom
+      end
+
+      def width
+        (right - left)
+      end
+
+      def height
+        (bottom - top)
+      end
+
+      def center
+        top_left + point_at(width/2,height/2)
       end
 
       def dimensions
-        Dimensions.of (right - left), (bottom - top)
+        Dimensions.of width, height
       end
 
       def ==(value)
@@ -67,6 +79,10 @@ module Metro
       end
 
       private
+
+      def point_at(x,y)
+        Point.at(x,y)
+      end
 
       def calculation_requirements
         [ :left, :right, :top, :bottom ]
