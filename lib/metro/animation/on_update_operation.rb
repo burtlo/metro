@@ -39,14 +39,14 @@ module Metro
     # Perform a step of an animation, if it hasn't already been completed.
     #
     def update
-      return if completed?
+      return if update_completed?
 
       execute_step
       next_step
 
-      complete! if completed?
+      complete! if update_completed?
     end
-    
+
     #
     # @return the current step of the animation.
     #
@@ -67,11 +67,11 @@ module Metro
     def step_interval
       1
     end
-    
-    # 
+
+    #
     # @return true if the animation has completed all the actions, false
     #   if there are remaining actions.
-    # 
+    #
     def update_completed?
       current_step >= interval
     end
