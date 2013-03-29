@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Metro by burtlo</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Metro</h1>
+        <h2>Ruby 2D Gaming powered by Gosu.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/burtlo/metro/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/burtlo/metro/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/burtlo/metro" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <pre><code>  ______  ___      _____
+  ___   |/  /_____ __  /_______________
+  __  /|_/ / _  _ \_  __/__  ___/_  __ \
+  _  /  / /  /  __// /_  _  /    / /_/ /
+  /_/  /_/   \___/ \__/  /_/     \____/
+
+</code></pre>
+
+<p>Metro is a framework built around <a href="https://github.com/jlnr/gosu">gosu</a> (the 2D
+game development library in Ruby). The goal of Metro is to enforce common
+conceptual structures and conventions making it easier to quickly generate a
+game.</p>
+
+<p><a href="https://codeclimate.com/github/burtlo/metro"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a></p>
+
+<p><a href="https://travis-ci.org/burtlo/metro"><img src="https://travis-ci.org/burtlo/metro.png" alt="Build Status"></a></p>
+
+<p><a href="https://gemnasium.com/burtlo/metro"><img src="https://gemnasium.com/burtlo/metro.png" alt="Dependency Status"></a></p>
+
+<h2>Why Use Metro?</h2>
+
+<p>You want to develop games in Ruby.</p>
+
+<h3>Why not just use Gosu?</h3>
+
+<p>Gosu does a lot of great work bringing OpenGL to Ruby. However, when you finish
+the <a href="https://github.com/jlnr/gosu/wiki/Ruby-Tutorial">initial tutorial</a> you are
+left with a brittle game that is very resistant to changes or new features.</p>
+
+<ul>
+<li>Metro provides the concept of a
+<a href="https://github.com/burtlo/metro/wiki/Scenes">Scene</a> which is the first
+abstraction you would likely build after completing the tutorial.</li>
+</ul><blockquote>
+<p>Developing your game in individual scenes will make it easier to logically
+layout your game.</p>
+</blockquote>
+
+<ul>
+<li>Sane management of images, animations, fonts, songs, and samples through
+<a href="https://github.com/burtlo/metro/wiki/Model-properties">model properties</a>.</li>
+</ul><blockquote>
+<p>Having to load and cache fonts and images in every one of your models is
+tedious. It is also is wasteful as several of the same fonts are being used all
+over the place.</p>
+</blockquote>
+
+<ul>
+<li><a href="https://github.com/burtlo/metro/wiki/Animations">Key-frame animations</a></li>
+</ul><blockquote>
+<p>Metro makes it simple to move an actor from one position to another position.
+So simple movements, fades, color changes, and really any property change over
+time is defined very simply.</p>
+</blockquote>
+
+<ul>
+<li><a href="https://github.com/burtlo/metro/wiki/Events">Event Handling</a></li>
+</ul><blockquote>
+<p>Delete those huge <code>if ... elsif ... else</code> input checking structures for
+keyboard, gamepad, and mouse button presses (down,up, and held). Metro makes it
+easy to define them and an attach a course of action to take when the event
+happens.</p>
+</blockquote>
+
+<h3>Why not use Chingu or Gamebox?</h3>
+
+<p>Both <a href="https://github.com/shawn42/gamebox">Gamebox</a> and
+<a href="https://github.com/ippa/chingu">Chingu</a> are more mature libraries with a
+larger set of features. I encourage you to check out those libraries.</p>
+
+<p>Metro's primary goal is to be a framework of features that make game development
+joyful.</p>
+
+<ul>
+<li>Active Reloading while building your scenes.</li>
+</ul><blockquote>
+<p>Adjustments to your game code while working on a scene will automatically
+reload your game code. The template game sets up a shortcut key (**Ctrl+R**)
+that allows you to explicitly reload the game and the current scene.</p>
+</blockquote>
+
+<ul>
+<li>Scene Edit Support</li>
+</ul><blockquote>
+<p>Scenes can enter an edit mode which allows you to re-position actors within
+the scene. The changes can then be saved back to the view. This allows you to
+fine tune the layout of those scene elements, making it easier to get things
+pixel perfect.</p>
+</blockquote>
+
+<p>Metro's secondary goal is to make it easier for individuals familiar with Rails
+get into game development. That is the reason for some of the design choices,
+the opinionated structure, and generators that come with Metro.</p>
+
+<h3>Why you shouldn't use Metro?</h3>
+
+<p>Metro has some the following limitations:</p>
+
+<ul>
+<li>Limited to the gems defined within Metro</li>
+</ul><blockquote>
+<p>At this point in time you are not able to define and package additional
+dependencies with your game. This means if you are using a gem that is not
+already defined by Metro you will run into trouble when running it on alternate
+systems. This will likely be addressed in the future when more demand arises.</p>
+</blockquote>
+
+<ul>
+<li>Difficult Deployment</li>
+</ul><blockquote>
+<p>For individuals to play your game, they will also have to install Metro.
+However, work is being made to bring some simple packaging to Metro games to
+make them stand-along executables.</p>
+</blockquote>
+
+<h2>Installation</h2>
+
+<div class="highlight"><pre><span class="nv">$ </span>gem install metro
+</pre></div>
+
+<h2>Usage</h2>
+
+<h3>Running a Game</h3>
+
+<p>By default <code>metro</code> will look for a file named 'metro' within the current working
+directory if no <em>gamefilename</em> has been provided.</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>metro GAMEFILENAME
+</pre></div>
+
+<p>Please take a look at the <a href="https://github.com/burtlo/starry-knight">example game project</a> that is being built alongside of 'metro'. It currently showcases all the current features available to the game.</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>git clone git://github.com/burtlo/starry-knight.git
+<span class="nv">$ </span><span class="nb">cd </span>starry-knight
+<span class="nv">$ </span>metro
+</pre></div>
+
+<h3>Creating a Game</h3>
+
+<p>Metro contains content generators to assist you.</p>
+
+<p>Creating a Game can be done with a single command.</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>metro new GAMENAME
+</pre></div>
+
+<p>This should generate for you a starting game with a branding scene and a title
+scene. The game allows the player to start the game.</p>
+
+<p>The game is missing the <code>first</code> scene of the game. This can be created with the
+scene generator:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>metro generate scene first
+</pre></div>
+
+<p>This should generate a scene in the scenes directory. The scene file contains a lot of examples of how to draw, animate and have your scene listen to events.</p>
+
+<h2>Resources</h2>
+
+<h3>Programming</h3>
+
+<ul>
+<li>
+<a href="http://www.yaml.org/YAML_for_ruby.html">YAML for Ruby</a> reference which can help you define views in the game.</li>
+<li>
+<a href="http://jsonlint.com/">JSONLint</a> is a JSON Validator</li>
+</ul><h3>Art</h3>
+
+<ul>
+<li><a href="http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html">Lost Garden</a></li>
+<li>
+<a href="http://www.rigzsoft.co.uk/">TimelieFX</a> particle editor allows you to export animations.</li>
+<li><a href="http://patorjk.com/software/taag">Text to ASCII Art Generator</a></li>
+<li><a href="http://css-tricks.com/flat-icons-icon-fonts/">Icons</a></li>
+<li>
+<a href="http://subtlepatterns.com/">Subtle Patterns</a> various backgrounds and textures.</li>
+</ul><h3>Sound</h3>
+
+<ul>
+<li>
+<a href="http://www.superflashbros.net/as3sfxr/">as3sfxr</a> generates unique sounds.</li>
+<li>
+<a href="https://www.ableton.com/en/">Ableton</a> music generation tool.</li>
+</ul><h3>Books</h3>
+
+<ul>
+<li><a href="http://www.amazon.com/dp/0262240459">Rules of Play</a></li>
+<li><a href="http://www.amazon.com/dp/1584507020">Game Programming Gems 8</a></li>
+<li><a href="http://www.amazon.com/dp/0123743281">Game Feel</a></li>
+<li><a href="http://www.amazon.com/dp/1584506806">Game Coding Complete</a></li>
+<li><a href="http://www.amazon.com/dp/0240809742">Game Design Workshop</a></li>
+<li><a href="http://www.amazon.com/dp/158450580X">Challenges For Game Designers</a></li>
+<li><a href="http://www.amazon.com/dp/0123694965">The Art of Game Design: A book of lenses</a></li>
+<li><a href="http://www.theoryoffun.com">A Theory of Fun</a></li>
+<li><a href="http://www.amazon.com/dp/1592730019">Andrew Rollings and Ernest Adams on Game Design</a></li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
