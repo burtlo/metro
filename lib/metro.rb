@@ -4,6 +4,7 @@ require 'erb'
 require 'open3'
 
 require 'gosu'
+require 'chipmunk'
 require 'i18n'
 require 'listen'
 require 'active_support'
