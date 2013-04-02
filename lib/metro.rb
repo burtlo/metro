@@ -4,6 +4,7 @@ require 'erb'
 require 'open3'
 
 require 'gosu'
+require 'tmx'
 require 'i18n'
 require 'listen'
 require 'active_support'
@@ -12,10 +13,11 @@ require 'active_support/inflector'
 require 'active_support/core_ext/hash'
 require 'active_support/hash_with_indifferent_access'
 
-require 'gosu_ext/color'
-require 'gosu_ext/gosu_constants'
 require 'core_ext/numeric'
 require 'core_ext/class'
+require 'gosu_ext/color'
+require 'gosu_ext/gosu_constants'
+require 'tmx-ext/tile_set'
 
 require 'locale/locale'
 
