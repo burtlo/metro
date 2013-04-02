@@ -155,7 +155,7 @@ This should generate a scene in the scenes directory. The scene file contains a 
 ### Art
 
 * [Lost Garden](http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html)
-* [TimelieFX](http://www.rigzsoft.co.uk/) particle editor allows you to export animations.
+* [TimelineFX](http://www.rigzsoft.co.uk/) particle editor allows you to export animations.
 * [Text to ASCII Art Generator](http://patorjk.com/software/taag)
 * [Icons](http://css-tricks.com/flat-icons-icon-fonts/)
 * [Subtle Patterns](http://subtlepatterns.com/) various backgrounds and textures.
