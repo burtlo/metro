@@ -23,6 +23,16 @@ module Metro
         @bottom = params[:bottom].to_f
       end
 
+      #
+      # Move the bounds by the amount specified in the point.
+      #
+      def shift(point)
+        self.left = self.left + point.x
+        self.right = self.right + point.x
+        self.top = self.top + point.y
+        self.bottom = self.bottom + point.y
+      end
+
       def top_left
         point_at left, top
       end
