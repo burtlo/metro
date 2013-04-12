@@ -29,12 +29,17 @@ module Metro
 
       attr_reader :viewport
 
-      def row(position)
-        position / layer.width
+      def draw
+        tiles_within_viewport.each do |bounds,image|
+          image.draw_rot(bounds.left - x,bounds.top - y,z_order,rotation)
+        end
       end
 
-      def column(position)
-        position % layer.width
+      private
+
+      def tiles_within_viewport
+        enlarged_viewport = viewport.enlarge(left: map.tilewidth, right: map.tilewidth, top: map.tileheight, bottom: map.tileheight)
+        tile_bounds.find_all {|bounds,images| enlarged_viewport.intersect?(bounds) }
       end
 
       def tile_bounds
@@ -49,14 +54,6 @@ module Metro
         end.compact
       end
 
-      def tiles_within_viewport
-        tile_bounds.find_all {|bounds,images| viewport.intersect?(bounds) }
-      end
-
-      def draw
-        tiles_within_viewport.each { |bounds,image| image.draw_rot(bounds.left - x,bounds.top - y,z_order,rotation) }
-      end
-
       def tileset_image(image_index)
         unless cached_images[image_index]
           tileset = map.tilesets.find do |t|
@@ -67,6 +64,14 @@ module Metro
         end
 
         cached_images[image_index]
+      end
+
+      def row(position)
+        position / layer.width
+      end
+
+      def column(position)
+        position % layer.width
       end
 
       def cached_images

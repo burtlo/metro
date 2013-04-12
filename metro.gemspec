@@ -25,7 +25,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = Metro::WEBSITE
 
   gem.add_dependency 'gosu', '~> 0.7'
-  gem.add_dependency 'tmx', '~> 0.1'
+  gem.add_dependency 'texplay', '~> 0.4'
+  gem.add_dependency 'tmx', '~> 0.1.1'
   gem.add_dependency 'thor', '~> 0.16.0'
   gem.add_dependency 'i18n', '~> 0.6.1'
   gem.add_dependency 'active_support', '~> 3.0.0'

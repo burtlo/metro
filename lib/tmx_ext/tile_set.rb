@@ -16,7 +16,8 @@ module Tmx
     end
 
     def crop_bounds
-      [ margin, margin, tilewidth - spacing, tileheight - spacing ]
+      #[ margin, margin, tilewidth - spacing, tileheight - spacing ]
+      [ margin, margin, tilewidth + margin - spacing + 1, tileheight + margin - spacing + 1 ]
     end
 
     def image_path
@@ -34,7 +35,13 @@ module Tmx
 
     def crop_images(images)
       # @TODO: Originally the use of Texplay caused corruption on cropping (when reloading) and slowness in execution
-      images
+      return images unless spacing > 0
+      images.map do |image|
+        cropped_image = TexPlay.create_image(window,tilewidth,tileheight)
+        cropped_image.splice image, 0, 0, crop: crop_bounds
+        cropped_image
+      end
     end
+
   end
 end

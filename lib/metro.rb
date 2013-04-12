@@ -5,6 +5,7 @@ require 'open3'
 
 require 'gosu'
 require 'chipmunk'
+require 'texplay'
 require 'tmx'
 require 'i18n'
 require 'listen'
@@ -18,7 +19,8 @@ require 'core_ext/numeric'
 require 'core_ext/class'
 require 'gosu_ext/color'
 require 'gosu_ext/gosu_constants'
-require 'tmx-ext/tile_set'
+require 'tmx_ext/tile_set'
+require 'tmx_ext/object'
 
 require 'locale/locale'
 

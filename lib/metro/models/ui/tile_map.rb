@@ -2,7 +2,6 @@ module Metro
   module UI
     class TileMap < ::Metro::Model
 
-      property :position
       property :file, type: :text
       property :rotation
 
@@ -17,6 +16,15 @@ module Metro
         end
       end
 
+      def objects(*types)
+        result = map.object_groups.map do |object_group|
+          types.map do |type|
+            # TODO: provide a more robust query functionality in the TMX gem
+            object_group.objects.find_all {|object| object.type == type }
+          end
+        end.flatten.compact
+      end
+
       def layer_positioning
         { orthogonal: "Metro::Tmx::TileLayer::OrthogonalPositioning",
           isometric: "Metro::Tmx::TileLayer::IsometricPositioning" }[map.orientation.to_sym].constantize
@@ -25,6 +33,7 @@ module Metro
       def show
         self.layers = map.layers.collect do |layer|
           tml = TileLayer.new
+          # FIX: change to use composition
           tml.extend layer_positioning
           tml.rotation = rotation
           tml.viewport = viewport
