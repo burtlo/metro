@@ -1,11 +1,4 @@
-```
-  ______  ___      _____
-  ___   |/  /_____ __  /_______________
-  __  /|_/ / _  _ \_  __/__  ___/_  __ \
-  _  /  / /  /  __// /_  _  /    / /_/ /
-  /_/  /_/   \___/ \__/  /_/     \____/
-
-```
+![Metro Image](metro.png)
 
 Metro is a framework built around [gosu](https://github.com/jlnr/gosu) (the 2D
 game development library in Ruby). The goal of Metro is to enforce common
