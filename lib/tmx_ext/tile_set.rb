@@ -7,41 +7,35 @@ module Tmx
   class TileSet
     attr_accessor :window
 
-    def full_width
+    def images
+      @images ||= raw_image_tiles.map {|image| crop_image(image) }
+    end
+
+    private
+
+    def raw_image_tiles
+      Gosu::Image.load_tiles(window, image_path, full_image_width, full_image_height, false)
+    end
+
+    def crop_image(image)
+      Metro::Image.crop window, image, crop_bounds
+    end
+
+    def full_image_width
       tilewidth + spacing
     end
 
-    def full_height
+    def full_image_height
       tileheight + spacing
     end
 
     def crop_bounds
-      #[ margin, margin, tilewidth - spacing, tileheight - spacing ]
-      [ margin, margin, tilewidth + margin - spacing + 1, tileheight + margin - spacing + 1 ]
+      @crop_bounds ||= Metro::Units::RectangleBounds.new left: margin, top: margin,
+                        right: tilewidth + spacing, bottom: tileheight + spacing
     end
 
     def image_path
       Metro::AssetPath.with(image).filepath
     end
-
-    def images
-      @images ||= begin
-        original_images = Gosu::Image.load_tiles window, image_path, full_width,full_height, true
-        crop_images original_images
-      end
-    end
-
-    private
-
-    def crop_images(images)
-      # @TODO: Originally the use of Texplay caused corruption on cropping (when reloading) and slowness in execution
-      return images unless spacing > 0
-      images.map do |image|
-        cropped_image = TexPlay.create_image(window,tilewidth,tileheight)
-        cropped_image.splice image, 0, 0, crop: crop_bounds
-        cropped_image
-      end
-    end
-
   end
 end

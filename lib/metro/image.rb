@@ -50,6 +50,13 @@ module Metro
       new gosu_image, asset_path.path, tileable
     end
 
+    def self.crop(window,image,bounds)
+      cropped_image = TexPlay.create_image(window,bounds.width,bounds.height)
+      cropped_image.refresh_cache
+      cropped_image.splice image, 0, 0, crop: [ bounds.left, bounds.top, bounds.right, bounds.bottom ]
+      cropped_image
+    end
+
     private
 
     def self.create_params(options)

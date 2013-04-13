@@ -2,6 +2,23 @@ module Tmx
 
   class Object
 
+    # TODO: the mass and moment of interia should configurable through properties
+    def body
+      @body ||= CP::Body.new default_mass, default_moment_of_inertia
+    end
+
+    def shape
+      @poly_shape ||= begin
+        new_shape = CP::Shape::Poly.new(body,poly_vec2s,default_shape_attach_point)
+        new_shape.collision_type = type.to_sym
+        new_shape.e = default_elasticity
+        new_shape.sensor = default_sensor
+        new_shape
+      end
+    end
+
+    private
+
     #
     # A TMX object currently has an array of points in a format
     # list of strings. This will convert the points into
@@ -18,25 +35,6 @@ module Tmx
         CP::Vec2.new(x,y)
       end.reverse
     end
-
-    # TODO: the mass and moment of interia should configurable through properties
-    def body
-      @body ||= CP::Body.new default_mass, default_moment_of_inertia
-    end
-
-    def poly_shape
-      @poly_shape ||= begin
-        new_shape = CP::Shape::Poly.new(body,poly_vec2s,default_shape_attach_point)
-        new_shape.collision_type = type.to_sym
-        new_shape.e = default_elasticity
-        new_shape.sensor = default_sensor
-        new_shape
-      end
-    end
-
-    alias_method :shape, :poly_shape
-
-    private
 
     def default_sensor
       false
