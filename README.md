@@ -126,17 +126,8 @@ Creating a Game can be done with a single command.
 $ metro new GAMENAME
 ```
 
-This should generate for you a starting game with a branding scene and a title
-scene. The game allows the player to start the game.
-
-The game is missing the `first` scene of the game. This can be created with the
-scene generator:
-
-```bash
-$ metro generate scene first
-```
-
-This should generate a scene in the scenes directory. The scene file contains a lot of examples of how to draw, animate and have your scene listen to events.
+This should generate for you a starting game with a branding scene, title
+scene and first game scene. The game allows the player to start the game.
 
 ## Resources
 
