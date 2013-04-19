@@ -137,7 +137,7 @@ module Metro
 end
 
 require 'setup_handlers/move_to_game_directory'
-require 'setup_handlers/load_game_files'
 require 'setup_handlers/load_game_configuration'
+require 'setup_handlers/load_game_files'
 require 'setup_handlers/exit_if_dry_run'
 require 'setup_handlers/reload_game_on_game_file_changes'
