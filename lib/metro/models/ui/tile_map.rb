@@ -5,6 +5,8 @@ module Metro
       property :file, type: :text
       property :rotation
 
+      property :follow, type: :text
+
       attr_accessor :layers
       attr_accessor :viewport
 
@@ -25,11 +27,6 @@ module Metro
         end.flatten.compact
       end
 
-      def layer_positioning
-        { orthogonal: "Metro::Tmx::TileLayer::OrthogonalPositioning",
-          isometric: "Metro::Tmx::TileLayer::IsometricPositioning" }[map.orientation.to_sym].constantize
-      end
-
       def show
         self.layers = map.layers.collect do |layer|
           tml = TileLayer.new
@@ -45,12 +42,35 @@ module Metro
       end
 
       def update
-        # update the layer with the current viewport position
+        shift_viewport_to_center_who_we_are_following
       end
 
       def draw
         layers.each {|layer| layer.draw }
       end
+
+      private
+
+      def layer_positioning
+        { orthogonal: "Metro::Tmx::TileLayer::OrthogonalPositioning",
+          isometric: "Metro::Tmx::TileLayer::IsometricPositioning" }[map.orientation.to_sym].constantize
+      end
+
+      def following
+        scene.send(follow) if follow
+      end
+
+      def shift_viewport_to_center_who_we_are_following
+        return unless following
+
+        diff_x = (following.x - Game.center.x).to_i
+
+        if diff_x >= 1 or diff_x <= -1
+          viewport.shift(Point.at(diff_x,0))
+        end
+
+      end
+
     end
   end
 end
