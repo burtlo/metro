@@ -23,6 +23,29 @@ module Metro
         @bottom = params[:bottom].to_f
       end
 
+      #
+      # Move the bounds by the amount specified in the point.
+      #
+      def shift(point)
+        self.left = self.left + point.x
+        self.right = self.right + point.x
+        self.top = self.top + point.y
+        self.bottom = self.bottom + point.y
+      end
+
+      #
+      # Create a new RectangleBounds that is larger than the
+      # current bounds, given the specifed hash of parameters
+      # that contain the amount to expand in the four directions
+      # left, right, top, bottom.
+      #
+      def enlarge(params = {})
+        self.class.new(left: left - params[:left].to_i,
+            right: right + params[:right].to_i,
+            top: top - params[:top].to_i,
+            bottom: bottom + params[:bottom].to_i)
+      end
+
       def top_left
         point_at left, top
       end
