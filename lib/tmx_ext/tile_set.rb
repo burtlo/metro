@@ -31,7 +31,7 @@ module Tmx
 
     def crop_bounds
       @crop_bounds ||= Metro::Units::RectangleBounds.new left: margin, top: margin,
-                        right: tilewidth + spacing, bottom: tileheight + spacing
+                        right: full_image_width, bottom: full_image_height
     end
 
     def image_path

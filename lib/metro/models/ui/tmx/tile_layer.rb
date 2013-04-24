@@ -6,6 +6,7 @@ module Metro
       attr_accessor :map
       attr_accessor :layer
       attr_accessor :tilesets
+      attr_accessor :viewport
 
       def data
         layer.data
@@ -22,12 +23,6 @@ module Metro
       def z_order
         -1
       end
-
-      def viewport=(port)
-        @viewport = port
-      end
-
-      attr_reader :viewport
 
       def draw
         tiles_within_viewport.each do |bounds,image|
