@@ -133,18 +133,18 @@ scene and first game scene. The game allows the player to start the game.
 
 ### Metro Documentation
 
-The Metro [wiki](wiki) contains lots of documentation:
+The Metro [wiki](../../wiki) contains lots of documentation:
 
 * [Game Configuration](wiki/game-configuration)
-* [Scenes](wiki/scenes)
-* [Views](wiki/views)
-* [Animations](wiki/animations)
-* [Scene Transitions](wiki/transitions)
-* [Models](wiki/models)
-* [Metro Models](wiki/metro-models)
-* [Model Properties](wiki/properties)
-* [Events](wiki/events)
-* [Units](wiki/units)
+* [Scenes](../../wiki/scenes)
+* [Views](../../wiki/views)
+* [Animations](../../wiki/animations)
+* [Scene Transitions](../../wiki/transitions)
+* [Models](../../wiki/models)
+* [Metro Models](../../wiki/metro-models)
+* [Model Properties](../../wiki/properties)
+* [Events](../../wiki/events)
+* [Units](../../wiki/units)
 
 ### Programming
 
