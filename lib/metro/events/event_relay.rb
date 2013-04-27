@@ -66,6 +66,7 @@ module Metro
       @up_actions ||= {}
       @down_actions ||= {}
       @held_actions ||= {}
+      @mouse_movement_actions ||= []
       @custom_notifications ||= HashWithIndifferentAccess.new([])
     end
 
@@ -179,6 +180,33 @@ module Metro
     alias_method :button_hold, :on_hold
     alias_method :button_held, :on_hold
 
+
+    #
+    # Register for mouse movements events. These events are fired each update
+    # providing an event which contains the current position of the mouse.
+    #
+    # @note mouse movement events fire with each update so it is up to the
+    #    receiving object of the event to determine if the new mouse movement
+    #    is a delta.
+    #
+    # @note mouse movement events require that the window be specified during initialization.
+    #
+    # @example Registering for button held events
+    #
+    #     class ExampleScene
+    #
+    #       draws :player
+    #
+    #       event :on_mouse_movement do |event|
+    #         player.position = event.mouse_point
+    #       end
+    #     end
+    #
+    def on_mouse_movement(*args,&block)
+      options = (args.last.is_a?(Hash) ? args.pop : {})
+      @mouse_movement_actions << ( block || lambda { |instance| send(options[:do]) } )
+    end
+
     #
     # Register for a custom notification event. These events are fired when
     # another object within the game posts a notification with matching criteria.
@@ -217,7 +245,11 @@ module Metro
       custom_notifications[param.to_sym] = custom_notifications[param.to_sym] + [ block ]
     end
 
-    attr_reader :up_actions, :down_actions, :held_actions, :custom_notifications
+    attr_reader :up_actions, :down_actions, :held_actions
+
+    attr_reader :mouse_movement_actions
+
+    attr_reader :custom_notifications
 
     def _on(hash,args,block)
       options = (args.last.is_a?(Hash) ? args.pop : {})
@@ -251,6 +283,16 @@ module Metro
     def fire_events_for_held_buttons
       held_actions.each do |key,action|
         execute_block_for_target(&action) if window and window.button_down?(key)
+      end
+    end
+
+    #
+    # Fire events for all the registered actions that are suppose to receive
+    # the mouse movement events.
+    #
+    def fire_events_for_mouse_movement
+      mouse_movement_actions.each do |action|
+        execute_block_for_target(&action)
       end
     end
 
