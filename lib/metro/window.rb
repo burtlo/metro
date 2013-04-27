@@ -36,6 +36,7 @@ module Metro
     # This is called every update interval while the window is being shown.
     #
     def update
+      state.fire_events_for_mouse_movement
       state.fire_events_for_held_buttons
       scene.base_update
     end

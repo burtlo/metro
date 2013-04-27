@@ -26,6 +26,13 @@ module Metro
     end
 
     #
+    # Fire events for mouse events within the current game state
+    #
+    def fire_events_for_mouse_movement
+      current_state.each {|cs| cs.fire_events_for_mouse_movement }
+    end
+
+    #
     # Fire events for button up for the current game state
     #
     def fire_button_up(id)
