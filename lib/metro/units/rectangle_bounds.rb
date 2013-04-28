@@ -46,6 +46,37 @@ module Metro
             bottom: bottom + params[:bottom].to_i)
       end
 
+      def shrink(params = {})
+        self.class.new(left: left + params[:left].to_i,
+            right: right - params[:right].to_i,
+            top: top + params[:top].to_i,
+            bottom: bottom - params[:bottom].to_i)
+      end
+
+      def clamp(point)
+        return point if contains?(point)
+
+        new_point = Point.new(point.x,point.y)
+
+        if point.x < left
+          new_point.x = left
+        end
+
+        if point.x > right
+          new_point.x = right
+        end
+
+        if point.y < top
+          new_point.y = top
+        end
+
+        if point.y > bottom
+          new_point.y = bottom
+        end
+
+        new_point
+      end
+
       def top_left
         point_at left, top
       end
