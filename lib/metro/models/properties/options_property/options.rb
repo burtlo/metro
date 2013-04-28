@@ -40,7 +40,11 @@ module Metro
         # count of options will reset to the beginning of the list of options.
         # Values that proceed the start of of the list of options will fallback to the last option.
         #
+        # @param [Fixnum,Object] value is the integer position within the menu
+        #   to select or the item in the options to select.
+        #
         def current_selected_index=(value)
+          value = index(value) unless value.is_a?(Fixnum)
           @current_selected_index = value || 0
           @current_selected_index = 0 if @current_selected_index >= count
           @current_selected_index = count - 1 if @current_selected_index <= -1
