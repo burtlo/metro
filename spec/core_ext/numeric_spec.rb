@@ -75,4 +75,32 @@ describe Numeric do
     end
   end
 
+  describe "#to_degrees" do
+    context "when using a Float" do
+      it "converts the radians to degrees" do
+        3.1415.radians.to_degrees.should eq 179.99469134034814
+      end
+    end
+
+    context "when using an Integer" do
+      it "converts the radians to degrees" do
+        4.radians.to_degrees.should eq 229.1831180523293
+      end
+    end
+  end
+
+  describe "#to_radians" do
+    context "when using a Float" do
+      it "converts the degrees to radians" do
+        360.5.degrees.to_radians.should eq 6.291911953439557
+      end
+    end
+
+    context "when using an Integer" do
+      it "converts the degrees to radians" do
+        180.degrees.to_radians.should eq 3.141592653589793
+      end
+    end
+  end
+
 end

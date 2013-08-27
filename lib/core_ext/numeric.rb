@@ -56,4 +56,21 @@ class Numeric
 
   alias_method :ticks, :tick
 
+  def radians
+    self
+  end
+
+  def degrees
+    self
+  end
+
+  # Convert the specified numeric value in radians to degrees
+  def to_degrees
+    self * 180 / Math::PI
+  end
+
+  # Convert the specified numeric value in degrees to radians
+  def to_radians
+    self * Math::PI / 180
+  end
 end
