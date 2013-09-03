@@ -72,6 +72,12 @@ module Metro
         Array(objects).each {|object| add_object(object) }
       end
 
+      # When the first shape collides with the second shape perform
+      # the following block of code.
+      def collision_between(first,second,&block)
+        space.add_collision_func(first,second,&block)
+      end
+
       # This method allows the space to declare which objects are effected by
       # gravity during their time within the space.
       #

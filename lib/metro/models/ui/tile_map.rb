@@ -67,7 +67,8 @@ module Metro
 
       #
       # Find objects that match the specified type or by the specified
-      # parameters.
+      # parameters. If no parameter is provided then all the objects are
+      # returned
       #
       # @example Finding all the objects with the type :floor
       #
@@ -76,8 +77,8 @@ module Metro
       # @example Finding all the objects with the name 'tree'
       #
       #    objects(name: 'tree')
-      def objects(params)
-        map.objects.find(params)
+      def objects(params=nil)
+        params ? map.objects.find(params) : map.objects
       end
 
       def update

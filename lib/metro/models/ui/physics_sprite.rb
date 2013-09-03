@@ -22,7 +22,7 @@ module Metro
       # A physics sprite has by default a collision shape that is a square.
       # So this property defines the length of one side which is used to create
       # the appropriately sized shape for the sprite.
-      property :shape_size, default: 120.0
+      property :shape_size, default: 48.0
 
       # @attribute
       # The name of the shape. This name is important when the space defines
