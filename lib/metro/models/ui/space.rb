@@ -66,6 +66,16 @@ module Metro
         space.add_shape object.shape
       end
 
+      # Remove a single object from the space. This object will remove the
+      # reference stored within the space as well as removing the body and
+      # shape that was added to the space.
+      #
+      def remove_object(object)
+        space_objects.delete(object)
+        space.remove_body(object.body)
+        space.remove_shape(object.shape)
+      end
+
       # Add multiple objects to the space.
       # @see #add_object
       def add_objects(objects)
