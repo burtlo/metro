@@ -32,6 +32,12 @@ module Metro
     #       path: "asset_path", tileable: tileable
     #
     def self.find_or_create(options)
+      begin
+        File.open(File.join("assets", options[:path]), "r")
+      rescue Exception
+        puts $! # <- make this prettier
+        options[:path] = "missing.png" # <- make this file installed by default into the assets folder of the game
+      end
       path = AssetPath.with(options[:path])
       images[path.to_s] or (images[path.to_s] = create(options))
     end
