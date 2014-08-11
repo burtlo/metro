@@ -1,8 +1,8 @@
 module Metro
-  VERSION = "0.3.4"
+  VERSION = "0.3.5"
   WEBSITE = "https://github.com/burtlo/metro"
-  CONTACT_EMAILS = ["dev@rubymetro.com"]
-  
+  CONTACT_EMAILS = ["franklin.webber@gmail.com"]
+
   def self.changes_for_version(version)
 
     change = Struct::Changes.new(nil,[])
@@ -28,5 +28,5 @@ module Metro
 
     change
   end
-  
+
 end
