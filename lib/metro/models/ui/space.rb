@@ -70,10 +70,15 @@ module Metro
       # reference stored within the space as well as removing the body and
       # shape that was added to the space.
       #
+      # This removal is done in a post-step callback because otherwise the
+      # space we are manipulating is locked.
+      #
       def remove_object(object)
-        space_objects.delete(object)
-        space.remove_body(object.body)
-        space.remove_shape(object.shape)
+        space.add_post_step_callback(object) do |space,object|
+          space_objects.delete(object)
+          space.remove_body(object.body)
+          space.remove_shape(object.shape)
+        end
       end
 
       # Add multiple objects to the space.
@@ -119,7 +124,6 @@ module Metro
       #
       def clean_up
         space_objects.each {|object| object.body.reset_forces }
-        space.rehash_static
       end
 
       def show
