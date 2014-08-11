@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in metro.gemspec
 gemspec
 
-gem 'chipmunk'
-
 gem 'rake'
 
 group 'development' do
