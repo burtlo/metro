@@ -1,10 +1,16 @@
 # Metro
 
+## 0.3.7 / 2014-08-11
+
+* FIX Chipmunk Space to remove the deprecated rehashing function
+* FIX Chipmunk Space fix for the removing of objects in handler
+* FIX Support for Ruby 2 and Windows with Texplay gem
+
 ## 0.3.6 / 2014-08-11
 
 * FIX for chipmunk latest version missing CP::Vec2::ZERO
 * FIX for specs and deprecations
-* FIX adding chipmunk to the gem dependencies 
+* FIX adding chipmunk to the gem dependencies
 
 ## 0.3.5 / 2014-08-11
 
