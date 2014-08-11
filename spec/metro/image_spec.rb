@@ -10,7 +10,7 @@ describe Metro::Image do
 
       let(:image) { stub('Original Image') }
       let(:window) { stub('Gosu::Window') }
-      let(:mock_image) { mock("TexPlay Created Image",refresh_cache: nil) }
+      let(:mock_image) { double("TexPlay Created Image",refresh_cache: nil) }
       let(:bounds) { Metro::Units::RectangleBounds.new(left: 2,top: 2,right: 30,bottom:30) }
 
       let(:expected_crop_params) { [ bounds.left, bounds.top, bounds.right, bounds.bottom ]}

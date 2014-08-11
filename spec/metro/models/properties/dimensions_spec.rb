@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Metro::Model::DimensionsProperty do
 
   subject { desribed_class.new model }
-  let(:model) { mock("model", window: window) }
+  let(:model) { double("model", window: window) }
   let(:window) do
-    mock('window',dimensions: window_dimensions )
+    double('window',dimensions: window_dimensions )
   end
 
   let(:window_dimensions) { Dimensions.of(1,1) }

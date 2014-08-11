@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Metro::Model::OptionsProperty do
 
   subject { described_class.new model }
-  let(:model) { mock("model", create: 'builds models for a living') }
+  let(:model) { double("model", create: 'builds models for a living') }
 
   describe "#get" do
     context "when the value is nil" do
@@ -17,7 +17,7 @@ describe Metro::Model::OptionsProperty do
 
     context "when the value is an array of options names" do
       before do
-        model.stub(:create) { |model_type,options| mock(model_type,options) }
+        model.stub(:create) { |model_type,options| double(model_type,options) }
       end
 
       let(:names) { [ 'Start Game', 'Options', 'Exit Game' ] }
@@ -45,7 +45,7 @@ describe Metro::Model::OptionsProperty do
 
     context "when the value is a hash which is a set of option names and the selected index" do
       before do
-        model.stub(:create) { |model_type,options| mock(model_type,options) }
+        model.stub(:create) { |model_type,options| double(model_type,options) }
       end
 
       let(:names_and_selected_index) do
@@ -55,9 +55,9 @@ describe Metro::Model::OptionsProperty do
       let(:names) { [ 'Start Game', 'Options', 'Exit Game' ] }
       let(:actions) { [ :start_game, :options, :exit_game ] }
       let(:selected_index) { 1 }
-      
+
       let(:label_model_class) { 'metro::ui::label' }
-      
+
 
       let(:options) { subject.get(names_and_selected_index) }
 
@@ -85,7 +85,7 @@ describe Metro::Model::OptionsProperty do
 
     context "when the value is hash that contains a set of options (with specific ui details) and the seelcted index" do
       before do
-        model.stub(:create) { |model_type,options| mock(model_type,options) }
+        model.stub(:create) { |model_type,options| double(model_type,options) }
       end
 
       let(:names_and_selected_index) do
@@ -97,14 +97,14 @@ describe Metro::Model::OptionsProperty do
           { model: 'metro::ui::image', text: 'Settings', action: 'open_settings' },
           { model: 'metro::ui::label', text: 'Exit' } ]
       end
-      
+
 
       let(:names) { [ 'Start Game!', 'Settings', 'Exit' ] }
       let(:actions) { [ :start_game, :open_settings, :exit ] }
       let(:models) { [ 'metro::ui::label', 'metro::ui::image', 'metro::ui::label' ] }
-      
+
       let(:selected_index) { 1 }
-      
+
       let(:options) { subject.get(names_and_selected_index) }
 
       it "should return an option for each name" do

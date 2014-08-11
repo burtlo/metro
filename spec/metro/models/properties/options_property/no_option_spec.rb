@@ -4,7 +4,7 @@ describe Metro::Model::OptionsProperty::NoOption do
 
   context "when attempting to an attribute like color of the no option" do
 
-    let(:log) { mock('log') }
+    let(:log) { double('log') }
 
     it "should generate a warning message" do
       log.should_receive(:warn).with(subject.warning_message)

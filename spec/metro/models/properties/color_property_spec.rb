@@ -3,11 +3,11 @@ require 'spec_helper'
 describe Metro::Model::ColorProperty do
 
   subject { described_class.new model }
-  let(:model) { mock("model", window: window) }
-  let(:window) { mock('window') }
+  let(:model) { double("model", window: window) }
+  let(:window) { double('window') }
 
   describe "#get" do
-    let(:expected_color) { mock('color') }
+    let(:expected_color) { double('color') }
 
     context "when the value is nil" do
       context "when no default value has been specified" do
@@ -47,7 +47,7 @@ describe Metro::Model::ColorProperty do
   end
 
   describe "#set" do
-    let(:expected_color) { mock('color') }
+    let(:expected_color) { double('color') }
 
     context "when the value is nil" do
 

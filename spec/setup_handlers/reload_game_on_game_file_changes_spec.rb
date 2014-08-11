@@ -15,7 +15,7 @@ describe Metro::SetupHandlers::ReloadGameOnGameFileChanges do
         Game.stub(:debug?).and_return(false)
       end
 
-      let(:options) { mock('Options',packaged?: false) }
+      let(:options) { double('Options',packaged?: false) }
 
       it "should not start the watcher" do
         subject.should_not_receive(:start_watcher)
@@ -28,7 +28,7 @@ describe Metro::SetupHandlers::ReloadGameOnGameFileChanges do
         Game.stub(:debug?).and_return(true)
       end
 
-      let(:options) { mock('Options',packaged?: true) }
+      let(:options) { double('Options',packaged?: true) }
 
       it "should not start the watcher" do
         subject.should_not_receive(:start_watcher)
@@ -41,7 +41,7 @@ describe Metro::SetupHandlers::ReloadGameOnGameFileChanges do
         Game.stub(:debug?).and_return(true)
       end
 
-      let(:options) { mock('Options',packaged?: false) }
+      let(:options) { double('Options',packaged?: false) }
 
 
       it "should start the watcher" do

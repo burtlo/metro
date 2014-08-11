@@ -12,7 +12,7 @@ describe Tmx::TileSet do
   end
 
   describe "#images" do
-    let(:raw_images) { [ mock("image-1"), mock("image-2") ] }
+    let(:raw_images) { [ double("image-1"), double("image-2") ] }
 
     it "returns an array of images" do
       subject.should_receive(:raw_image_tiles).and_return(raw_images)

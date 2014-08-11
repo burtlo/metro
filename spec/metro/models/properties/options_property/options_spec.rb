@@ -105,17 +105,17 @@ describe Metro::Model::OptionsProperty::Options do
 
   describe "#selected_action" do
     context "when there are options defined" do
-      subject { described_class.new [ mock('first-option',properties: { action: expected_action }), mock('second-option') ] }
+      subject { described_class.new [ double('first-option',properties: { action: expected_action }), double('second-option') ] }
       let(:expected_action) { :execute_this_action }
-      
+
       it "should return the action defined on the current selected item" do
         subject.selected_action.should eq expected_action
       end
     end
-    
+
     context "when there are no options defined" do
       subject { described_class.new [] }
-      
+
       it "should return the action on the NoOption" do
         subject.selected_action.should eq :missing_menu_action
       end

@@ -10,10 +10,10 @@ describe Metro::View do
 
   describe "#parser" do
     before do
-      subject.stub(:supported_parsers) { [ mock(exists?: false), expected_parser ] }
+      subject.stub(:supported_parsers) { [ double(exists?: false), expected_parser ] }
     end
 
-    let(:expected_parser) { mock(exists?: true) }
+    let(:expected_parser) { double(exists?: true) }
 
     it "should return the first parser which has a existing view" do
       subject.parser.should eq expected_parser
@@ -24,11 +24,11 @@ describe Metro::View do
 
     context "when the parser has a format that matches a writer" do
       before do
-        subject.stub(:parser) { mock(format: :json) }
-        subject.stub(:supported_writers) { [ mock(format: :yaml), expected_writer ] }
+        subject.stub(:parser) { double(format: :json) }
+        subject.stub(:supported_writers) { [ double(format: :yaml), expected_writer ] }
       end
 
-      let(:expected_writer) { mock(format: :json) }
+      let(:expected_writer) { double(format: :json) }
 
       it "should match the parser format" do
         subject.writer.format.should eq :json
@@ -37,11 +37,11 @@ describe Metro::View do
 
     context "when the format has been specified" do
       before do
-        subject.stub(:parser) { mock(format: :json) }
-        subject.stub(:supported_writers) { [ expected_writer, mock(format: :json) ] }
+        subject.stub(:parser) { double(format: :json) }
+        subject.stub(:supported_writers) { [ expected_writer, double(format: :json) ] }
       end
 
-      let(:expected_writer) { mock(format: :yaml) }
+      let(:expected_writer) { double(format: :yaml) }
 
       it "should match the format (ignoring the parser format)" do
         subject.format = :yaml

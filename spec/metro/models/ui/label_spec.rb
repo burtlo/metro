@@ -4,7 +4,7 @@ describe Metro::UI::Label do
 
   subject do
     label = described_class.new text: expected_text
-    label.window = mock('window')
+    label.window = double('window')
     label
   end
 
@@ -79,7 +79,7 @@ describe Metro::UI::Label do
       Metro::Font.stub(:find_or_create).and_return(font)
     end
 
-    let(:font) { mock('font', name: expected_font_name, size: expected_font_size) }
+    let(:font) { double('font', name: expected_font_name, size: expected_font_size) }
 
     let(:expected_font) { font }
     its(:font) { should eq expected_font }
@@ -128,7 +128,7 @@ describe Metro::UI::Label do
     let(:scale_x) { 1.0 }
     let(:scale_y) { 1.0 }
 
-    let(:font) { mock('font') }
+    let(:font) { double('font') }
 
     let(:line_height) { 20 }
 
