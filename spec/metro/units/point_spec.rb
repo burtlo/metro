@@ -28,7 +28,7 @@ describe Metro::Units::Point do
     end
 
     context "when adding it to another point-like object" do
-      let(:point) { stub('Point Like',x: 1, y: 2, z: 3) }
+      let(:point) { double('Point Like',x: 1, y: 2, z: 3) }
       let(:summed_point) { described_class.at 13, 26, 39 }
 
       it "should be a sum of the two points" do
@@ -38,7 +38,7 @@ describe Metro::Units::Point do
     end
 
     context "when adding it to something not like a point" do
-      let(:point) { stub('Not Point Like') }
+      let(:point) { double('Not Point Like') }
       let(:summed_point) { described_class.at 13, 26, 39 }
 
       it "should raise an error" do
@@ -59,7 +59,7 @@ describe Metro::Units::Point do
     end
 
     context "when adding it to another point-like object" do
-      let(:point) { stub('Point Like',x: 1, y: 2, z: 3) }
+      let(:point) { double('Point Like',x: 1, y: 2, z: 3) }
       let(:summed_point) { described_class.at 11, 22, 33 }
 
       it "should be a sum of the two points" do
@@ -69,7 +69,7 @@ describe Metro::Units::Point do
     end
 
     context "when adding it to something not like a point" do
-      let(:point) { stub('Not Point Like') }
+      let(:point) { double('Not Point Like') }
       let(:summed_point) { described_class.at 13, 26, 39 }
 
       it "should raise an error" do

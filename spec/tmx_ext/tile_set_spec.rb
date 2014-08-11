@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Tmx::TileSet do
 
-  let(:window) { stub('window') }
+  let(:window) { double('window') }
 
   let(:subject) do
     tile_set = described_class.new tilewidth: 10, tileheight: 20,

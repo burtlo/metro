@@ -8,8 +8,8 @@ describe Metro::Image do
 
     describe ".crop" do
 
-      let(:image) { stub('Original Image') }
-      let(:window) { stub('Gosu::Window') }
+      let(:image) { double('Original Image') }
+      let(:window) { double('Gosu::Window') }
       let(:mock_image) { double("TexPlay Created Image",refresh_cache: nil) }
       let(:bounds) { Metro::Units::RectangleBounds.new(left: 2,top: 2,right: 30,bottom:30) }
 

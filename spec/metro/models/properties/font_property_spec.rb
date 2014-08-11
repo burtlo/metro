@@ -7,7 +7,7 @@ describe Metro::Model::FontProperty do
   let(:window) { double('window') }
 
   describe "#get" do
-    let(:expected_font) { stub('font') }
+    let(:expected_font) { double('font') }
     let(:expected_options) { { name: expected_font_name, size: expected_font_size, window: window } }
 
     context "when the value is nil" do
@@ -67,7 +67,7 @@ describe Metro::Model::FontProperty do
       context "when no default value has been specified" do
         let(:expected_font_name) { Gosu::default_font_name }
         let(:expected_font_size) { 40 }
-        let(:expected_font) { stub('font') }
+        let(:expected_font) { double('font') }
 
         let(:expected_result) { { name: expected_font_name, size: expected_font_size } }
         let(:expected_options) { { name: expected_font_name, size: expected_font_size, window: window } }
@@ -97,7 +97,7 @@ describe Metro::Model::FontProperty do
     context "when the value is a font" do
 
       let(:gosu_font) do
-        font = stub('font', name: expected_font_name, height: expected_font_size)
+        font = double('font', name: expected_font_name, height: expected_font_size)
         font.stub(:class) { Metro::Font }
         font
       end
