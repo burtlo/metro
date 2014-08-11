@@ -21,6 +21,7 @@ require 'gosu_ext/color'
 require 'gosu_ext/gosu_constants'
 require 'tmx_ext/tile_set'
 require 'tmx_ext/object'
+require 'chipmunk_ext/chipmunk'
 
 require 'locale/locale'
 
