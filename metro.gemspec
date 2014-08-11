@@ -25,7 +25,13 @@ Gem::Specification.new do |gem|
   gem.homepage      = Metro::WEBSITE
 
   gem.add_dependency 'gosu', '~> 0.7'
-  gem.add_dependency 'texplay', '~> 0.4'
+
+  if RUBY_PLATFORM == "i386-mingw32"
+    gem.add_dependency 'texplay', '~> 0.4'
+  else
+    gem.add_dependency 'texplay', '~> 0.4.4.pre'
+  end
+
   gem.add_dependency 'chipmunk', '~> 6.1.3.1'
   gem.add_dependency 'tmx', '~> 0.1.2'
   gem.add_dependency 'thor', '~> 0.16.0'
