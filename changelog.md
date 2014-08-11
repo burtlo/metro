@@ -1,5 +1,11 @@
 # Metro
 
+## 0.3.6 / 2014-08-11
+
+* FIX for chipmunk latest version missing CP::Vec2::ZERO
+* FIX for specs and deprecations
+* FIX adding chipmunk to the gem dependencies 
+
 ## 0.3.5 / 2014-08-11
 
 * FIX active_support is now activesupport
