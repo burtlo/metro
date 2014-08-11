@@ -18,7 +18,7 @@ describe Metro::Views::JSONView do
       let(:filepath_that_exists) { "#{view_name}.json" }
 
       it "should return true" do
-        subject.exists?(view_name).should be_true
+        subject.exists?(view_name).should be_truthy
       end
 
     end

@@ -18,7 +18,7 @@ describe Metro::Views::YAMLView do
       let(:filepath_that_exists) { "#{view_name}.yaml" }
 
       it "should return true" do
-        subject.exists?(view_name).should be_true
+        subject.exists?(view_name).should be_truthy
       end
 
     end
@@ -30,7 +30,7 @@ describe Metro::Views::YAMLView do
       let(:filepath_that_exists) { "#{view_name}.yml" }
 
       it "should return true" do
-        subject.exists?(view_name).should be_true
+        subject.exists?(view_name).should be_truthy
       end
     end
   end

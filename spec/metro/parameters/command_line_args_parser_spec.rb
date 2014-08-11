@@ -26,12 +26,12 @@ describe Metro::Parameters::CommandLineArgsParser do
         end
 
         it "should find all the flags" do
-          subject.upset_the_world?.should be_true
-          subject.check_dependencies?.should be_true
+          subject.upset_the_world?.should be_truthy
+          subject.check_dependencies?.should be_truthy
         end
-        
+
         it "should return false when non-existant flags are present" do
-          subject.wants_food_mild?.should be_false
+          subject.wants_food_mild?.should be_falsy
         end
       end
 
