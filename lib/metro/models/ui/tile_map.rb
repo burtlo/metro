@@ -32,7 +32,7 @@ module Metro
 
       # @attribute
       # The actor that the viewport of the scene will follow.
-      property :follow, type: :text
+      property :follow, type: :text, default: ""
 
       # @attribute
       # The rotation of each tile within the scene. This is by default
@@ -110,7 +110,7 @@ module Metro
       end
 
       def following
-        scene.send(follow) if follow
+        scene.send(follow) if follow.present?
       end
 
       def shift_viewport_to_center_who_we_are_following
