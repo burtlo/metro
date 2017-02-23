@@ -45,8 +45,9 @@ module Metro
       # Defines the listener that will watch the filepaths
       #
       def watch_filepaths(filepaths)
-        listener = Listen.to(*filepaths)
-        listener.change(&on_change)
+        listener = Listen.to(*filepaths) do |modified, added, removed|
+          on_change(modified, added, removed)
+        end
         listener.start
       end
 
@@ -54,8 +55,8 @@ module Metro
       # @return [Proc] the body of code to execute when a file change event has
       #   been received.
       #
-      def on_change
-        Proc.new { |modified,added,removed| reload_game_because_files_changed(modified + added + removed) }
+      def on_change(modified, added, removed)
+        reload_game_because_files_changed(modified + added + removed)
       end
 
       #

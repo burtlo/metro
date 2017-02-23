@@ -24,20 +24,15 @@ Gem::Specification.new do |gem|
 
   gem.homepage      = Metro::WEBSITE
 
-  gem.add_dependency 'gosu', '~> 0.7'
+  gem.add_dependency 'gosu'
+  gem.add_dependency 'texplay', '~> 0.4.4.pre'
 
-  if RUBY_PLATFORM == "i386-mingw32"
-    gem.add_dependency 'texplay', '~> 0.4'
-  else
-    gem.add_dependency 'texplay', '~> 0.4.4.pre'
-  end
-
-  gem.add_dependency 'chipmunk', '~> 6.1.3.1'
-  gem.add_dependency 'tmx', '~> 0.1.2'
-  gem.add_dependency 'thor', '~> 0.19.1'
-  gem.add_dependency 'i18n', '~> 0.6.1'
-  gem.add_dependency 'activesupport', '~> 4.1.4'
-  gem.add_dependency 'listen', '~> 0.6.0'
+  gem.add_dependency 'chipmunk'
+  gem.add_dependency 'tmx'
+  gem.add_dependency 'thor'
+  gem.add_dependency 'i18n'
+  gem.add_dependency 'activesupport', '~> 4.2'
+  gem.add_dependency 'listen'
   gem.add_development_dependency 'rspec', '~> 2.11'
   gem.add_development_dependency 'rspec-its', '~> 1.0.1'
 

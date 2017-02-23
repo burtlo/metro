@@ -58,7 +58,7 @@ module Metro
     end
 
     def self.create_gosu_font(window, name, size)
-      Gosu::Font.new window, name, size
+      Gosu::Font.new size, name: name
     end
 
     def self.fonts
